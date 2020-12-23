@@ -1,0 +1,51 @@
+.select
+  width: 100%
+  position: relative
+  font-size: 2.2rem
+  &.active
+    .select
+      &__input-container
+        z-index: 12
+      &__options
+        display: block
+  img
+    max-width: 4.5rem
+    max-height: 4.5rem
+    margin-right: 10px
+    object-fit: contain
+  &__input-container
+    +flex(row nowrap, flex-start, center)
+    height: 7rem
+    padding: 0 2rem
+    cursor: pointer
+    position: relative
+    transition: all 0.3s
+    &:after
+      content: "\e90a"
+      font-family: 'icomoon'
+      font-size: 8px
+  &__options
+    position: absolute
+    top: 100%
+    left: 0
+    width: max-content
+    z-index: 10
+    background: white
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3)
+    display: none
+  &__option
+    +flex(row nowrap, flex-start, center)
+    padding: 10px 2rem
+    transition: all 0.3s
+    &:hover
+      background: var(--color8)
+    &._choosed
+      display: none
+  &__input
+    display: none
+  &__value
+    +flex(row nowrap, flex-start, center)
+    flex-grow: 1
+    margin-right: 10px
+
+@import "media"

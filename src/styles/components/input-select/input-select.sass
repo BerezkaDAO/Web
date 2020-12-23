@@ -1,0 +1,25 @@
+.input-select
+  +flex(row nowrap, flex-start, stretch)
+  border: 2px solid var(--color9)
+  .select
+    max-width: 18rem
+    background: var(--color8)
+  &._light
+    border: none
+    border-bottom: 2px solid var(--color12)
+    align-items: flex-end
+    padding-bottom: 15px
+    .select
+      max-width: 14rem
+      background: none
+      &__input-container
+        padding: 0
+        height: auto
+      img
+        max-width: 3.2rem
+        max-height: 3.2rem
+    .input
+      padding: 0
+      height: initial
+      line-height: 1.37
+

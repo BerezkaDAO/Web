@@ -1,0 +1,68 @@
+h1, h2, h3, h4, h5, h6
+  font-weight: inherit
+  font-size: inherit
+  margin: 0
+
+p
+  font-size: inherit
+  margin: 0 0 3rem 0
+  line-height: 1.62
+  letter-spacing: -0.02em
+  &:last-child
+    margin-bottom: 0
+
+ul, ol
+  margin: 0 0 3rem 0
+  line-height: 1.62
+  letter-spacing: -0.02em
+  padding: 0
+  list-style-type: none
+  &:last-child
+    margin-bottom: 0
+
+ul
+  li
+    &:before
+      content: "● "
+
+ol
+  counter-reset: li
+  li
+    &:before
+      content: counter(li)". "
+      counter-increment: li
+
+b
+  font-weight: 500
+
+.title-main
+  font-size: 12rem
+  letter-spacing: -0.04em
+  line-height: 0.92
+
+.title
+  font-size: 6rem
+  line-height: 1
+  letter-spacing: -0.04em
+
+.title-2
+  font-size: 3.5rem
+
+.title-3
+  font-size: 2.2rem
+  font-weight: 600
+
+.red
+  color: var(--red)
+
+.link-color
+  color: var(--color1)
+  transition: all 0.3s
+  &:hover
+    color: var(--color5)
+
+.text-block
+  h1, h2, h3, h4, h5, h6
+    margin-bottom: 1em
+
+@import "media"

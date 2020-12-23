@@ -1,0 +1,77 @@
+.main-table
+  &__tr
+    display: grid
+    grid-template-columns: repeat(4, 25%)
+    padding: 0 4rem
+    position: relative
+    transition: all 0.3s
+    &.active
+      background: var(--color1)
+      .main-table__dropdown-btn
+        &:before
+          transform: rotate(90deg)
+      & + .main-table
+        &__dropdown
+          display: block
+    &.activeToggle
+      cursor: pointer
+      &:hover
+        background: var(--color1)
+        .main-table
+          &__dropdown-btn
+            background: white
+            &:after,
+            &:before
+              background: black
+  &__td
+    +flex(row nowrap, flex-end, center)
+    font-size: 6rem
+    letter-spacing: -0.04em
+    padding: 3.5rem 2rem
+    &:first-child
+      padding-left: 0
+      justify-content: flex-start
+    &:last-child
+      padding-right: 0
+  &__th
+    font-size: 14px
+    padding: 10px 2rem 4rem 0
+    border-bottom: 1px solid var(--color13)
+    text-align: right
+    &:first-child
+      text-align: left
+  &__icon
+    width: 3.2rem
+    height: 3.2rem
+    min-width: 3.2rem
+    margin-right: 2.8rem
+  &__dropdown
+    background: white
+    padding: 0 4rem
+    display: none
+  &__dropdown-btn
+    +flex(row nowrap, center, center)
+    width: 5rem
+    height: 5rem
+    border: 1px solid
+    border-radius: 100%
+    position: relative
+    transition: all 0.3s
+    &:after,
+    &:before
+      content: ""
+      display: block
+      background: white
+      position: absolute
+      top: 0
+      bottom: 0
+      left: 0
+      right: 0
+      margin: auto
+      transition: all 0.3s
+    &:after
+      width: 2.5rem
+      height: 1px
+    &:before
+      height: 2.5rem
+      width: 1px

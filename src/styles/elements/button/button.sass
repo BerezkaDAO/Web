@@ -1,0 +1,35 @@
+.button
+  +flex(row nowrap, center, center)
+  font-weight: 500
+  font-size: 14px
+  text-transform: uppercase
+  display: inline-flex
+  text-align: center
+  padding: 15px 1.8rem
+  min-height: 6rem
+  background: var(--color1)
+  min-width: 17rem
+  transition: all 0.3s
+  cursor: pointer
+  color: white
+  &:hover
+    filter: brightness(1.2)
+  &._light
+    border: 1px solid
+    background: none
+    &:hover
+      border-color: var(--color1)
+  &._middle
+    min-width: 28rem
+  &._full
+    width: 100%
+  &._large
+    min-height: 7rem
+    font-weight: 600
+    font-size: 2.4rem
+
+.buttons
+  +flex(row wrap, flex-start, flex-start)
+  margin: -10px
+  & > *
+    margin: 10px

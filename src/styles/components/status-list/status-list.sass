@@ -1,0 +1,26 @@
+.status-list
+  list-style-type: none
+  padding: 4px 0 0 0
+  margin: 0
+  display: grid
+  grid-gap: 2rem
+  li
+    +flex(row nowrap, flex-start, flex-start)
+    font-weight: 500
+    &._color1
+      color: var(--color1)
+    &._color2
+      color: var(--color2)
+    &._color3
+      color: var(--color3)
+    &._color4
+      color: var(--color4)
+    &._color5
+      color: var(--color5)
+    &:before
+      content: "\e908"
+      font-family: 'icomoon'
+      font-size: 2rem
+      margin-right: 15px
+      margin-top: -4px
+      display: block

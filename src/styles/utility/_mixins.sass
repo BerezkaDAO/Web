@@ -1,0 +1,48 @@
+=flex($flex-flow, $justify-content, $align-items)
+  display: flex
+  flex-flow: $flex-flow
+  justify-content: $justify-content
+  align-items: $align-items
+
+=font($size, $weight, $color)
+  font-size: $size
+  font-weight: $weight
+  color: $color
+
+=offset($t, $b)
+  padding: $t 10px $b 10px
+
+=grid($min, $max, $gap-r, $gap-c)
+  display: grid
+  grid-template-columns: repeat(auto-fit,minmax($min,$max))
+  grid-gap: $gap-r $gap-c
+=grid2($min, $max, $gap-r, $gap-c)
+  display: grid
+  grid-template-columns: repeat(auto-fill,minmax($min,$max))
+  grid-gap: $gap-r $gap-c
+
+=full()
+  position: absolute
+  width: 100%
+  height: 100%
+  top: 0
+  left: 0
+
+=link()
+  border-bottom: 0.5px solid transparent
+  &:hover
+    border-color: inherit
+
+=margin-sides($margin)
+  margin: 0 $margin
+  &:last-child
+    margin-right: 0
+  &:first-child
+    margin-left: 0
+
+=margin-updown($margin)
+  margin: $margin 0
+  &:last-child
+    margin-bottom: 0
+  &:first-child
+    margin-top: 0

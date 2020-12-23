@@ -1,0 +1,24 @@
+.user-menu
+  &__avatar
+    width: 4.2rem
+    height: 4.2rem
+    min-width: 4.2rem
+    border-radius: 100%
+    background: url("../../../img/user.svg") no-repeat center
+    background-size: cover
+    overflow: hidden
+  &__avatar-img
+    width: 100%
+    height: 100%
+    object-fit: cover
+  &__header
+    +flex(row nowrap, flex-start, center)
+    cursor: pointer
+    &:after
+      content: "\e905"
+      font-family: 'icomoon'
+      font-size: 6px
+      margin-left: 10px
+      color: var(--color8)
+  &__dropdown
+    display: none

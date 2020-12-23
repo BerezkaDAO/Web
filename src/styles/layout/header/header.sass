@@ -1,0 +1,21 @@
+.header
+  +flex(row nowrap, flex-start, center)
+  padding-top: 3rem
+  &__menu
+    +flex(row nowrap, flex-start, center)
+  &__menu-item
+    text-transform: uppercase
+    font-size: 14px
+    margin-right: 2rem
+    border-bottom: 1px solid
+    transition: all 0.3s
+    &:hover
+      color: var(--color5)
+  &__title
+    opacity: 0.6
+    font-size: 14px
+    flex-grow: 1
+  &__sidebar-open
+    display: none
+
+@import "media"

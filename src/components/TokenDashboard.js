@@ -15,8 +15,8 @@ function TokenDashboard(props) {
   const tokenAddress = tokenInfo[token].address;
 
   return (
-    <div className="info-list">
-      <div className="info-main">
+    <div className="info-list grid">
+      <div className="info-main grid-col-4 grid-md-12">
         <div className="info-main__header">
           <div className="info-main__title">
             {tokenInfo[token].tableName} token price, USD
@@ -29,7 +29,7 @@ function TokenDashboard(props) {
           <TokenAmount tokenAddress={tokenAddress} />
         </div>
       </div>
-      <div className="info-main">
+      <div className="info-main grid-col-4 grid-md-12">
         <div className="info-main__header">
           <div className="info-main__title">Portfolio, USD</div>
           <div className="info-main__icon">
@@ -44,7 +44,7 @@ function TokenDashboard(props) {
           />
         </div>
       </div>
-      <div className="info-main">
+      <div className="info-main grid-col-4 grid-md-12">
         <div className="info-main__header">
           <div className="info-main__title">APY, %</div>
           <div className="info-main__icon">
@@ -55,7 +55,7 @@ function TokenDashboard(props) {
           <APY tokenAddress={tokenAddress} decimals={2} />
         </div>
       </div>
-      <div className="info-general">
+      <div className="info-general grid-col-4 grid-lg-6 grid-md-12">
         <div className="info-general__header">
           <div className="info-general__title">Portfolio</div>
           <div className="info-general__menu">
@@ -73,7 +73,7 @@ function TokenDashboard(props) {
           <PortfolioPartsGraph tokenAddress={tokenAddress} web3={web3Global} />
         </div>
       </div>
-      <div className="info-general _wide">
+      <div className="info-general _wide grid-col-8 grid-lg-6 grid-md-12">
         <div className="info-general__header">
           <div className="info-general__title">Token Price, USD</div>
           <div className="info-general__menu">
@@ -91,7 +91,7 @@ function TokenDashboard(props) {
           <TokenPriceGraph tokenAddress={tokenAddress} />
         </div>
       </div>
-      <div className="info-general">
+      <div className="info-general grid-col-4 grid-lg-6 grid-md-12">
         <div className="info-general__header">
           <div className="info-general__title">Liquidity pools</div>
         </div>
@@ -99,7 +99,7 @@ function TokenDashboard(props) {
           <PortfolioParts tokenAddress={tokenAddress} web3={web3Global} />
         </div>
       </div>
-      <div className="info-general _wide">
+      <div className="info-general _wide grid-col-8 grid-lg-6 grid-md-12">
         <div className="info-general__header">
           <div className="info-general__title">Portfolio Value, USD</div>
           <div className="info-general__menu">

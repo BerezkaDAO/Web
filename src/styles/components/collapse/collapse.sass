@@ -1,0 +1,12 @@
+.collapse
+  --collapse-display: block
+  &_flex
+    --collapse-display: flex
+  &__activation
+    display: none
+  &__activation:checked + .collapse .collapse__content
+    display: var(--collapse-display)
+  &__activation:checked + .collapse .collapse__hide
+    display: none
+  &__content
+    display: none

@@ -1,2 +1,135 @@
-
+.grid
+  display: grid
+  grid-gap: 3rem
+  grid-template-columns: repeat(12, 1fr)
+  width: 100%
+  &.gap-0
+    grid-gap: 0
+  &.center
+    justify-items: center
+  &_2
+    grid-template-columns: repeat(2, 1fr)
+  &_3
+    grid-template-columns: repeat(3, 1fr)
+  &_4
+    grid-template-columns: repeat(4, 1fr)
+  &_5
+    grid-template-columns: repeat(5, 1fr)
+  &_6
+    grid-template-columns: repeat(6, 1fr)
+  &_7
+    grid-template-columns: repeat(7, 1fr)
+  &_8
+    grid-template-columns: repeat(8, 1fr)
+  &_9
+    grid-template-columns: repeat(9, 1fr)
+  &_10
+    grid-template-columns: repeat(10, 1fr)
+  &_11
+    grid-template-columns: repeat(11, 1fr)
+.grid-col-1
+  grid-column: span 1
+.grid-col-2
+  grid-column: span 2
+.grid-col-3
+  grid-column: span 3
+.grid-col-4
+  grid-column: span 4
+.grid-col-5
+  grid-column: span 5
+.grid-col-6
+  grid-column: span 6
+.grid-col-7
+  grid-column: span 7
+.grid-col-8
+  grid-column: span 8
+.grid-col-9
+  grid-column: span 9
+.grid-col-10
+  grid-column: span 10
+.grid-col-11
+  grid-column: span 11
+.grid-col-12
+  grid-column: span 12
+@media (max-width: 1023px)
+  .grid-lg-center
+    justify-items: center
+  .grid-lg-1
+    grid-column: span 1
+  .grid-lg-2
+    grid-column: span 2
+  .grid-lg-3
+    grid-column: span 3
+  .grid-lg-4
+    grid-column: span 4
+  .grid-lg-5
+    grid-column: span 5
+  .grid-lg-6
+    grid-column: span 6
+  .grid-lg-7
+    grid-column: span 7
+  .grid-lg-8
+    grid-column: span 8
+  .grid-lg-9
+    grid-column: span 9
+  .grid-lg-10
+    grid-column: span 10
+  .grid-lg-11
+    grid-column: span 11
+  .grid-lg-12
+    grid-column: span 12
+@media (max-width: 767px)
+  .grid-md-1
+    grid-column: span 1
+  .grid-md-2
+    grid-column: span 2
+  .grid-md-3
+    grid-column: span 3
+  .grid-md-4
+    grid-column: span 4
+  .grid-md-5
+    grid-column: span 5
+  .grid-md-6
+    grid-column: span 6
+  .grid-md-7
+    grid-column: span 7
+  .grid-md-8
+    grid-column: span 8
+  .grid-md-9
+    grid-column: span 9
+  .grid-md-10
+    grid-column: span 10
+  .grid-md-11
+    grid-column: span 11
+  .grid-md-12
+    grid-column: span 12
+@media (max-width: 460px)
+  .grid
+    grid-gap: 2.8rem 15px
+  .grid-sm-0
+    display: none
+  .grid-sm-1
+    grid-column: span 1
+  .grid-sm-2
+    grid-column: span 2
+  .grid-sm-3
+    grid-column: span 3
+  .grid-sm-4
+    grid-column: span 4
+  .grid-sm-5
+    grid-column: span 5
+  .grid-sm-6
+    grid-column: span 6
+  .grid-sm-7
+    grid-column: span 7
+  .grid-sm-8
+    grid-column: span 8
+  .grid-sm-9
+    grid-column: span 9
+  .grid-sm-10
+    grid-column: span 10
+  .grid-sm-11
+    grid-column: span 11
+  .grid-sm-12
+    grid-column: span 12
 

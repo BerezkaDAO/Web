@@ -6,7 +6,7 @@ function Dashboard(props) {
   const { web3Global } = props;
 
   return (
-    <div className="dashboard">
+    <div className="page dashboard">
       <section className="section">
         <div className="section__header">
           <h1 className="title">Dashboard</h1>

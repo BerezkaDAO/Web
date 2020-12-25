@@ -15,7 +15,7 @@ class Sidebar extends React.Component {
           <a href="http://berezka.io">
             <img
               className="sidebar-menu__logo-img"
-              src="img/logo.png"
+              src="/img/logo.png"
               title="Logo"
               alt="Logo"
             />

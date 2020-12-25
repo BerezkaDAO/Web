@@ -7,7 +7,7 @@ function Account(props) {
   const { web3Global, address, connectWeb3 } = props;
 
   return (
-    <div className="account">
+    <div className="page account">
       <section className="section">
         <div className="section__header">
           <h1 className="title">My Account</h1>

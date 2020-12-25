@@ -2,7 +2,7 @@
   &__tr
     display: grid
     grid-template-columns: repeat(4, 25%)
-    padding: 0 4rem
+    padding: 0 var(--offset)
     position: relative
     transition: all 0.3s
     &.active
@@ -23,21 +23,23 @@
             &:after,
             &:before
               background: black
+  &__td-row
+    +flex(row nowrap, flex-start, center)
   &__td
-    +flex(row nowrap, flex-end, center)
     font-size: 6rem
     letter-spacing: -0.04em
-    padding: 3.5rem 2rem
+    padding: 2.5rem 0 2.5rem 2rem
+    text-align: right
     &:first-child
       padding-left: 0
-      justify-content: flex-start
     &:last-child
       padding-right: 0
   &__th
     font-size: 14px
-    padding: 10px 2rem 4rem 0
+    padding: 10px 0 3.7rem 0
     border-bottom: 1px solid var(--color13)
     text-align: right
+    margin-bottom: 2.5rem
     &:first-child
       text-align: left
   &__icon
@@ -47,10 +49,11 @@
     margin-right: 2.8rem
   &__dropdown
     background: white
-    padding: 0 4rem
+    padding: 0 var(--offset)
     display: none
   &__dropdown-btn
     +flex(row nowrap, center, center)
+    display: inline-flex
     width: 5rem
     height: 5rem
     border: 1px solid
@@ -75,3 +78,13 @@
     &:before
       height: 2.5rem
       width: 1px
+  &__link
+    +font(2rem, 600, var(--color1))
+    text-transform: uppercase
+    text-align: center
+    padding: 6rem 0
+    a
+      min-height: 6rem
+
+
+@import "media"

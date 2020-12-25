@@ -2,27 +2,34 @@
   border-collapse: collapse
   margin: -1px
   background: white
-  min-width: 100%
+  width: 100%
   tbody
     color: var(--color11)
   thead
     background: var(--color1)
   th
     border: 1px solid
-    padding: 10px 2rem
+    padding: 15px 2rem
     font-size: 1.8rem
     font-weight: 500
     &._large
       font-size: 2.4rem
     &:last-child
       border-right: none
+      padding-right: 3.5rem
+  tr
+    &:first-child
+      th
+        &:first-child
+          padding-left: 3.5rem
   td
     padding: 2rem
-    border-bottom: 1px solid rgba(0, 0, 0, 0.3)
+    border-bottom: 1px solid #e0e0e0
     vertical-align: top
-    &:first-child,
-    &:last-child
+    &:first-child
       padding-left: 3.5rem
+    &:last-child
+      padding-right: 3.5rem
     &._right
       text-align: right
   tfoot
@@ -30,6 +37,12 @@
       +font(2.2rem, 600, var(--color1))
 
 .table-wrapper
+  border-radius: 10px
+  overflow: hidden
+  &__mobile-col
+    display: none
+
+.table-scroll
   border-radius: 10px
   overflow: hidden
   width: 100%
@@ -41,30 +54,42 @@
     white-space: nowrap
     font-size: 2rem
     text-align: center
-    &:first-child,
-    &:nth-child(2)
+    &:first-child
+    // &:first-child,
+    // &:nth-child(2)
       text-align: left
+  tr
+    &:last-child
+      th
+        &:first-child
+          white-space: nowrap
+    &:first-child
+      th
+        &:first-child
+        // &:first-child,
+        // &:nth-child(2)
+          text-align: left
 
 .table-offer
   td
-    padding: 3rem 17px
+    padding: 3rem 3.5rem 3rem 0
     border-bottom: 1px solid var(--color14)
     width: calc(100% / 4)
+    line-height: 1.25
     &:first-child
       padding-left: 0
     &:last-child
       padding-right: 0
   tr
-    &:nth-last-child(3)
+    &._no-border
       td
-        border-bottom: none
-    &:nth-last-child(2),
-    &:last-child
-      td
-        padding: 17px
+        padding-top: 2.5rem
+        padding-bottom: 17px
         border-bottom: none
   &__group
     +flex(row nowrap, flex-start, flex-start)
   &__label
     margin-right: 3rem
     padding-top: 10px
+
+@import "media"

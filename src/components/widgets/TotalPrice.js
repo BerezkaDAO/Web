@@ -38,7 +38,7 @@ const TotalPrice = (props) => {
       {totalPrice
         .toFixed(0)
         .toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, " ")}
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
     </>
   );
 };

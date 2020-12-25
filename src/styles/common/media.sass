@@ -1,4 +1,22 @@
+@media (max-width: 1023px)
+  .main
+    padding-left: var(--offset)
+  .section
+    &._full
+      width: calc(100% + var(--offset) * 2)
+      margin-left: calc(0px - var(--offset))
+    &._with-aside
+      display: grid
+      grid-template-columns: initial
+      grid-gap: 2rem
+    &__breadcrumbs
+      margin-bottom: 4.5rem
+
 @media (max-width: 767px)
   .main
     &__content
       padding: 0 15px
+  .section
+    &__aside
+      border: none
+      padding: 0

@@ -1,0 +1,31 @@
+@media (max-width: 1100px)
+  .header
+    align-items: flex-start
+    &__main
+      display: grid
+      grid-gap: 10px
+      margin-right: 3rem
+
+@media (max-width: 1023px)
+  .header
+    height: auto
+    padding-top: var(--offset)
+    &__sidebar-open
+      display: block
+
+@media (max-width: 767px)
+  .header
+    position: static
+    &._scroll
+      pointer-events: auto
+      .header__main
+        opacity: 1
+    &__main
+      display: grid
+      grid-gap: 15px
+    &__menu
+      display: grid
+      grid-gap: 10px
+      justify-items: flex-start
+    &__sidebar-open
+      display: block

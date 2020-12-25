@@ -3,39 +3,45 @@
   background: black
   width: 100vh
   min-width: 100vh
-  overflow-x: auto
   bottom: -10rem
   height: 10rem
   left: 0
-  z-index: 3
+  z-index: 10
   transition: all 0.5s
   transform: rotate(-90deg)
   position: fixed
   transform-origin: left top
-  &::-webkit-scrollbar-track
-    background: white
-  &::-webkit-scrollbar
-    width: 5px
-    height: 6px
-  &::-webkit-scrollbar-thumb
-    background-color: var(--color5)
-  &:hover::-webkit-scrollbar-thumb
-    background: var(--color5)
+  //&::-webkit-scrollbar-track
+  //  background: white
+  //&::-webkit-scrollbar
+  //  width: 5px
+  //  height: 6px
+  //&::-webkit-scrollbar-thumb
+  //  background-color: var(--color5)
+  //&:hover::-webkit-scrollbar-thumb
+  //  background: var(--color5)
   &__items
     +flex(row-reverse nowrap, flex-end, stretch)
   &__item
     +flex(row nowrap, center, center)
     font-size: 14px
     text-transform: uppercase
-    font-weight: 600
+    font-weight: 500
     background: var(--color7)
-    padding: 10px 4rem
+    padding: 10px
+    min-width: 18rem
+    &:last-child
+      min-width: 20rem
     &.active
       background: var(--color1)
   &__logo
+    +flex(row nowrap, center, center)
     padding: 2rem 3rem 2rem 2rem
+    width: 11rem
   &__logo-img
     transform: rotate(90deg)
+    max-height: 100%
+    width: 100%
   &__close
     display: none
   &__activation

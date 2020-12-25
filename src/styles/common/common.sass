@@ -15,10 +15,9 @@
     font-size: 16px
     color: white
     position: relative
-    background-color: #C4C4C4
-    background: url("../../img/bg.jpg") no-repeat top left
-    background-size: cover
-    background-attachment: fixed
+    background-color: black
+    background: url("../../img/bg.jpg") repeat top left
+    background-size: 100% auto
 img, iframe
   display: block
   max-width: 100%
@@ -74,7 +73,7 @@ img
   .main
     width: 100%
     flex-grow: 1
-    padding: 0 4rem 4rem 14rem
+    padding: 0 var(--offset) var(--offset) 14rem
     max-width: 1600px
   .hidden
     display: none
@@ -86,30 +85,37 @@ img
     height: 100%
     z-index: 10
     cursor: pointer
+  .page
+    margin-top: -1.4rem
   .section
     position: relative
+    padding-top: 2rem
     &._with-aside
       display: grid
       grid-template-columns: 35.5rem 1fr
     &._mb
-      margin-bottom: 10rem
+      margin-bottom: 9rem
     &._bg
       background: var(--color12)
-      padding: 6rem 4rem
+      padding: 6rem var(--offset) 5rem var(--offset)
     &._full
-      width: calc(100% + 8rem)
-      margin-left: -4rem
+      width: calc(100% + var(--offset) * 2)
+      margin-left: calc(0px - var(--offset))
     &__aside
       padding-top: 3.2rem
       border-top: 1px solid var(--color13)
       padding-right: 15px
+      .section__header
+        padding-left: 8px
     &__hint
       opacity: 0.6
       font-size: 14px
+      margin-top: 3.8rem
     &__breadcrumbs
-      margin-bottom: 7.5rem
+      margin-bottom: 7rem
+      margin-top: 4rem
     &__header
-      margin-bottom: 3.5rem
+      margin-bottom: 2.5rem
     &__subtitle
       font-weight: 600
       color: var(--color10)
@@ -127,3 +133,16 @@ img
     flex-grow: 1
 
   @import "media"
+
+@media (max-width: 1520px)
+  .common
+    font-size: 9px
+@media (max-width: 1360px)
+  .common
+    font-size: 8px
+@media (max-width: 1220px)
+  .common
+    font-size: 7px
+@media (max-width: 1023px)
+  \:root
+    --offset: 3rem

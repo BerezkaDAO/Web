@@ -3,7 +3,7 @@
   line-height: 1.4
   &__item
     display: grid
-    grid-gap: 2rem
+    grid-gap: 14px
     padding-right: 6rem
     margin-left: 6rem
     border-right: 1px solid var(--color13)
@@ -11,8 +11,19 @@
     &:last-child
       border-right: none
       padding-right: 0
+      max-width: 32rem
     &:first-child
       margin-left: 0
+      .information__text
+        max-width: 47rem
+        margin-top: 8px
+        margin-bottom: -8px
   &__title
     font-size: 2rem
-    font-weight: 600
+    font-weight: 500
+    letter-spacing: -0.01em
+  &__text
+    font-size: 15px
+    line-height: 1.5
+
+@import "media"

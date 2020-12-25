@@ -22,8 +22,10 @@ function AssetTableRow(props) {
         onClick={toggleOpen}
       >
         <div className="main-table__td">
-          <img className="main-table__icon" src="img/logo.png" title alt />
-          <span>{tableName}</span>
+          <div className="main-table__td-row">
+            <img className="main-table__icon" src="img/logo.png" alt=""/>
+            <span>{tableName}</span>
+          </div>
         </div>
         <div className="main-table__td">
           <TokenPrice tokenAddress={address} />

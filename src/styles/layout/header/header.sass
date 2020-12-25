@@ -1,12 +1,26 @@
 .header
   +flex(row nowrap, flex-start, center)
-  padding-top: 3rem
+  padding-top: 2rem
+  position: sticky
+  top: 0
+  z-index: 5
+  height: 10rem
+  &._scroll
+    pointer-events: none
+    .buttons
+      pointer-events: auto
+    .header__main
+      opacity: 0
   &__menu
     +flex(row nowrap, flex-start, center)
+  &__main
+    +flex(row wrap, flex-start, center)
+    flex-grow: 1
+    transition: all 0.3s
   &__menu-item
     text-transform: uppercase
     font-size: 14px
-    margin-right: 2rem
+    margin-right: 2.3rem
     border-bottom: 1px solid
     transition: all 0.3s
     &:hover
@@ -14,7 +28,6 @@
   &__title
     opacity: 0.6
     font-size: 14px
-    flex-grow: 1
   &__sidebar-open
     display: none
 

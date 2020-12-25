@@ -1,0 +1,41 @@
+@media (max-width: 1023px)
+  .main-table
+    &__td
+      font-size: 4rem
+
+@media (max-width: 767px)
+  .main-table
+    &__tr
+      +flex(row wrap, flex-start, center)
+      border-bottom: 1px solid var(--color13)
+      position: relative
+      padding: 2rem
+      &:nth-child(2)
+        .main-table__td
+          padding-top: 2rem
+    &__th
+      display: none
+    &__td
+      text-align: left
+      flex-grow: 1
+      padding: 10px
+      width: 50%
+      &:nth-child(odd)
+        text-align: right
+      &:first-child
+        width: 100%
+        padding: 10px
+        text-align: left
+      &:last-child
+        text-align: right
+        position: absolute
+        right: 3rem
+        top: 2rem
+        padding: 0
+      &[data-title]
+        &:before
+          content: attr(data-title)
+          font-size: 14px
+          display: block
+          margin-bottom: 5px
+          font-weight: 300

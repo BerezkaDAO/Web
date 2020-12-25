@@ -12,10 +12,11 @@
   transition: all 0.3s
   cursor: pointer
   color: white
+  border: 1px solid var(--color1)
   &:hover
     filter: brightness(1.2)
   &._light
-    border: 1px solid
+    border: 1px solid rgba(255, 255, 255, 0.63)
     background: none
     &:hover
       border-color: var(--color1)
@@ -30,6 +31,8 @@
 
 .buttons
   +flex(row wrap, flex-start, flex-start)
-  margin: -10px
+  margin: -8.5px
   & > *
-    margin: 10px
+    margin: 8.5px
+
+@import "media"

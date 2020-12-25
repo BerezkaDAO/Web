@@ -1,0 +1,113 @@
+@media (max-width: 1024px)
+  .table-wrapper
+    position: relative
+    &__mobile-col
+      +flex(column nowrap, flex-start, stretch)
+      display: inline-flex
+      position: absolute
+      left: 0
+      top: -0.5px
+      width: auto
+      background: white
+      box-shadow: 0px 11px 20px rgba(171, 171, 171, 0.5)
+      th
+        +flex(row nowrap, flex-start, center)
+        background: var(--color1)
+        border: 1px solid white
+        border-top-color: transparent
+        border-left-color: transparent
+        padding: 10px 2rem 10px 3.5rem
+        font-size: 1.8rem
+        font-weight: 500
+        line-height: 1
+      td
+        padding: 2rem 2rem 2rem 3.5rem
+        border-bottom: 1px solid rgba(0, 0, 0, 0.3)
+        color: var(--color11)
+        font-size: 2rem
+        &:last-child
+          +font(2.2rem, 600, var(--color1))
+          border-bottom-color: transparent
+
+  .table-scroll
+    -webkit-overflow-scrolling: touch
+    &._end
+      &:after
+        background: transparent
+    &:after
+      content: ''
+      position: absolute
+      right: 0
+      top: 0
+      display: block
+      width: 4rem
+      height: 100%
+      background: linear-gradient(90deg, rgba(0, 140, 185,0) 0%, rgba(0, 140, 185,0.5) 50%, rgba(0, 140, 185,0.8) 100%)
+      z-index: 2
+      pointer-events: none
+      transition: all 0.6s
+      opacity: 1
+
+@media (max-width: 1024px)
+  .table-offer
+    td
+      padding: 15px
+
+@media (max-width: 767px)
+  .table
+    th
+      &:last-child
+        padding-right: 3rem
+      &:first-child
+        padding-left: 3rem
+    td
+      &:first-child
+        padding-left: 3rem
+      &:last-child
+        padding-right: 3rem
+
+  .table-offer
+    display: block
+    &__group
+      display: grid
+      grid-gap: 15px
+      justify-content: initial
+    &__label
+      margin: 0
+    tbody, tr, td
+      display: block
+      width: 100%
+    tr
+      &:first-child
+        display: none
+    td
+      padding: 15px 0
+      &:first-child
+        padding-left: 0
+      &:last-child
+        padding-right: 0
+      &[data-title]
+        &:before
+          content: attr(data-title)
+          font-size: 18px
+          display: block
+          margin-bottom: 10px
+          font-weight: 500
+      &:empty
+        display: none
+    tr
+      &._no-border
+        td
+          padding: 15px 0
+
+  .table-wrapper
+    width: calc(100% + var(--offset) * 2)
+    margin-left: calc(0px - var(--offset))
+    border-radius: 0
+    &__mobile-col
+      th
+        padding: 10px 2rem 10px 3rem
+      td
+        padding: 2rem 2rem 2rem 3rem
+    .table-scroll
+      border-radius: 0

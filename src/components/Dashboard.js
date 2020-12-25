@@ -3,7 +3,7 @@ import { Switch, Route, Redirect, NavLink } from "react-router-dom";
 import TokenDashboard from "./TokenDashboard";
 
 function Dashboard(props) {
-  const { web3Global } = props;
+  const { web3Global, address } = props;
 
   return (
     <div className="page dashboard">
@@ -31,7 +31,11 @@ function Dashboard(props) {
           <Route
             path="/dashboard/:id"
             render={(routeProps) => (
-              <TokenDashboard web3Global={web3Global} {...routeProps} />
+              <TokenDashboard
+                web3Global={web3Global}
+                address={address}
+                {...routeProps}
+              />
             )}
           />
           <Redirect from="/dashboard" to="/dashboard/flex" />

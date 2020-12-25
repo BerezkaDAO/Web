@@ -6,7 +6,8 @@ export const tokenInfo = {
     tableName: "FLEX",
     symbol: "FLEX",
     dao: "0xac3f8e8518139f732218ff542d21cd6968e8209d",
-    onChainDayIdStart: 18613,
+    onChainDayIdStart: 18550,
+    maximumDiff: 3,
   },
   emiflex: {
     name: "Emiflex",
@@ -15,7 +16,8 @@ export const tokenInfo = {
     tableName: "Emiflex",
     symbol: "EFLX",
     dao: "0xef5d72e2d0cd8943e02aa4118bf94424017c8fdf",
-    onChainDayIdStart: 18613,
+    onChainDayIdStart: 18550,
+    maximumDiff: 3,
   },
   dyna: {
     name: "Dynamic",
@@ -24,7 +26,8 @@ export const tokenInfo = {
     tableName: "Dynamic",
     symbol: "DYNA",
     dao: "0x95c4c0bcffd5ff8b5796f395b20db7414b34954c",
-    onChainDayIdStart: 18613,
+    onChainDayIdStart: 18550,
+    maximumDiff: 11,
   },
   deposit: {
     name: "Deposit",
@@ -34,6 +37,7 @@ export const tokenInfo = {
     symbol: "BDQ",
     dao: "0xf5ac13a709e7bc86001b7107c8839b6d6f6046a3",
     onChainDayIdStart: 18613,
+    maximumDiff: 1,
   },
 };
 
@@ -75,3 +79,9 @@ export const onChainDayIdStart = (address) =>
     .map((token) => tokenInfo[token])
     .find((info) => info.address.toLowerCase() === address.toLowerCase())
     .onChainDayIdStart;
+
+export const maximumDiff = (address) =>
+  tokens
+    .map((token) => tokenInfo[token])
+    .find((info) => info.address.toLowerCase() === address.toLowerCase())
+    .maximumDiff;

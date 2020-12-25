@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import SidebarActivation from "./SidebarActivation";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import HeaderBalance from "./HeaderBalance";
+import HeaderAccountBalance from "./HeaderAccountBalance";
 import Footer from "./Footer";
 import Index from "./Index";
 import Dashboard from "./Dashboard";
@@ -16,6 +17,8 @@ import { client } from "./graphClient";
 
 function Main(props) {
   const { connectWeb3, address, web3Global } = props;
+  const [globalTotal, setGlobalTotal] = useState(0);
+
   return (
     <ApolloProvider client={client}>
       <Router>
@@ -23,19 +26,27 @@ function Main(props) {
           <SidebarActivation />
           <Sidebar />
           <Header address={address} connectWeb3={connectWeb3} />
-          <HeaderBalance />
+          <Switch>
+            <Route path="/account">
+              <HeaderAccountBalance globalTotal={globalTotal} />
+            </Route>
+            <Route path="/">
+              <HeaderBalance />
+            </Route>
+          </Switch>
           <Switch>
             <Route exact path="/">
               <Index connectWeb3={connectWeb3} />
             </Route>
             <Route path="/dashboard">
-              <Dashboard web3Global={web3Global} />
+              <Dashboard web3Global={web3Global} address={address} />
             </Route>
             <Route path="/account">
               <Account
                 address={address}
                 web3Global={web3Global}
                 connectWeb3={connectWeb3}
+                setGlobalTotal={setGlobalTotal}
               />
             </Route>
             <Route path="/cookie">

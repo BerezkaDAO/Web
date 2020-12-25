@@ -48,9 +48,10 @@ const renderIncrease = (options) => {
 };
 
 const TokenPriceGraph = (props) => {
-  const { tokenAddress } = props;
+  const { tokenAddress, isAdmin } = props;
+  const precision = isAdmin ? 6 : 3;
 
-  const { loading, error, data } = useQuery(GET_LAST_PRICE, {
+  const { loading, data } = useQuery(GET_LAST_PRICE, {
     variables: {
       tokenAddress,
     },
@@ -76,7 +77,7 @@ const TokenPriceGraph = (props) => {
             return {
               date: Math.floor(data[0] / 1000),
               dayId: Math.floor(data[0] / 1000 / 86400),
-              price: "" + round(data[1] * 10 ** 6, 3),
+              price: "" + round(data[1] * 10 ** 6, precision),
               token: tokenAddress.toLowerCase(),
               totalPrice: round(
                 Number.parseFloat(data[3]) * 10 ** 6 * 10 ** 18,
@@ -95,16 +96,60 @@ const TokenPriceGraph = (props) => {
     return <>Loading...</>;
   }
 
+  const graphOnly = mergeByDayID([], [...data.dayHistoricalDatas]);
+  const excelOnly = mergeByDayID([...historicalData], []);
   const merged = mergeByDayID(historicalData, data.dayHistoricalDatas);
 
   const chartData = merged
     .map((it) => {
       return [
-        Number.parseInt(it.date) * 1000,
-        round(Number.parseFloat(it.price / 10 ** 6), 3),
+        Number.parseInt(it.dayId) * 1000 * 86400,
+        round(Number.parseFloat(it.price / 10 ** 6), precision),
       ];
     })
     .reverse();
+
+  var series = [
+    {
+      color: "#623a6c",
+      name: "Token Price",
+      data: chartData,
+    },
+  ];
+
+  if (isAdmin) {
+    const chartDataGraphOnly = graphOnly
+      .map((it) => {
+        return [
+          Number.parseInt(it.dayId) * 1000 * 86400,
+          round(Number.parseFloat(it.price / 10 ** 6), precision),
+        ];
+      })
+      .reverse();
+
+    const chartDataExcelOnly = excelOnly
+      .map((it) => {
+        return [
+          Number.parseInt(it.dayId) * 1000 * 86400,
+          round(Number.parseFloat(it.price / 10 ** 6), precision),
+        ];
+      })
+      .reverse();
+
+    series = [
+      ...series,
+      {
+        color: "#f54242",
+        name: "Token Price (Graph)",
+        data: chartDataGraphOnly,
+      },
+      {
+        color: "#f542e0",
+        name: "Token Price (Excel)",
+        data: chartDataExcelOnly,
+      },
+    ];
+  }
 
   const titleOptions = {
     // text: title
@@ -171,13 +216,7 @@ const TokenPriceGraph = (props) => {
       opposite: false,
     },
 
-    series: [
-      {
-        color: "#623a6c",
-        name: "Token Price",
-        data: chartData,
-      },
-    ],
+    series,
   };
 
   setTimeout(() => {

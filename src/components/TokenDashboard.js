@@ -1,5 +1,6 @@
 import React from "react";
 import { tokenInfo } from "./data/tokens";
+import { admins } from "./data/admin";
 
 import TokenAmount from "./widgets/TokenAmount";
 import TokenPrice from "./widgets/TokenPrice";
@@ -11,8 +12,9 @@ import PortfolioParts from "./widgets/PortfolioParts";
 
 function TokenDashboard(props) {
   const token = props.match.params.id;
-  const { web3Global } = props;
+  const { web3Global, address } = props;
   const tokenAddress = tokenInfo[token].address;
+  const isAdmin = address && admins.includes(address.toLowerCase());
 
   return (
     <div className="info-list grid">
@@ -88,7 +90,7 @@ function TokenDashboard(props) {
           </div>
         </div>
         <div className="info-general__content">
-          <TokenPriceGraph tokenAddress={tokenAddress} />
+          <TokenPriceGraph tokenAddress={tokenAddress} isAdmin={isAdmin} />
         </div>
       </div>
       <div className="info-general grid-col-4 grid-lg-6 grid-md-12">

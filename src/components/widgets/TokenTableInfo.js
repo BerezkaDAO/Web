@@ -2,7 +2,13 @@ import React, { useState, useCallback, useRef } from "react";
 import TokenTableInfoRow from "./TokenTableInfoRow";
 
 const TokenTableInfo = (props) => {
-  const { tokens, walletAddress, web3, profitAccumulator } = props;
+  const {
+    tokens,
+    walletAddress,
+    web3,
+    setGlobalTotal,
+    profitAccumulator,
+  } = props;
 
   const [total, setTotal] = useState(0);
   const [totalProfit, setTotalProfit] = useState(0);
@@ -33,6 +39,7 @@ const TokenTableInfo = (props) => {
         total: newTotal,
       };
       setTotal(newTotal);
+      setGlobalTotal(newTotal);
     }
   }, []);
 

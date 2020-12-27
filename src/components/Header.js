@@ -1,19 +1,25 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 function Header(props) {
   const { connectWeb3, address } = props;
   const [scroll, setScroll] = useState(false);
 
-  useEffect(() =>
-    window.addEventListener('scroll',
-      () => setScroll( window.pageYOffset > 50)
-    ), []);
+  useEffect(
+    () =>
+      window.addEventListener("scroll", () =>
+        setScroll(window.pageYOffset > 50)
+      ),
+    []
+  );
 
   return (
     <header className={"header " + (scroll ? "_scroll" : "")}>
       <div className="header__main">
-        <label className="header__sidebar-open" htmlFor="sidebar-menu-activation">
+        <label
+          className="header__sidebar-open"
+          htmlFor="sidebar-menu-activation"
+        >
           <i className="icon icon-menu" />
         </label>
         <nav className="header__menu">
@@ -27,13 +33,13 @@ function Header(props) {
             Blog
           </Link>
         </nav>
-        <div className="header__title">#Berezka DAO - DeFi Asset Management</div>
+        <div className="header__title">
+          #Berezka DAO - DeFi Asset Management
+        </div>
       </div>
       <div className="buttons">
         {address ? (
-          <a className="button _light" href>
-            {address}
-          </a>
+          <div className="connect__value">{address}</div>
         ) : (
           <a className="button _light" href onClick={connectWeb3}>
             Connect wallet

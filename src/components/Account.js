@@ -4,7 +4,7 @@ import TokenTableInfo from "./widgets/TokenTableInfo";
 import { allTokens } from "./data/tokens";
 
 function Account(props) {
-  const { web3Global, address, connectWeb3 } = props;
+  const { web3Global, address, connectWeb3, setGlobalTotal } = props;
 
   return (
     <div className="page account">
@@ -40,6 +40,7 @@ function Account(props) {
               tokens={allTokens}
               walletAddress={address}
               web3={web3Global}
+              setGlobalTotal={setGlobalTotal}
               profitAccumulator={() => {}}
             />
           </div>

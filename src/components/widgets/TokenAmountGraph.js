@@ -26,7 +26,7 @@ const GET_LAST_PRICE = gql`
 const TokenAmountGraph = (props) => {
   const { tokenAddress } = props;
 
-  const { loading, error, data } = useQuery(GET_LAST_PRICE, {
+  const { loading, data } = useQuery(GET_LAST_PRICE, {
     variables: {
       tokenAddress,
     },
@@ -80,14 +80,6 @@ const TokenAmountGraph = (props) => {
     })
     .reverse();
 
-  const series = [
-    {
-      // type: 'area',
-      color: "#623a6c",
-      name: "Token Price",
-      data: chartData,
-    },
-  ];
   const titleOptions = {
     // text: title
     text: null,

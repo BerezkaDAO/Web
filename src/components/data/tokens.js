@@ -10,10 +10,10 @@ export const tokenInfo = {
     maximumDiff: 3,
   },
   emiflex: {
-    name: "Emiflex",
+    name: "EmiFlex",
     apiName: "emiflex",
     address: "0xD68E7b64888F095Ee15f18347ccA7e453E0DBe17",
-    tableName: "Emiflex",
+    tableName: "EmiFlex",
     symbol: "EFLX",
     dao: "0xef5d72e2d0cd8943e02aa4118bf94424017c8fdf",
     onChainDayIdStart: 18550,

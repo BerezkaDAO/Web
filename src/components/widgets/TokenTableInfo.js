@@ -78,18 +78,20 @@ const TokenTableInfo = (props) => {
           <th rowSpan={2}>Product</th>
           <th rowSpan={2}>Token</th>
           <th rowSpan={2}>Amount</th>
-          <th rowSpan={2}>Invested amount, USDT</th>
+          <th rowSpan={2}>
+            Invested amount, <br /> USDT
+          </th>
           <th rowSpan={2}>AVG purchase price</th>
-          <th className="_large" colSpan={5}>
+          <th className="_large" colSpan={5} style={{ fontWeight: 700 }}>
             Current value
           </th>
         </tr>
         <tr>
           <th>Token price</th>
-          <th>Portfolio value, USDT</th>
+          <th style={{ width: "135px" }}>Portfolio value, USDT</th>
           <th>Profit/Loss, USDT</th>
-          <th>Profit/Loss, %</th>
-          <th>APY %</th>
+          <th style={{ width: "135px" }}>Profit/Loss, %</th>
+          <th>APY, %</th>
         </tr>
       </thead>
       <tbody>

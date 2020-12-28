@@ -37,7 +37,7 @@ function Header(props) {
           #Berezka DAO - DeFi Asset Management
         </div>
       </div>
-      <div className="buttons">
+      <div className="buttons-header">
         {address ? (
           <div className="connect__value">{address}</div>
         ) : (

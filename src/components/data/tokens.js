@@ -1,6 +1,7 @@
 export const tokenInfo = {
   flex: {
     name: "Flex",
+    fullName: "Berezka Flex",
     apiName: "berezka",
     address: "0x0D7DeA5922535087078dd3D7c554EA9f2655d4cB",
     tableName: "Flex",
@@ -41,7 +42,7 @@ export const tokenInfo = {
   },
 };
 
-export const tokens = ["flex", "emiflex", "dyna", "deposit"];
+export const tokens = ["flex", "deposit", "dyna", "emiflex"];
 
 export const allTokens = tokens.map((token) => tokenInfo[token]);
 

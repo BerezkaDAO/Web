@@ -26,7 +26,7 @@ function Footer(props) {
             Cookie Policy
           </Link>
         </nav>
-        <div className="buttons">
+        <div className="buttons-header">
           <Link className="button _light" to="/dashboard">
             Dashboard
           </Link>

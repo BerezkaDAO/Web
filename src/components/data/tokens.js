@@ -1,9 +1,9 @@
 export const tokenInfo = {
   flex: {
-    name: "Berezka FLEX",
+    name: "Flex",
     apiName: "berezka",
     address: "0x0D7DeA5922535087078dd3D7c554EA9f2655d4cB",
-    tableName: "FLEX",
+    tableName: "Flex",
     symbol: "FLEX",
     dao: "0xac3f8e8518139f732218ff542d21cd6968e8209d",
     onChainDayIdStart: 18550,

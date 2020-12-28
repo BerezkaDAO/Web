@@ -23,14 +23,14 @@ function AssetTableRow(props) {
       >
         <div className="main-table__td">
           <div className="main-table__td-row">
-            <img className="main-table__icon" src="img/logo.png" alt=""/>
+            <img className="main-table__icon" src="img/logo.png" alt="" />
             <span>{tableName}</span>
           </div>
         </div>
-        <div className="main-table__td">
+        <div className="main-table__td" style={{ justifyContent: "flex-end" }}>
           <TokenPrice tokenAddress={address} />
         </div>
-        <div className="main-table__td">
+        <div className="main-table__td" style={{ justifyContent: "flex-end" }}>
           <APY tokenAddress={address} decimals={0} />
         </div>
         <div className="main-table__td">

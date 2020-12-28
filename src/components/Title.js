@@ -5,11 +5,7 @@ class Title extends React.Component {
     return (
       <section className="section">
         <div className="section__header">
-          <h1 className="title-main">
-            Berezka
-            <br />
-            DAO
-          </h1>
+          <h1 className="title-main">Berezka DAO</h1>
         </div>
       </section>
     );

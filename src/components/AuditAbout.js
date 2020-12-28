@@ -21,7 +21,7 @@ class AuditAbout extends React.Component {
               being audited at the Aragon Association's discretion.
             </div>
             <div className="information__text">
-              Details:&#32;
+              <span style={{ marginRight: "6px" }}>Details:</span>
               <a className="link-color" href="">
                 wiki.aragon.org/association/security/
               </a>

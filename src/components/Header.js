@@ -27,7 +27,7 @@ function Header(props) {
             Home
           </Link>
           <Link className="header__menu-item" to="/about">
-            About as
+            About us
           </Link>
           <Link className="header__menu-item" to="/blog">
             Blog

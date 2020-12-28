@@ -6,7 +6,7 @@ class Brands extends React.Component {
       <section className="section _with-aside _mb">
         <div className="section__aside">
           <div className="section__header">
-            <h2 className="title">Don't Trust — Verify</h2>
+            <h2 className="title">Don't Trust — Verify</h2>
           </div>
           <div className="section__hint">
             We are using these audited protocols

@@ -5,6 +5,7 @@ import Sidebar from "./Sidebar";
 import Header from "./Header";
 import HeaderBalance from "./HeaderBalance";
 import HeaderAccountBalance from "./HeaderAccountBalance";
+import HeaderTokenBalance from "./HeaderTokenBalance";
 import Footer from "./Footer";
 import Index from "./Index";
 import Dashboard from "./Dashboard";
@@ -30,6 +31,10 @@ function Main(props) {
             <Route path="/account">
               <HeaderAccountBalance globalTotal={globalTotal} />
             </Route>
+            <Route
+              path="/dashboard/:id"
+              render={(routeProps) => <HeaderTokenBalance {...routeProps} />}
+            />
             <Route path="/">
               <HeaderBalance />
             </Route>

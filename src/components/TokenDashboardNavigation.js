@@ -17,7 +17,7 @@ function TokenDashboardNavigation() {
               style={{
                 width: "1px",
                 height: "16px",
-                margin: "5px 10px",
+                margin: "2px 10px",
                 backgroundColor: "white",
               }}
             />

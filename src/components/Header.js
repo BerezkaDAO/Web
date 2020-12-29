@@ -37,9 +37,19 @@ function Header(props) {
           #Berezka DAO - DeFi Asset Management
         </div>
       </div>
-      <div className="buttons" style={{ alignItems: "center" }}>
+      <div
+        className="buttons"
+        style={{
+          justifyContent: "flex-end",
+          alignItems: "center",
+          flex: "1 1 100%",
+        }}
+      >
         {address ? (
-          <div className="connect__value header__title" style={{ margin: "0" }}>
+          <div
+            className="connect__value header__title"
+            style={{ margin: "0 10px 0 0" }}
+          >
             {address}
           </div>
         ) : (

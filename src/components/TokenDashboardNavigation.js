@@ -11,7 +11,17 @@ function TokenDashboardNavigation() {
           className="breadcrumbs__item"
           to={`/dashboard/${token}`}
         >
-          {tokenInfo[token].fullName || tokenInfo[token].name}
+          <div style={{ display: "flex" }}>
+            <span>{tokenInfo[token].fullName || tokenInfo[token].name}</span>
+            <div
+              style={{
+                width: "1px",
+                height: "16px",
+                margin: "5px 10px",
+                backgroundColor: "white",
+              }}
+            />
+          </div>
         </NavLink>
       ))}
     </div>

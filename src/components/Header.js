@@ -37,9 +37,11 @@ function Header(props) {
           #Berezka DAO - DeFi Asset Management
         </div>
       </div>
-      <div className="buttons">
+      <div className="buttons" style={{ alignItems: "center" }}>
         {address ? (
-          <div className="connect__value header__title">{address}</div>
+          <div className="connect__value header__title" style={{ margin: "0" }}>
+            {address}
+          </div>
         ) : (
           <a className="button _light" href onClick={connectWeb3}>
             Connect wallet

@@ -4,12 +4,15 @@ class CookiePolicy extends React.Component {
   render() {
     return (
       <div className="policy">
-        <section className="section" style={{ paddingLeft: "210px" }}>
+        <section className="section" style={{ paddingLeft: "190px" }}>
           <div className="section__header">
-            <h1 className="title" style={{ marginLeft: "-210px" }}>
+            <h1 className="title" style={{ marginLeft: "-190px" }}>
               Cookie Policy
             </h1>
-            <div className="section__subtitle" style={{ marginLeft: "-210px" }}>
+            <div
+              className="section__subtitle"
+              style={{ marginLeft: "-190px", fontSize: "14px" }}
+            >
               updated 23.07.2020
             </div>
           </div>

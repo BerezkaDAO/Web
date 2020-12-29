@@ -111,7 +111,7 @@ const TokenPriceGraph = (props) => {
 
   var series = [
     {
-      color: "#623a6c",
+      color: "#008cb9",
       name: "Token Price",
       data: chartData,
     },
@@ -144,7 +144,7 @@ const TokenPriceGraph = (props) => {
         data: chartDataGraphOnly,
       },
       {
-        color: "#f542e0",
+        color: "#08ff39",
         name: "Token Price (Excel)",
         data: chartDataExcelOnly,
       },

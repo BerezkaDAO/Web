@@ -1,14 +1,14 @@
 .button
   +flex(row nowrap, center, center)
   font-weight: 700
-  font-size: 13px
+  font-size: 14px
   text-transform: uppercase
   display: inline-flex
   text-align: center
-  padding: 15px 1.8rem
+  padding: 15px 24px
   min-height: 6rem
   background: var(--color1)
-  min-width: 16.7rem
+  min-width: 17rem
   transition: all 0.3s
   cursor: pointer
   color: white
@@ -39,15 +39,11 @@
 .buttons-header
   +flex(row wrap, flex-end, center)
   flex: 2 0 auto
-  margin: -8.5px
+  margin-right: -17px
   & > *
-    margin: 8.5px
+    margin: 7px
 
-.buttons-header
-  +flex(row wrap, flex-end, center)
-  flex: 2 0 auto
-  margin: -8.5px
-  & > *
-    margin: 8.5px
+.buttons-footer
+  padding-left: 9px
 
 @import "media"

@@ -3,7 +3,7 @@ import React from "react";
 class AuditAbout extends React.Component {
   render() {
     return (
-      <div className="section _with-aside _mb">
+      <div className="section _with-aside _mb section_audit">
         <div></div>
         <div className="information">
           <div className="information__item">

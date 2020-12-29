@@ -1,11 +1,15 @@
 .footer
-  padding: 12rem 0 4rem 0
+  padding: 12.5rem 0 4rem 0
   &__bottom
     +flex(row nowrap, space-between, flex-end)
+    .buttons-header
+      margin-right: -7px
+      a
+        margin: 0 7px
   &__menu-item
     letter-spacing: -0.02em
     border-bottom: 1px solid
-    margin-right: 2rem
+    margin-right: 2.4rem
     transition: all 0.3s
     &:hover
       color: var(--color5)
@@ -14,5 +18,7 @@
     margin-bottom: 12rem
     display: grid
     grid-gap: 2rem
+  &__menu
+    margin-left: 7px
 
 @import "media"

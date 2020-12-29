@@ -3,7 +3,10 @@ import React from "react";
 class HowItWorks extends React.Component {
   render() {
     return (
-      <section className="section _bg _full" data-class="HowItWorks">
+      <section
+        className="section _bg _full section_how"
+        data-class="HowItWorks"
+      >
         <h2 className="title">How it works</h2>
         <div className="separator" />
         <div className="steps _centered">

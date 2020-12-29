@@ -10,11 +10,17 @@ function Footer(props) {
           type="email"
           placeholder="Email for updates"
         />
-        <div className="buttons">
-          <a className="button _light _middle" href>
+        <div className="buttons buttons-footer">
+          <a
+            className="button _light _middle"
+            href
+            style={{ fontWeight: 500, fontSize: "12px" }}
+          >
             Get updates
           </a>
-          <span>Lets build DeFi Community Together</span>
+          <span style={{ margin: "3.5px 9.5px" }}>
+            Lets build DeFi Community Together
+          </span>
         </div>
       </form>
       <div className="footer__bottom">

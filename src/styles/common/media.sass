@@ -4,7 +4,6 @@
   .section
     &._full
       width: calc(100% + var(--offset) * 2)
-      margin-left: calc(0px - var(--offset))
     &._with-aside
       display: grid
       grid-template-columns: initial
@@ -20,3 +19,14 @@
     &__aside
       border: none
       padding: 0
+  .buttons-header
+    flex-direction: column !important
+    align-items: flex-end !important
+  .footer__bottom
+    .buttons-header
+      flex-direction: row !important
+      .button
+        width: 100%
+        &:first-child
+          margin-bottom: 10px
+

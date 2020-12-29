@@ -25,7 +25,11 @@ class Sidebar extends React.Component {
           <NavLink className="sidebar-menu__item active" to="/account">
             My Account
           </NavLink>
-          <NavLink className="sidebar-menu__item" to="/dashboard">
+          <NavLink
+            activeClassName="none"
+            className="sidebar-menu__item"
+            to="/dashboard"
+          >
             Dashboard
           </NavLink>
         </nav>

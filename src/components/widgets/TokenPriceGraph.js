@@ -219,11 +219,14 @@ const TokenPriceGraph = (props) => {
     series,
   };
 
-  setTimeout(() => {
-    renderIncrease({
-      chart: chartRef.current.chart,
-      data: chartData,
-    });
+  const interval = setInterval(() => {
+    if (chartRef.current) {
+      clearInterval(interval);
+      renderIncrease({
+        chart: chartRef.current.chart,
+        data: chartData,
+      });
+    }
   });
 
   return (

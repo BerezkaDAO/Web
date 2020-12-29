@@ -9,17 +9,13 @@
     -webkit-tap-highlight-color: transparent
     outline: none
   &__body
-    font-family: Helvetica, sans-serif
+    font-family: "Helvetica", sans-serif
     margin: 0
     font-weight: 400
     font-size: 16px
     color: white
     position: relative
     background-color: black
-    background-image: url("../../img/bg.jpg")
-    background-position: 1.5rem -3.7rem
-    background-size: cover
-    //background-size: 100% auto
 img, iframe
   display: block
   max-width: 100%
@@ -30,7 +26,10 @@ img
   flex-flow: column nowrap
   min-height: 100vh
   position: relative
-  width: 100%
+  width: calc(100% - 10rem)
+  background: url("../../img/bg.jpg") repeat top left
+  background-size: 100% auto
+  margin-left: 10rem
   //overflow-x: hidden
   z-index: 1
   label, button
@@ -75,7 +74,7 @@ img
   .main
     width: 100%
     flex-grow: 1
-    padding: 0 var(--offset) var(--offset) 14rem
+    padding: 0 var(--offset)
     max-width: 1600px
   .hidden
     display: none
@@ -87,8 +86,6 @@ img
     height: 100%
     z-index: 10
     cursor: pointer
-  .page
-    margin-top: -1.4rem
   .section
     position: relative
     padding-top: 2rem
@@ -111,8 +108,9 @@ img
         padding-left: 8px
     &__hint
       opacity: 0.6
-      font-size: 14px
-      margin-top: 3.8rem
+      font-size: 12.5px
+      margin-top: 3.5rem
+      letter-spacing: 0.005em
     &__breadcrumbs
       margin-bottom: 7rem
       margin-top: 4rem
@@ -146,8 +144,8 @@ img
   .common
     font-size: 7px
 @media (max-width: 1023px)
-  .common
-    &__body
-      background-position: 0 0
+  .app
+    width: 100%
+    margin-left: 0
   \:root
     --offset: 3rem

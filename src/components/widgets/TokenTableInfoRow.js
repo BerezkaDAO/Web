@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { round } from "./round";
 import AccountPortfolioProvider from "./AccountPortfolioProvider";
+import TokenTableValueOutput from "./TokenTableValueOutput";
 import ERC20Provider from "./ERC20Provider";
 
 const getPrice = (purchase) => {
@@ -91,14 +92,61 @@ const RowDataC = (props) => {
     <tr>
       <td>{tableName}</td>
       <td>{symbol}</td>
-      <td>{round(balance, 2).toFixed(2)}</td>
-      <td>$ {round(iAmount, 2).toFixed(2)}</td>
-      <td>$ {round(avgInvPrice, 2).toFixed(2)}</td>
-      <td className="nowrap">$ {round(priceUSD, 2).toFixed(2)}</td>
-      <td className="nowrap">$ {round(portfolioPrice, 2).toFixed(2)}</td>
-      <td>$ {round(profit, 2).toFixed(2)}</td>
-      <td>{round(profitPercent, 1).toFixed(1)} %</td>
-      <td className="nowrap">{round(apy, 2).toFixed(1)} %</td>
+      <td>
+        <TokenTableValueOutput
+          value={balance}
+          render={(value) => `$ ${round(value, 2).toFixed(2)}`}
+        />
+      </td>
+      <td>
+        {" "}
+        <TokenTableValueOutput
+          value={iAmount}
+          render={(value) => `$ ${round(value, 2).toFixed(2)}`}
+        />
+      </td>
+      <td>
+        {" "}
+        <TokenTableValueOutput
+          value={avgInvPrice}
+          render={(value) => `$ ${round(value, 2).toFixed(2)}`}
+        />
+      </td>
+      <td className="nowrap">
+        {" "}
+        <TokenTableValueOutput
+          value={priceUSD}
+          render={(value) => `$ ${round(value, 2).toFixed(2)}`}
+        />
+      </td>
+      <td className="nowrap">
+        {" "}
+        <TokenTableValueOutput
+          value={portfolioPrice}
+          render={(value) => `$ ${round(value, 2).toFixed(2)}`}
+        />
+      </td>
+      <td>
+        {" "}
+        <TokenTableValueOutput
+          value={profit}
+          render={(value) => `$ ${round(value, 2).toFixed(2)}`}
+        />
+      </td>
+      <td>
+        {" "}
+        <TokenTableValueOutput
+          value={profitPercent}
+          render={(value) => `${round(value, 2).toFixed(1)} %`}
+        />
+      </td>
+      <td className="nowrap">
+        {" "}
+        <TokenTableValueOutput
+          value={apy}
+          render={(value) => `${round(value, 2).toFixed(2)} %`}
+        />
+      </td>
     </tr>
   );
 };

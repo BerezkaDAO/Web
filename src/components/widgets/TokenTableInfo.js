@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useRef } from "react";
 import TokenTableInfoRow from "./TokenTableInfoRow";
+import TokenTableValueOutput from "./TokenTableValueOutput";
 
 const TokenTableInfo = (props) => {
   const {
@@ -111,12 +112,32 @@ const TokenTableInfo = (props) => {
           <td>TOTAL</td>
           <td />
           <td />
-          <td>$ {totalInvested.toFixed(2)}</td>
+          <td>
+            <TokenTableValueOutput
+              value={totalInvested}
+              render={(value) => `$ ${value.toFixed(2)}`}
+            />
+          </td>
           <td></td>
           <td></td>
-          <td>$ {total.toFixed(2)}</td>
-          <td>$ {totalProfit.toFixed(2)}</td>
-          <td>{profitPercent.toFixed(2)}%</td>
+          <td>
+            <TokenTableValueOutput
+              value={total}
+              render={(value) => `$ ${value.toFixed(2)}`}
+            />
+          </td>
+          <td>
+            <TokenTableValueOutput
+              value={totalProfit}
+              render={(value) => `$ ${value.toFixed(2)}`}
+            />
+          </td>
+          <td>
+            <TokenTableValueOutput
+              value={profitPercent}
+              render={(value) => `${value.toFixed(2)}%`}
+            />
+          </td>
           <td></td>
         </tr>
       </tfoot>

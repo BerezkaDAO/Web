@@ -3,11 +3,28 @@ import { round } from "./round";
 import AccountPortfolioProvider from "./AccountPortfolioProvider";
 import ERC20Provider from "./ERC20Provider";
 
+const getPrice = (purchase) => {
+  let price = 0;
+  if (
+    purchase.counterparty.toLowerCase() ===
+    "0xf8a8d25049ebfaf36cf1dd7ff51ebd0777fc9b32"
+  ) {
+    price = 1;
+  } else {
+    if (purchase.price) {
+      price = purchase.price.price / 10 ** 6;
+    }
+  }
+  return price;
+};
+
 const investedAmount = (purchases) => {
   let totalInvestedAmount = 0;
   for (let purchase of purchases) {
-    totalInvestedAmount +=
-      ((purchase.amount / 10 ** 18) * purchase.price.price) / 10 ** 6;
+    const price = getPrice(purchase);
+    if (price) {
+      totalInvestedAmount += (purchase.amount / 10 ** 18) * price;
+    }
   }
   return totalInvestedAmount;
 };
@@ -19,13 +36,14 @@ const avgInvestedPrice = (purchases) => {
   let totalPrice = 0;
   let total = 0;
   for (let purchase of purchases) {
-    const price = purchase.price.price / 10 ** 6;
-    const amount = purchase.amount / 10 ** 18;
-    console.log(`price = ${price}, amount = ${amount}`);
-    totalPrice += price + amount;
-    total += amount;
+    const price = getPrice(purchase);
+    if (price) {
+      const amount = purchase.amount / 10 ** 18;
+      totalPrice += price * amount;
+      total += amount;
+    }
   }
-  return totalPrice / total;
+  return totalPrice && total ? totalPrice / total : 0;
 };
 
 const RowDataC = (props) => {

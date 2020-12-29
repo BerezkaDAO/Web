@@ -42,7 +42,7 @@ function Header(props) {
         style={{
           justifyContent: "flex-end",
           alignItems: "center",
-          flex: "1 1 100%",
+          flex: "0 0 auto",
         }}
       >
         {address ? (

@@ -25,7 +25,7 @@ function Account(props) {
           <div className="table-wrapper">
             <TokenTableInfo
               tokens={allTokens}
-              walletAddress={"0x78ab05fb88d580b83ca4f90aca6056498b69747a"}
+              walletAddress={address}
               web3={web3Global}
               setGlobalTotal={setGlobalTotal}
               profitAccumulator={() => {}}

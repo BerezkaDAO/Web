@@ -39,14 +39,14 @@ function Header(props) {
       </div>
       <div className="buttons-header">
         {address ? (
-          <div className="connect__value">{address}</div>
+          <div className="connect__value header__title">{address}</div>
         ) : (
           <a className="button _light" href onClick={connectWeb3}>
             Connect wallet
           </a>
         )}
-        <Link className="button _light" to="/account">
-          My Account
+        <Link className="button _light" to="/dashboard">
+          Dashboard
         </Link>
         <Link className="button" to="/request">
           Join Dao

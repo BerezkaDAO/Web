@@ -1,6 +1,7 @@
 import React from "react";
-import { Switch, Route, Redirect, NavLink } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import TokenDashboard from "./TokenDashboard";
+import TokenDashboardNavigation from "./TokenDashboardNavigation";
 
 function Dashboard(props) {
   const { web3Global, address } = props;
@@ -12,20 +13,7 @@ function Dashboard(props) {
           <h1 className="title">Dashboard</h1>
         </div>
         <div className="section__breadcrumbs">
-          <div className="breadcrumbs">
-            <NavLink className="breadcrumbs__item" to="/dashboard/flex">
-              Berezka Flex
-            </NavLink>
-            <NavLink className="breadcrumbs__item" to="/dashboard/emiflex">
-              Emiflex
-            </NavLink>
-            <NavLink className="breadcrumbs__item" to="/dashboard/dyna">
-              Dynamic
-            </NavLink>
-            <NavLink className="breadcrumbs__item" to="/dashboard/deposit">
-              Deposit
-            </NavLink>
-          </div>
+          <TokenDashboardNavigation />
         </div>
         <Switch>
           <Route

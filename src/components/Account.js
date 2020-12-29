@@ -1,7 +1,7 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 import TokenTableInfo from "./widgets/TokenTableInfo";
 import { allTokens } from "./data/tokens";
+import TokenDashboardNavigation from "./TokenDashboardNavigation";
 
 function Account(props) {
   const { web3Global, address, connectWeb3, setGlobalTotal } = props;
@@ -13,20 +13,7 @@ function Account(props) {
           <h1 className="title">My Account</h1>
         </div>
         <div className="section__breadcrumbs">
-          <div className="breadcrumbs">
-            <NavLink className="breadcrumbs__item" to="/dashboard/flex">
-              Berezka Flex
-            </NavLink>
-            <NavLink className="breadcrumbs__item" to="/dashboard/emiflex">
-              Emiflex
-            </NavLink>
-            <NavLink className="breadcrumbs__item" to="/dashboard/dyna">
-              Dynamic
-            </NavLink>
-            <NavLink className="breadcrumbs__item" to="/dashboard/deposit">
-              Deposit
-            </NavLink>
-          </div>
+          <TokenDashboardNavigation />
         </div>
         {!address ? (
           <div className="buttons">

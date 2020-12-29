@@ -43,7 +43,7 @@ function TokenRequestEmbedded(props) {
             <Select
               value={requestedToken}
               setValue={setRequestedToken}
-              options={tokens}
+              options={[requestedToken]}
               valueDisplay={(token) => tokenInfo[token].symbol}
               valueImage={(_) => "logo"}
             />

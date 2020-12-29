@@ -216,7 +216,7 @@ const PortfolioPartsGraph = (props) => {
 
   const series = partList.map((item, index) => {
     const name = item.name;
-    const y = round(item.pricePercentValue, 3);
+    const y = round(item.pricePercentValue, 1);
     const radius = maxRadius - radiusStep * index;
     const innerRadius = radius - radiusStep + (index + 1);
     const color = colorByIndex(index);
@@ -288,8 +288,8 @@ const PortfolioPartsGraph = (props) => {
     },
 
     pane: {
-      startAngle: 0,
-      endAngle: 360,
+      startAngle: 360,
+      endAngle: 0,
       background: paneBackgrounds,
     },
 

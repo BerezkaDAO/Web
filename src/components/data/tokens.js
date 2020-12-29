@@ -1,19 +1,20 @@
 export const tokenInfo = {
   flex: {
-    name: "Berezka FLEX",
+    name: "Flex",
+    fullName: "Berezka Flex",
     apiName: "berezka",
     address: "0x0D7DeA5922535087078dd3D7c554EA9f2655d4cB",
-    tableName: "FLEX",
+    tableName: "Flex",
     symbol: "FLEX",
     dao: "0xac3f8e8518139f732218ff542d21cd6968e8209d",
     onChainDayIdStart: 18550,
     maximumDiff: 3,
   },
   emiflex: {
-    name: "Emiflex",
+    name: "EmiFlex",
     apiName: "emiflex",
     address: "0xD68E7b64888F095Ee15f18347ccA7e453E0DBe17",
-    tableName: "Emiflex",
+    tableName: "EmiFlex",
     symbol: "EFLX",
     dao: "0xef5d72e2d0cd8943e02aa4118bf94424017c8fdf",
     onChainDayIdStart: 18550,
@@ -41,7 +42,7 @@ export const tokenInfo = {
   },
 };
 
-export const tokens = ["flex", "emiflex", "dyna", "deposit"];
+export const tokens = ["flex", "deposit", "dyna", "emiflex"];
 
 export const allTokens = tokens.map((token) => tokenInfo[token]);
 

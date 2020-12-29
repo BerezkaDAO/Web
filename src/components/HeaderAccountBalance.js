@@ -9,7 +9,7 @@ function HeaderAccountBalance(props) {
         {globalTotal
           .toFixed(0)
           .toString()
-          .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+          .replace(/\B(?=(\d{3})+(?!\d))/g, " ")}
       </div>
     </div>
   );

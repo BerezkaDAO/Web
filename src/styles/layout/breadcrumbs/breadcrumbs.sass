@@ -4,6 +4,8 @@
   &__item
     transition: all 0.3s
     margin-bottom: 5px
+    span
+      border-bottom: 1px solid transparent
     &:hover
       color: var(--color5)
 
@@ -12,5 +14,7 @@
         display: none
     &.active
       font-weight: 600
-      text-decoration: underline
+
+      span
+        border-color: var(--color1)
 

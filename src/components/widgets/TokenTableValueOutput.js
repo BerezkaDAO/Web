@@ -6,7 +6,7 @@ function TokenTableValueOutput(props) {
   if (value) {
     return <>{render(value)}</>;
   } else {
-    return <>&#8212;</>;
+    return <span className="placeholder">&#8211;</span>;
   }
 }
 

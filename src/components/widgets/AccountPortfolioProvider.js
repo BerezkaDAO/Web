@@ -43,7 +43,10 @@ const GET_PURCHASES = gql`
   query GetAccountPortfolioPurchases($wallet: String, $tokens: [String]) {
     balanceEvents(
       where: {
-        counterparty: "0x0000000000000000000000000000000000000000"
+        counterparty_in: [
+          "0x0000000000000000000000000000000000000000"
+          "0xf8a8d25049ebfaf36cf1dd7ff51ebd0777fc9b32"
+        ]
         kind: 1
         wallet: $wallet
         token_in: $tokens

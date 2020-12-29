@@ -17,10 +17,15 @@ const avgInvestedPrice = (purchases) => {
     return 0;
   }
   let totalPrice = 0;
+  let total = 0;
   for (let purchase of purchases) {
-    totalPrice += purchase.price.price / 10 ** 6;
+    const price = purchase.price.price / 10 ** 6;
+    const amount = purchase.amount / 10 ** 18;
+    console.log(`price = ${price}, amount = ${amount}`);
+    totalPrice += price + amount;
+    total += amount;
   }
-  return totalPrice / purchases.length;
+  return totalPrice / total;
 };
 
 const RowDataC = (props) => {

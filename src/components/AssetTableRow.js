@@ -3,10 +3,12 @@ import { useLocation } from "react-router-dom";
 import AssetTableRowDropdown from "./AssetTableRowDropdown";
 import { tokenInfo } from "./data/tokens";
 import APY from "./widgets/APY";
+import APYLegacy from "./widgets/legacy/APYLegacy";
+import TokenPriceLegacy from "./widgets/legacy/TokenPriceLegacy";
 import TokenPrice from "./widgets/TokenPrice";
 
 function AssetTableRow(props) {
-  const { tokenName, connectWeb3, open, onClick } = props;
+  const { tokenName, connectWeb3, open, onClick, legacy } = props;
 
   const { address, tableName } = tokenInfo[tokenName];
 
@@ -44,16 +46,28 @@ function AssetTableRow(props) {
           </div>
         </div>
         <div className="main-table__td">
-          <TokenPrice tokenAddress={address} />
+          {legacy ? (
+            <TokenPriceLegacy tokenAddress={address} />
+          ) : (
+            <TokenPrice tokenAddress={address} />
+          )}
         </div>
         <div className="main-table__td">
-          <APY tokenAddress={address} decimals={0} />
+          {legacy ? (
+            <APYLegacy tokenAddress={address} decimals={0} />
+          ) : (
+            <APY tokenAddress={address} decimals={0} />
+          )}
         </div>
         <div className="main-table__td">
           <div className="main-table__dropdown-btn" ref={myRef} />
         </div>
       </div>
-      <AssetTableRowDropdown connectWeb3={connectWeb3} tokenName={tokenName} />
+      <AssetTableRowDropdown
+        legacy={legacy}
+        connectWeb3={connectWeb3}
+        tokenName={tokenName}
+      />
     </>
   );
 }

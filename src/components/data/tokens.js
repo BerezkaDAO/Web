@@ -40,13 +40,31 @@ export const tokenInfo = {
     onChainDayIdStart: 18613,
     maximumDiff: 1,
   },
+  skyflex: {
+    address: "0x26677EB24FD007Ad279FC55f367De31482E1bF54",
+    apiName: "skyflex",
+    name: "SkyFlex",
+    tableName: "SkyFlex",
+  },
+  btceth: {
+    address: "0x0586cfc19dbf0894a7ab0949b7c0cde1608d126c",
+    apiName: "cbdao",
+    name: "BTC/ETH",
+    tableName: "BTC/ETH",
+  },
 };
 
 export const tokens = ["flex", "deposit", "dyna", "emiflex"];
 
+export const legacyTokens = ["skyflex", "btceth"];
+
 export const allTokens = tokens.map((token) => tokenInfo[token]);
 
 export const tokenAddresses = tokens.map((token) => tokenInfo[token].address);
+
+export const legacyTokenAddresses = legacyTokens.map(
+  (token) => tokenInfo[token].address
+);
 
 export const currencyInfo = {
   usdt: {
@@ -72,7 +90,7 @@ export const currencyInfo = {
 export const currencies = ["usdt", "usdc", "dai"];
 
 export const apiNameByAddress = (address) =>
-  tokens
+  [...tokens, ...legacyTokens]
     .map((token) => tokenInfo[token])
     .find((info) => info.address.toLowerCase() === address.toLowerCase())
     .apiName;

@@ -1,13 +1,18 @@
 import React from "react";
 import TotalPrice from "./widgets/TotalPrice";
-import { tokenAddresses } from "./data/tokens";
+import { tokenAddresses, legacyTokenAddresses } from "./data/tokens";
 
 function HeaderBalance(props) {
   const { value } = props;
   return (
     <div className="balance">
       <div className="balance__amount">
-        {value || <TotalPrice tokens={tokenAddresses} />}
+        {value || (
+          <TotalPrice
+            tokens={tokenAddresses}
+            legacyTokens={legacyTokenAddresses}
+          />
+        )}
       </div>
     </div>
   );

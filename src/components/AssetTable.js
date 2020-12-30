@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { tokens } from "./data/tokens";
+import { tokens, legacyTokens } from "./data/tokens";
 import AssetTableRow from "./AssetTableRow";
 import AssetTableHeader from "./AssetTableHeader";
 
@@ -18,7 +18,7 @@ function AssetTable(props) {
   return (
     <div className="section _full main-table _mb">
       <AssetTableHeader />
-      {tokens.map((token, index) => (
+      {tokens.map((token) => (
         <AssetTableRow
           open={open === token}
           onClick={() => {
@@ -31,6 +31,22 @@ function AssetTable(props) {
           key={token}
           tokenName={token}
           connectWeb3={connectWeb3}
+        />
+      ))}
+
+      {legacyTokens.map((token) => (
+        <AssetTableRow
+          legacy={true}
+          open={open === token}
+          onClick={() => {
+            if (open === token) {
+              setOpen(null);
+            } else {
+              setOpen(token);
+            }
+          }}
+          key={token}
+          tokenName={token}
         />
       ))}
     </div>

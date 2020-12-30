@@ -60,7 +60,7 @@ function Header(props) {
         <Link className="button _light" to="/dashboard">
           Dashboard
         </Link>
-        <Link className="button" to="/request">
+        <Link className="button" to="/#flex">
           Join Dao
         </Link>
       </div>

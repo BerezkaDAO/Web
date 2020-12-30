@@ -30,7 +30,12 @@ function AssetTableRowDropdown(props) {
               Component={TokenRequestEmbedded}
             />
           ) : (
-            ""
+            <tr>
+              <td />
+              <td />
+              <td />
+              <td />
+            </tr>
           )}
         </tbody>
       </table>

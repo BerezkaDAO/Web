@@ -11,7 +11,7 @@ class CookiePolicy extends React.Component {
             </h1>
             <div
               className="section__subtitle"
-              style={{ marginLeft: "-190px", fontSize: "14px" }}
+              style={{ marginLeft: "-185px", fontSize: "14px" }}
             >
               updated 23.07.2020
             </div>

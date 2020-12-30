@@ -47,7 +47,6 @@ const GET_PURCHASES = gql`
           "0x0000000000000000000000000000000000000000"
           "0xf8a8d25049ebfaf36cf1dd7ff51ebd0777fc9b32"
         ]
-        kind: 1
         wallet: $wallet
         token_in: $tokens
       }
@@ -157,6 +156,7 @@ const AccountPortfolioProvider = (props) => {
   //
   const purchasesWithPrice = purchases.balanceEvents.map((p) => ({
     ...p,
+    amount: p.kind === 1 ? p.amount : -p.amount,
     price: dataIndex[`${p.dayId}_${p.token.toLowerCase()}`],
   }));
 

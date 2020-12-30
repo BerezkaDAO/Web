@@ -1,6 +1,6 @@
 import React from "react";
+import { texts } from "./data/descriptions";
 import TokenRequestController from "./TokenRequestController";
-
 import TokenRequestEmbedded from "./TokenRequestEmbedded";
 
 function AssetTableRowDropdown(props) {
@@ -17,28 +17,10 @@ function AssetTableRowDropdown(props) {
             <td>Risk</td>
           </tr>
           <tr>
-            <td>Berezka Flex</td>
-            <td>
-              Imagine that you own an exchange and earn commission from each
-              trade
-            </td>
-            <td>
-              Stable coins are allocated across
-              <br />
-              decentralized exchanges
-              <br />
-              (Uniswap, dydx, etc.) and are split in trading pairs (ETH/USDC,
-              USDC/Dai, etc). Each exchange charges a commission on each trade
-              in such pairs and shares the commission with you. Flex strategy
-              may include other investment instruments which are introduced
-              after DAO voting
-            </td>
-            <td>
-              - instant withdrawal
-              <br />- limited exposure to volatile assets (e.g. ETH, if selected
-              in traded pair), smoothed by earned trading commissions
-              <br />- higher returns with longer investment periods
-            </td>
+            <td>{texts[tokenName].name}</td>
+            <td>{texts[tokenName].shortDesc}</td>
+            <td>{texts[tokenName].fullDesc}</td>
+            <td>{texts[tokenName].benefits}</td>
           </tr>
           {!legacy ? (
             <TokenRequestController

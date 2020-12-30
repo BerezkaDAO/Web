@@ -95,7 +95,7 @@ const RowDataC = (props) => {
       <td>
         <TokenTableValueOutput
           value={balance}
-          render={(value) => `$ ${round(value, 2).toFixed(2)}`}
+          render={(value) => `${round(value, 2).toFixed(2)}`}
         />
       </td>
       <td>

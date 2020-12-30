@@ -33,7 +33,7 @@ function Header(props) {
             Blog
           </Link>
         </nav>
-        <div className="header__title">
+        <div className="desktop_only header__title">
           #Berezka DAO - DeFi Asset Management
         </div>
       </div>

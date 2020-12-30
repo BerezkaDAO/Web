@@ -19,13 +19,13 @@ function TokenRequestEmbedded(props) {
 
   return (
     <>
-      <tr>
+      <tr className="desktop_only">
         <td>Token request</td>
         <td />
         <td />
         <td />
       </tr>
-      <tr>
+      <tr className="desktop_only">
         <td className="_right">
           <div className="table-offer__label">Requested Amount</div>
         </td>
@@ -73,7 +73,7 @@ function TokenRequestEmbedded(props) {
           </div>
         </td>
       </tr>
-      <tr>
+      <tr className="desktop_only">
         <td colSpan={3} className="error">
           <span>{errorMessage}</span>
         </td>

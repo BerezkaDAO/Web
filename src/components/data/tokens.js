@@ -46,6 +46,8 @@ export const tokens = ["flex", "deposit", "dyna", "emiflex"];
 
 export const allTokens = tokens.map((token) => tokenInfo[token]);
 
+export const tokenAddresses = tokens.map((token) => tokenInfo[token].address);
+
 export const currencyInfo = {
   usdt: {
     symbol: "USDT",

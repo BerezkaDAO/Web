@@ -3,8 +3,11 @@ import { useQuery, gql } from "@apollo/react-hooks";
 import { round } from "./round";
 
 const GET_LAST_PRICE = `
-query GetTotalPrice {
+query GetTotalPrice($tokens: [String]) {
     dayHistoricalDatas(
+      where: {
+        token_in: $tokens
+      }
       orderBy: dayId,
       orderDirection:desc,
       first:20
@@ -17,7 +20,12 @@ query GetTotalPrice {
 `;
 
 const TotalPrice = (props) => {
-  const { loading, data } = useQuery(gql(GET_LAST_PRICE));
+  const { tokens } = props;
+  const { loading, data } = useQuery(gql(GET_LAST_PRICE), {
+    variables: {
+      tokens,
+    },
+  });
 
   if (loading && !data) {
     return <>...</>;

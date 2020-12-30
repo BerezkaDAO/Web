@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import AssetTableRowDropdown from "./AssetTableRowDropdown";
 import { tokenInfo } from "./data/tokens";
@@ -6,24 +6,19 @@ import APY from "./widgets/APY";
 import TokenPrice from "./widgets/TokenPrice";
 
 function AssetTableRow(props) {
-  const { tokenName, connectWeb3 } = props;
+  const { tokenName, connectWeb3, open, onClick } = props;
 
   const { address, tableName } = tokenInfo[tokenName];
-
-  const [open, setOpen] = useState(false);
-  const toggleOpen = () => {
-    setOpen(!open);
-  };
 
   return (
     <>
       <div
         className={"main-table__tr activeToggle" + (open ? " active" : "")}
-        onClick={toggleOpen}
+        onClick={onClick}
       >
         <div className="main-table__td">
           <div className="main-table__td-row">
-            <img className="main-table__icon" src="img/logo.png" alt=""/>
+            <img className="main-table__icon" src="img/logo.png" alt="" />
             <span>{tableName}</span>
           </div>
         </div>

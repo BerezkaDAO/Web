@@ -20,10 +20,14 @@ query GetTotalPrice($tokens: [String]) {
   }
 `;
 
+const uniqueBy = (x, f) =>
+  Object.values(x.reduce((a, b) => ((a[f(b)] = b), a), {}));
+
 const computeSum = (datas) => {
   const lastDay = datas[0].dayId;
-  return datas
-    .filter((d) => d.dayId === lastDay)
+  const lastDayDatas = datas.filter((d) => d.dayId === lastDay);
+  const uniqueLastDayDatas = uniqueBy(lastDayDatas, (d) => d.token);
+  return uniqueLastDayDatas
     .map((d) => d.totalPrice)
     .map((d) =>
       Number.parseInt(round(Number.parseFloat(d) / 10 ** 18 / 10 ** 6, 0))

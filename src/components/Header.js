@@ -26,10 +26,10 @@ function Header(props) {
           <Link className="header__menu-item" to="/">
             Home
           </Link>
-          <Link className="header__menu-item" to="/about">
+          <Link className="header__menu-item" to="/">
             About us
           </Link>
-          <Link className="header__menu-item" to="/blog">
+          <Link className="header__menu-item" to="/">
             Blog
           </Link>
         </nav>

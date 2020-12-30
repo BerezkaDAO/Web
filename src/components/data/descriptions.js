@@ -105,10 +105,10 @@ const emiflex = {
 
 const skyflex = {
   name: <>SkyFlex</>,
-  shortDesc: <>- Imagine that you place a deposit in a bank</>,
+  shortDesc: <>Imagine that you place a deposit in a bank</>,
   fullDesc: (
     <>
-      - Stable coins are deposited across DeFi protocols (Compound, Curve, DDEX,
+      Stable coins are deposited across DeFi protocols (Compound, Curve, DDEX,
       Aave, etc.). Profit are reinvesting to synthetics and high volatile
       products
     </>
@@ -125,13 +125,13 @@ const btceth = {
   name: <>BTC/ETH</>,
   shortDesc: (
     <>
-      - An aggressive strategy that provides additional income for BTC / ETH
+      An aggressive strategy that provides additional income for BTC / ETH
       assets. Your BTC / ETH remain unchanged
     </>
   ),
   fullDesc: (
     <>
-      - BTC / ETH are deposited in secure protocols in which credit is taken in
+      BTC / ETH are deposited in secure protocols in which credit is taken in
       Stablecoin and deposited in Yield Farmnig projects
     </>
   ),

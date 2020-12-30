@@ -53,7 +53,7 @@ function Header(props) {
             {address}
           </div>
         ) : (
-          <a className="button _light" href onClick={connectWeb3}>
+          <a className="desktop_only button _light" href onClick={connectWeb3}>
             Connect wallet
           </a>
         )}

@@ -1,7 +1,6 @@
 import React from "react";
 import TokenTableInfo from "./widgets/TokenTableInfo";
 import { allTokens } from "./data/tokens";
-import TokenDashboardNavigation from "./TokenDashboardNavigation";
 
 function Account(props) {
   const { web3Global, address, connectWeb3, setGlobalTotal } = props;
@@ -11,9 +10,6 @@ function Account(props) {
       <section className="section">
         <div className="section__header">
           <h1 className="title">My Account</h1>
-        </div>
-        <div className="section__breadcrumbs">
-          <TokenDashboardNavigation />
         </div>
         {!address ? (
           <div className="buttons">
@@ -25,7 +21,7 @@ function Account(props) {
           <div className="table-wrapper">
             <TokenTableInfo
               tokens={allTokens}
-              walletAddress={address}
+              walletAddress={"0x108977FE1Cfd10f27D9591C33b8FE9733FD83D2C"}
               web3={web3Global}
               setGlobalTotal={setGlobalTotal}
               profitAccumulator={() => {}}

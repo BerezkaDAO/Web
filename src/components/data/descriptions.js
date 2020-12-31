@@ -59,7 +59,7 @@ const dyna = {
       {" "}
       ETH, BTC or other DeFi assets are bought and held up to the point when the
       20 days moving average price is crossed. At this stage the asset is sold
-      for stable coin, are repurchased again once the 20 days moving average
+      for stable coin, and repurchased again once the 20 days moving average
       price moves above the price point. Rebalanced not earlier than every 4
       days
     </>
@@ -125,23 +125,25 @@ const btceth = {
   name: <>BTC/ETH</>,
   shortDesc: (
     <>
-      An aggressive strategy that provides additional income for BTC / ETH
-      assets. Your BTC / ETH remain unchanged
+      Aggressive strategy that provides additional income on BTC / ETH assets.
+      Your amount of BTC / ETH remains unchanged, supplied to DeFi protocols and
+      yields interest.
     </>
   ),
   fullDesc: (
     <>
-      BTC / ETH are deposited in secure protocols in which credit is taken in
-      Stablecoin and deposited in Yield Farmnig projects
+      BTC / ETH deposited to audited DeFi protocols to particiapate in interest
+      and yield farming distribtion among all liquidity providers. Your amount
+      of BTC / ETH remains unchanged and Berezka does not participate in the BTC
+      / ETH price changes. Additional earnings on top of the amount of BTC / ETH
+      supplied are either reinvested or distributed to your wallet
     </>
   ),
   benefits: (
     <>
-      - possible sharp price drop of selected asset (ETH, BTC, etc) and long low
-      market period with zero movement
-      <br />- if withdrawal from the asset is made right after the price drop
-      the loss may be significant (2020 ETH historical peak price drops = from
-      -1,7% to -26,5%)
+      - possible sharp price drop of supplied asset (ETH, BTC) and long low
+      market period with zero movement (regardless the market situation the
+      amount of supplied assets (BTC / ETH) remains unchanged
     </>
   ),
 };

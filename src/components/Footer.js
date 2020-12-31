@@ -14,7 +14,7 @@ function Footer(props) {
           <a className="button _light _middle" href>
             Get updates
           </a>
-          <span>Lets build DeFi Community Together</span>
+          <span>Let’s build DeFi community together</span>
         </div>
       </form>
       <div className="footer__bottom">

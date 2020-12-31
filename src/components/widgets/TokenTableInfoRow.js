@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { round } from "./round";
+import { ftmAmount, fmtDollatAmount, fmtDollatAmountSmall } from "./format";
 import AccountPortfolioProvider from "./AccountPortfolioProvider";
 import TokenTableValueOutput from "./TokenTableValueOutput";
 import ERC20Provider from "./ERC20Provider";
@@ -95,45 +96,33 @@ const RowDataC = (props) => {
       <td>{tableName}</td>
       <td>{symbol}</td>
       <td>
-        <TokenTableValueOutput
-          value={balance}
-          render={(value) => `${round(value, 2).toFixed(2)}`}
-        />
+        <TokenTableValueOutput value={balance} render={ftmAmount} />
       </td>
       <td>
         {" "}
-        <TokenTableValueOutput
-          value={iAmount}
-          render={(value) => `$ ${round(value, 2).toFixed(2)}`}
-        />
+        <TokenTableValueOutput value={iAmount} render={fmtDollatAmount} />
       </td>
       <td>
         {" "}
         <TokenTableValueOutput
           value={avgInvPrice}
-          render={(value) => `$ ${round(value, 2).toFixed(2)}`}
+          render={fmtDollatAmountSmall}
         />
       </td>
       <td className="nowrap">
         {" "}
-        <TokenTableValueOutput
-          value={priceUSD}
-          render={(value) => `$ ${round(value, 2).toFixed(2)}`}
-        />
+        <TokenTableValueOutput value={priceUSD} render={fmtDollatAmountSmall} />
       </td>
       <td className="nowrap">
         {" "}
         <TokenTableValueOutput
           value={portfolioPrice}
-          render={(value) => `$ ${round(value, 2).toFixed(2)}`}
+          render={fmtDollatAmount}
         />
       </td>
       <td>
         {" "}
-        <TokenTableValueOutput
-          value={profit}
-          render={(value) => `$ ${round(value, 2).toFixed(2)}`}
-        />
+        <TokenTableValueOutput value={profit} render={fmtDollatAmount} />
       </td>
       <td>
         {" "}

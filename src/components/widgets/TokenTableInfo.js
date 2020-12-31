@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useRef } from "react";
+import { ftmAmount, fmtDollatAmount } from "./format";
 import TokenTableInfoRow from "./TokenTableInfoRow";
 import TokenTableValueOutput from "./TokenTableValueOutput";
 
@@ -115,21 +116,18 @@ const TokenTableInfo = (props) => {
           <td>
             <TokenTableValueOutput
               value={totalInvested}
-              render={(value) => `$ ${value.toFixed(2)}`}
+              render={fmtDollatAmount}
             />
           </td>
           <td></td>
           <td></td>
           <td>
-            <TokenTableValueOutput
-              value={total}
-              render={(value) => `$ ${value.toFixed(2)}`}
-            />
+            <TokenTableValueOutput value={total} render={fmtDollatAmount} />
           </td>
           <td>
             <TokenTableValueOutput
               value={totalProfit}
-              render={(value) => `$ ${value.toFixed(2)}`}
+              render={fmtDollatAmount}
             />
           </td>
           <td>

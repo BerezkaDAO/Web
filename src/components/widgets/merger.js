@@ -1,4 +1,4 @@
-import { onChainDayIdStart } from "../data/tokens";
+import { onChainDayIdStart, maximumDiff } from "../data/tokens";
 
 export const mergeByDayID = (hist, _actual) => {
   if (hist.length === 0) {
@@ -44,7 +44,7 @@ export const mergeByDayID = (hist, _actual) => {
     if (dayId < onChainDayIdStart(token)) {
       return hVal;
     } else {
-      if (valPercDiff > 5) {
+      if (valPercDiff > maximumDiff(token)) {
         return hVal;
       } else {
         return aVal;

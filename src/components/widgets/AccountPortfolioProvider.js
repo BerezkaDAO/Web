@@ -143,7 +143,7 @@ const AccountPortfolioProvider = (props) => {
     return <>{childrenLoading()}</>;
   }
 
-  const fullData = mergeByDayID(prices.dayHistoricalDatas, historicalData);
+  const fullData = mergeByDayID(historicalData, prices.dayHistoricalDatas);
   const computedData = computeDailyPrices(balances, fullData).reverse();
 
   // index computed data

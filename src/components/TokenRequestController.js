@@ -92,6 +92,17 @@ const ERC20_ABI = [
   },
 ];
 
+function toBigNumberString(num) {
+  return ("" + +num).replace(
+    /(-?)(\d*)\.?(\d+)e([+-]\d+)/,
+    function (a, b, c, d, e) {
+      return e < 0
+        ? b + "0." + Array(1 - e - c.length).join(0) + c + d
+        : b + c + d + Array(e - d.length + 1).join(0);
+    }
+  );
+}
+
 function TokenRequestController(props) {
   const { initialToken, initialCurrency, connectWeb3, Component } = props;
 
@@ -174,7 +185,7 @@ function TokenRequestController(props) {
         // Require approval first
         //
         await offeredTokenContract.methods
-          .approve(daoAddress, "" + offeredAmountDecimals)
+          .approve(daoAddress, toBigNumberString(offeredAmountDecimals))
           .send({
             from: address,
           });
@@ -183,8 +194,8 @@ function TokenRequestController(props) {
       await daoContract.methods
         .createTokenRequest(
           offeredTokenAddress,
-          "" + offeredAmountDecimals,
-          "" + requestedAmountDecimals,
+          toBigNumberString(offeredAmountDecimals),
+          toBigNumberString(requestedAmountDecimals),
           ""
         )
         .send({

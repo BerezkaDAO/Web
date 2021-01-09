@@ -29,7 +29,6 @@ export const mergeByDayID = (hist, _actual) => {
     (key) => histIndex[key] && actualIndex[key]
   );
 
-  console.log("+++");
   const resolved = resvedKeys.map((key) => {
     const hVal = histIndex[key];
     const aVal = actualIndex[key];
@@ -52,7 +51,6 @@ export const mergeByDayID = (hist, _actual) => {
     }
   });
 
-  console.log("+++");
   const unsortedResult = [...histOnly, ...actialOnly, ...resolved];
 
   const result = unsortedResult.sort(

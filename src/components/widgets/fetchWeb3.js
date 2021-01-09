@@ -137,9 +137,6 @@ export const fetchWeb3Data = async (web3, tokenAddress) => {
         if (state[tokenAddress] && !state[tokenAddress].loading) {
           resolve(state[tokenAddress].data);
         } else {
-          console.log(
-            `Passively waiting for web3 data for token ${tokenAddress}`
-          );
           setTimeout(function () {
             attempt();
           }, 200);
@@ -184,11 +181,9 @@ export const fetchWeb3Data = async (web3, tokenAddress) => {
     balancesMerged.push([addr, sum]);
   }
 
-  console.log(JSON.stringify(balancesMerged));
   for (let balance of balancesMerged) {
     const token = balance[0];
     const amount = balance[1];
-    console.log(`Token: ${token}`);
     if (token === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
       names[token] = "Ethereum";
     } else {

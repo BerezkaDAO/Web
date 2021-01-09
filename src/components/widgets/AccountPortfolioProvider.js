@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { apiNameByAddress } from "../data/tokens";
 import { mergeByDayID } from "./merger";
-import { round } from "./round";
+import { fetchCommonAll } from "./fetchCommon";
 import { useQuery, gql } from "@apollo/react-hooks";
 import { computeDailyPrices } from "./computeCost";
 
@@ -101,32 +100,8 @@ const AccountPortfolioProvider = (props) => {
 
   useEffect(() => {
     const fn = async () => {
-      const all = [];
-      for (const token of tokens) {
-        const apiName = apiNameByAddress(token);
-        if (apiName) {
-          const response = await fetch(
-            `/storage/charts/${apiName}/common.json`
-          ).then((res) => res.json());
-          const adjusted = response.map((data) => {
-            return {
-              date: Math.floor(data[0] / 1000),
-              dayId: Math.floor(data[0] / 1000 / 86400),
-              price: round(data[1] * 10 ** 6, 3),
-              token: token.toLowerCase(),
-              totalPrice: round(
-                Number.parseFloat(data[3]) * 10 ** 6 * 10 ** 18,
-                3
-              ),
-            };
-          });
-
-          adjusted.forEach((a) => {
-            all.push(a);
-          });
-        }
-        setHistoricalData(all);
-      }
+      const all = await fetchCommonAll(tokens);
+      setHistoricalData(all);
     };
     fn();
   }, [tokens]);

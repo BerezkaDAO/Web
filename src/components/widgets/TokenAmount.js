@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery, gql } from "@apollo/react-hooks";
+import { fetchCommon } from "./fetchCommon";
+import { mergeByDayID } from "./merger";
 import { round } from "./round";
 
 const GET_LAST_PRICE = gql`
@@ -20,20 +22,31 @@ const GET_LAST_PRICE = gql`
 
 const TokenPrice = (props) => {
   const { tokenAddress } = props;
-
   const { loading, data } = useQuery(GET_LAST_PRICE, {
     variables: {
       tokenAddress,
     },
   });
 
-  if (loading) {
+  const [historicalData, setHistoricalData] = useState();
+
+  useEffect(() => {
+    const fn = async () => {
+      const historicalData = await fetchCommon(tokenAddress, 3);
+      setHistoricalData(historicalData);
+    };
+    fn();
+  }, [tokenAddress]);
+
+  if (loading || !historicalData) {
     return <>...</>;
   }
 
+  const merged = mergeByDayID(historicalData, data.dayHistoricalDatas);
+
   const amount = loading
     ? 0
-    : round(Number.parseFloat(data.dayHistoricalDatas[0].price) / 10 ** 6, 3);
+    : round(Number.parseFloat(merged[0].price) / 10 ** 6, 3);
 
   return <>$ {amount.toFixed(2)}</>;
 };

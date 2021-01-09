@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { apiNameByAddress } from "../data/tokens";
 import { mergeByDayID } from "./merger";
 import { round } from "./round";
+import { fetchCommon } from "./fetchCommon";
 import { useQuery, gql } from "@apollo/react-hooks";
 import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
@@ -36,31 +36,8 @@ const TokenAmountGraph = (props) => {
 
   useEffect(() => {
     const fn = async () => {
-      if (!tokenAddress) {
-        setHistoricalData(null);
-      } else {
-        const apiName = apiNameByAddress(tokenAddress);
-        if (!apiName) {
-          setHistoricalData([]);
-        } else {
-          const response = await fetch(
-            `/storage/charts/${apiNameByAddress(tokenAddress)}/common.json`
-          ).then((res) => res.json());
-          const adjusted = response.map((data) => {
-            return {
-              date: Math.floor(data[0] / 1000),
-              dayId: Math.floor(data[0] / 1000 / 86400),
-              price: round(data[1] * 10 ** 6, 3),
-              token: tokenAddress.toLowerCase(),
-              totalPrice: round(
-                Number.parseFloat(data[3]) * 10 ** 6 * 10 ** 18,
-                3
-              ),
-            };
-          });
-          setHistoricalData(adjusted);
-        }
-      }
+      const historicalData = await fetchCommon(tokenAddress, 3);
+      setHistoricalData(historicalData);
     };
     fn();
   }, [tokenAddress]);

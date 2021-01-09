@@ -1,4 +1,5 @@
 import { apiNameByAddress } from "../data/tokens";
+import { fetchDedupe } from "fetch-dedupe";
 import { round } from "./round";
 
 export const fetchCommonAll = async (tokens) => {
@@ -18,9 +19,9 @@ export const fetchCommon = async (tokenAddress, precision = 3) => {
     if (!apiName) {
       return [];
     } else {
-      const response = await fetch(
+      const response = await fetchDedupe(
         `/storage/charts/${apiNameByAddress(tokenAddress)}/common.json`
-      ).then((res) => res.json());
+      ).then((res) => res.data);
       const adjusted = response.map((data) => {
         return {
           date: Math.floor(data[0] / 1000),

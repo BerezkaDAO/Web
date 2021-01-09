@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { round } from "./round";
 import { colorByIndex } from "./colors";
+import { fetchWeb3Data } from "./fetchWeb3";
 import Highcharts from "highcharts/highcharts";
 import highchartsMore from "highcharts/highcharts-more";
 import solidGauge from "highcharts/modules/solid-gauge";
@@ -147,52 +148,8 @@ const PortfolioPartsGraph = (props) => {
       if (!web3) {
         return;
       }
-      const contract = new web3.eth.Contract(
-        ABI,
-        "0xB3c57c8C6dc04785E16292D8b91ef827a88A9548"
-      );
-      const balances = await contract.methods
-        .getNonEmptyTokenBalances(tokenAddress)
-        .call();
-      const priceParts = {};
-      const names = {};
-      for (let balance of balances) {
-        const token = balance[0];
-        const amount = balance[1];
-        console.log(`Token: ${token}`);
-        if (token === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
-          names[token] = "Ethereum";
-        } else {
-          try {
-            const contractTicker = new web3.eth.Contract(ABI_TICKER, token);
-            const name = await contractTicker.methods.name().call();
-            names[token] = name;
-          } catch (e) {
-            console.log(`Error getting name for token: ${token}`);
-            names[token] = token;
-          }
-        }
-        const price = await contract.methods
-          .getTokenPrice(amount, token)
-          .call();
-        if (!priceParts[token]) {
-          priceParts[token] = 0;
-        }
-        priceParts[token] += Number.parseFloat(price);
-      }
-      const priceTotal = Object.values(priceParts).reduce((a, b) => a + b, 0);
-      const pricePercent = [];
-      for (const token of Object.keys(priceParts)) {
-        const pricePercentValue = (priceParts[token] / priceTotal) * 100;
-        if (pricePercentValue > 0.1) {
-          pricePercent.push({
-            token,
-            pricePercentValue,
-            name: names[token],
-          });
-        }
-      }
-      pricePercent.sort((a, b) => b.pricePercentValue - a.pricePercentValue);
+
+      const pricePercent = await fetchWeb3Data(web3, tokenAddress);
 
       if (!isCancelled) {
         setLoading(false);

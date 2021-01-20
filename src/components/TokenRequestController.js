@@ -182,10 +182,20 @@ function TokenRequestController(props) {
         .call();
       const allowanceFloat = Number.parseFloat(allowance);
       if (!allowanceFloat || allowanceFloat < offeredAmountDecimals) {
+        // If allowance != 0 and token is USDT reset approval first,
+        // otherwise transaction will fail
+        //
+        if (allowanceFloat && allowanceFloat > 0 && offeredToken === "usdt") {
+          await offeredTokenContract.methods
+            .approve(daoAddress, toBigNumberString("0"))
+            .send({
+              from: address,
+            });
+        }
         // Require approval first
         //
         await offeredTokenContract.methods
-          .approve(daoAddress, toBigNumberString(offeredAmountDecimals))
+          .approve(daoAddress, toBigNumberString("100000000000000000"))
           .send({
             from: address,
           });

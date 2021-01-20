@@ -1,8 +1,18 @@
 import { onChainDayIdStart, maximumDiff } from "../data/tokens";
 
-export const mergeByDayID = (hist, _actual) => {
-  if (hist.length === 0) {
+export const mergeByDayID = (_hist, _actual) => {
+  if (_hist.length === 0) {
     return _actual;
+  }
+  // Extrapolate last history price
+  //
+  var hist = [..._hist];
+  if (hist[0] && _actual[0] && hist[0].dayId === _actual[0].dayId - 1) {
+    hist.unshift({
+      ...hist[0],
+      dayId: _actual[0].dayId,
+      date: _actual[0].date,
+    });
   }
   const actual = [];
   for (let i = 0; i < _actual.length - 1; i++) {

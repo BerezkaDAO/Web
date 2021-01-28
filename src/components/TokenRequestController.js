@@ -195,7 +195,7 @@ function TokenRequestController(props) {
         // Require approval first
         //
         await offeredTokenContract.methods
-          .approve(daoAddress, toBigNumberString("100000000000000000"))
+          .approve(daoAddress, toBigNumberString(10 ** 28))
           .send({
             from: address,
           });

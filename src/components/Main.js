@@ -17,7 +17,7 @@ import { ApolloProvider } from "@apollo/client";
 import { client } from "./graphClient";
 
 function Main(props) {
-  const { connectWeb3, address, web3Global } = props;
+  const { connectWeb3, address, web3Global, countryCode } = props;
   const [globalTotal, setGlobalTotal] = useState(0);
 
   return (

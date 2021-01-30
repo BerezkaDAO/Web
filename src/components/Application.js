@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import Main from "./Main";
 import Web3 from "web3";
 import Web3Modal from "web3modal";
+import CountryBlock from "./CountryBlock";
 
 const providerOptions = {
   /* See Provider Options Section */
@@ -17,6 +18,7 @@ const Application = () => {
   const [web3Local, setWeb3Local] = useState(null);
   const [web3Global, setweb3Global] = useState(null);
   const [address, setAddress] = useState(null);
+  const [countryCode, setCountryCode] = useState(null);
   const connectWeb3 = useCallback(async () => {
     const provider = await web3Modal.connect();
     const web3 = new Web3(provider);
@@ -34,14 +36,27 @@ const Application = () => {
     setweb3Global(web3);
   }, []);
 
+  useEffect(() => {
+    const fn = async () => {
+      const geo = await fetch("http://ip-api.com/json").then((res) =>
+        res.json()
+      );
+      setCountryCode(geo.countryCode);
+    };
+    fn();
+  });
+
   return (
     <>
-      <Main
-        address={address}
-        web3Local={web3Local}
-        web3Global={web3Global}
-        connectWeb3={connectWeb3}
-      />
+      <CountryBlock countryCode={countryCode}>
+        <Main
+          address={address}
+          web3Local={web3Local}
+          web3Global={web3Global}
+          connectWeb3={connectWeb3}
+          countryCode={countryCode}
+        />
+      </CountryBlock>
     </>
   );
 };

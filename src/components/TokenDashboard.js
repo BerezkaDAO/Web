@@ -14,6 +14,7 @@ function TokenDashboard(props) {
   const token = props.match.params.id;
   const { web3Global, address } = props;
   const tokenAddress = tokenInfo[token].address;
+  const isLegacy = tokenInfo[token].isLegacy;
   const isAdmin = address && admins.includes(address.toLowerCase());
 
   return (
@@ -28,7 +29,7 @@ function TokenDashboard(props) {
           </div>
         </div>
         <div className="info-main__value">
-          <TokenAmount tokenAddress={tokenAddress} />
+          <TokenAmount tokenAddress={tokenAddress} isLegacy={isLegacy} />
         </div>
       </div>
       <div className="info-main grid-col-4 grid-md-12">
@@ -43,6 +44,7 @@ function TokenDashboard(props) {
             tokenAddress={tokenAddress}
             dollarSeparator=" "
             separator=" "
+            isLegacy={isLegacy}
           />
         </div>
       </div>
@@ -54,7 +56,7 @@ function TokenDashboard(props) {
           </div>
         </div>
         <div className="info-main__value">
-          <APY tokenAddress={tokenAddress} decimals={2} />
+          <APY tokenAddress={tokenAddress} decimals={2} isLegacy={isLegacy} />
         </div>
       </div>
       <div className="info-general grid-col-4 grid-lg-6 grid-md-12">
@@ -90,7 +92,11 @@ function TokenDashboard(props) {
           </div>
         </div>
         <div className="info-general__content">
-          <TokenPriceGraph tokenAddress={tokenAddress} isAdmin={isAdmin} />
+          <TokenPriceGraph
+            tokenAddress={tokenAddress}
+            isAdmin={isAdmin}
+            isLegacy={isLegacy}
+          />
         </div>
       </div>
       <div className="info-general grid-col-4 grid-lg-6 grid-md-12">
@@ -116,7 +122,7 @@ function TokenDashboard(props) {
           </div>
         </div>
         <div className="info-general__content">
-          <TokenAmountGraph tokenAddress={tokenAddress} />
+          <TokenAmountGraph tokenAddress={tokenAddress} isLegacy={isLegacy} />
         </div>
       </div>
     </div>

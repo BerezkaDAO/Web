@@ -21,12 +21,13 @@ query GetApy ($tokenAddress: String){
 `;
 
 const APY = (props) => {
-  const { tokenAddress, decimals } = props;
+  const { tokenAddress, decimals, isLegacy } = props;
 
   const { loading, data } = useQuery(gql(GET_LAST_PRICE), {
     variables: {
       tokenAddress,
     },
+    skip: isLegacy,
   });
 
   const [historicalData, setHistoricalData] = useState();
@@ -43,7 +44,10 @@ const APY = (props) => {
     return <>...</>;
   }
 
-  const merged = mergeByDayID(historicalData, data.dayHistoricalDatas);
+  const merged = mergeByDayID(
+    historicalData,
+    data ? data.dayHistoricalDatas : []
+  );
 
   const actualDecimals = decimals === undefined ? 2 : 0;
   const last = merged[0];

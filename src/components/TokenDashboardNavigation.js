@@ -1,11 +1,11 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { tokens, tokenInfo } from "./data/tokens";
+import { dashboardTokens, tokenInfo } from "./data/tokens";
 
 function TokenDashboardNavigation() {
   return (
     <div className="breadcrumbs">
-      {tokens.map((token) => (
+      {dashboardTokens.map((token) => (
         <NavLink
           key={token}
           className="breadcrumbs__item"

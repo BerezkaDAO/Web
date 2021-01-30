@@ -24,12 +24,13 @@ const GET_LAST_PRICE = gql`
 `;
 
 const TokenAmountGraph = (props) => {
-  const { tokenAddress } = props;
+  const { tokenAddress, isLegacy } = props;
 
   const { loading, data } = useQuery(GET_LAST_PRICE, {
     variables: {
       tokenAddress,
     },
+    skip: isLegacy,
   });
 
   const [historicalData, setHistoricalData] = useState();
@@ -46,7 +47,10 @@ const TokenAmountGraph = (props) => {
     return <>Loading...</>;
   }
 
-  const merged = mergeByDayID(historicalData, data.dayHistoricalDatas);
+  const merged = mergeByDayID(
+    historicalData,
+    data ? data.dayHistoricalDatas : []
+  );
 
   const chartData = merged
     .map((it) => {

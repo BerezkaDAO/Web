@@ -21,12 +21,13 @@ query GetTokenPrice ($tokenAddress: String) {
 `;
 
 const TokenPrice = (props) => {
-  const { tokenAddress, separator, dollarSeparator } = props;
+  const { tokenAddress, separator, dollarSeparator, isLegacy } = props;
 
   const { loading, data } = useQuery(gql(GET_LAST_PRICE), {
     variables: {
       tokenAddress,
     },
+    skip: isLegacy,
   });
 
   const [historicalData, setHistoricalData] = useState();
@@ -43,7 +44,10 @@ const TokenPrice = (props) => {
     return <>...</>;
   }
 
-  const merged = mergeByDayID(historicalData, data.dayHistoricalDatas);
+  const merged = mergeByDayID(
+    historicalData,
+    data ? data.dayHistoricalDatas : []
+  );
 
   const amount = loading
     ? 0

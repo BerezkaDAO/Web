@@ -48,13 +48,14 @@ const renderIncrease = (options) => {
 };
 
 const TokenPriceGraph = (props) => {
-  const { tokenAddress, isAdmin } = props;
+  const { tokenAddress, isAdmin, isLegacy } = props;
   const precision = isAdmin ? 6 : 3;
 
   const { loading, data } = useQuery(GET_LAST_PRICE, {
     variables: {
       tokenAddress,
     },
+    skip: isLegacy,
   });
 
   const [historicalData, setHistoricalData] = useState();
@@ -73,9 +74,11 @@ const TokenPriceGraph = (props) => {
     return <>Loading...</>;
   }
 
-  const graphOnly = mergeByDayID([], [...data.dayHistoricalDatas]);
+  const dayHistoricalDatas = data ? data.dayHistoricalDatas : [];
+
+  const graphOnly = mergeByDayID([], [...dayHistoricalDatas]);
   const excelOnly = mergeByDayID([...historicalData], []);
-  const merged = mergeByDayID(historicalData, data.dayHistoricalDatas);
+  const merged = mergeByDayID(historicalData, dayHistoricalDatas);
 
   const chartData = merged
     .map((it) => {

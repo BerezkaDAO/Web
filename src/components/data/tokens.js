@@ -45,6 +45,7 @@ export const tokenInfo = {
     apiName: "skyflex",
     name: "SkyFlex",
     tableName: "SkyFlex",
+    isLegacy: true,
   },
   btceth: {
     address: "0x0586cfc19dbf0894a7ab0949b7c0cde1608d126c",
@@ -55,6 +56,14 @@ export const tokenInfo = {
 };
 
 export const tokens = ["flex", "deposit", "dyna", "emiflex"];
+
+export const dashboardTokens = [
+  "flex",
+  "deposit",
+  "dyna",
+  "emiflex",
+  "skyflex",
+];
 
 export const legacyTokens = ["skyflex", "btceth"];
 
@@ -99,10 +108,10 @@ export const onChainDayIdStart = (address) =>
   tokens
     .map((token) => tokenInfo[token])
     .find((info) => info.address.toLowerCase() === address.toLowerCase())
-    .onChainDayIdStart;
+    ?.onChainDayIdStart;
 
 export const maximumDiff = (address) =>
   tokens
     .map((token) => tokenInfo[token])
     .find((info) => info.address.toLowerCase() === address.toLowerCase())
-    .maximumDiff;
+    ?.maximumDiff;

@@ -29,9 +29,13 @@ function Header(props) {
           <Link className="header__menu-item" to="/">
             About us
           </Link>
-          <Link className="header__menu-item" to="/">
+          <a
+            className="header__menu-item"
+            target="_blank"
+            href="https://medium.com/berezka-dao"
+          >
             Blog
-          </Link>
+          </a>
         </nav>
         <div className="desktop_only header__title">
           #Berezka DAO - DeFi Asset Management

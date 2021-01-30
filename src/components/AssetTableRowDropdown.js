@@ -1,5 +1,6 @@
 import React from "react";
 import { texts } from "./data/descriptions";
+import OnChainValidation from "./OnChainValidation";
 import TokenRequestController from "./TokenRequestController";
 import TokenRequestEmbedded from "./TokenRequestEmbedded";
 
@@ -30,12 +31,7 @@ function AssetTableRowDropdown(props) {
               Component={TokenRequestEmbedded}
             />
           ) : (
-            <tr>
-              <td />
-              <td />
-              <td />
-              <td />
-            </tr>
+            <OnChainValidation requestedToken={tokenName} />
           )}
         </tbody>
       </table>

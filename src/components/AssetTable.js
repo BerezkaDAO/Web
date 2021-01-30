@@ -35,19 +35,21 @@ function AssetTable(props) {
       ))}
 
       {legacyTokens.map((token) => (
-        <AssetTableRow
-          legacy={true}
-          open={open === token}
-          onClick={() => {
-            if (open === token) {
-              setOpen(null);
-            } else {
-              setOpen(token);
-            }
-          }}
-          key={token}
-          tokenName={token}
-        />
+        <>
+          <AssetTableRow
+            legacy={true}
+            open={open === token}
+            onClick={() => {
+              if (open === token) {
+                setOpen(null);
+              } else {
+                setOpen(token);
+              }
+            }}
+            key={token}
+            tokenName={token}
+          />
+        </>
       ))}
     </div>
   );

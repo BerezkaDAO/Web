@@ -20,5 +20,13 @@
 .app .table td.error {
   text-align: right;
   vertical-align: middle;
-  color: red;
+  color: #ee1b1b;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.app .table td.onchain {
+  text-align: right;
+  vertical-align: middle;
+  padding: 15px;
 }

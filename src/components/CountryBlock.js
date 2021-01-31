@@ -5,11 +5,15 @@ import { blacklist } from "./data/blacklist";
 function CountryBlock(props) {
   const { countryCode } = props;
 
-  return countryCode && !blacklist.includes(countryCode) ? (
-    props.children
-  ) : (
-    <Blocked />
-  );
+  if (!countryCode) {
+    return "";
+  } else {
+    return countryCode && !blacklist.includes(countryCode) ? (
+      props.children
+    ) : (
+      <Blocked />
+    );
+  }
 }
 
 export default CountryBlock;

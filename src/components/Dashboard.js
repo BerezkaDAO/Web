@@ -2,6 +2,7 @@ import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import TokenDashboard from "./TokenDashboard";
 import TokenDashboardNavigation from "./TokenDashboardNavigation";
+import TokenOnChainValidation from "./TokenOnChainValidation";
 
 function Dashboard(props) {
   const { web3Global, address } = props;

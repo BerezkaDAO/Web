@@ -36,7 +36,7 @@ export const tokenInfo = {
     symbol: "DYNA",
     dao: "0x95c4c0bcffd5ff8b5796f395b20db7414b34954c",
     onChainDayIdStart: 18550,
-    maximumDiff: 11,
+    maximumDiff: 1,
     vaults: ["0xd7b25a928f2de0beff34247a42fcb219b04323cc"],
   },
   deposit: {

@@ -18,7 +18,7 @@ function TokenOnChainValidation(props) {
             <a
               key={index}
               className="validation__item"
-              href={`/dashboard/${vault}`}
+              href={`https://app.zerion.io/${vault}/overview`}
               style={{ zIndex: 2 }}
             >
               <div style={{ display: "flex" }}>

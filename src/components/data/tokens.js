@@ -62,6 +62,8 @@ export const tokenInfo = {
     vaults: [
       "0x49a59d505b40f9db89bba418419342980f7b6605",
       "0x1eb038f9c4d3a081577a061dfa644ec2ea3288c3",
+      "0x60d231e8da6673b20b2aee67bdf2d8251784625b",
+      "0x753fe5ddb9d4e4888e2959a3c5a48233e461070a",
     ],
   },
   btceth: {

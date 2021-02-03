@@ -26,9 +26,13 @@ function Header(props) {
           <Link className="header__menu-item" to="/">
             Home
           </Link>
-          <Link className="header__menu-item" to="/">
+          <a
+            className="header__menu-item"
+            target="_blank"
+            href="https://medium.com/berezka-dao/what-is-the-berezka-dao-bce81ca1063d"
+          >
             About us
-          </Link>
+          </a>
           <a
             className="header__menu-item"
             target="_blank"

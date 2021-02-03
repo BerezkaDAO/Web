@@ -41,4 +41,13 @@
   & > *
     margin: 10px
 
+.buttons_container
+  display: flex
+  justify-content: space-between
+  width: 100%
+  .button
+    flex: 1 1 0px
+  .button:not(:last-child)
+    margin-right: 20px
+
 @import "media"

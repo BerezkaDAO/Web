@@ -13,6 +13,7 @@ export const tokenInfo = {
       "0xf8a8d25049ebfaf36cf1dd7ff51ebd0777fc9b32",
       "0xc6f7cb66f28954d1eb265d3ae3e24ff20d45d433",
     ],
+    isDexEnabled: true,
   },
   emiflex: {
     name: "EmiFlex",
@@ -38,6 +39,7 @@ export const tokenInfo = {
     onChainDayIdStart: 18550,
     maximumDiff: 1,
     vaults: ["0xd7b25a928f2de0beff34247a42fcb219b04323cc"],
+    isDexEnabled: true,
   },
   deposit: {
     name: "Deposit",

@@ -1,5 +1,6 @@
 import React from "react";
 import { tokenInfo, currencies, currencyInfo } from "./data/tokens";
+import { exchanges, tokenExchanges } from "./data/exchanges";
 import Select from "./Select";
 
 function TokenRequestEmbedded(props) {
@@ -15,6 +16,7 @@ function TokenRequestEmbedded(props) {
     performTokenRequest,
     canPerformTokenRequest,
     errorMessage,
+    smallSum,
   } = props;
 
   return (
@@ -73,47 +75,74 @@ function TokenRequestEmbedded(props) {
           </div>
         </td>
       </tr>
-      {errorMessage && (
+      {!smallSum && errorMessage && (
         <tr className="desktop_only">
           <td
             colSpan={4}
             className="error"
             style={{ borderBottomWidth: 0, padding: 0 }}
           >
-            <span>{errorMessage && errorMessage.toUpperCase()}</span>
+            <span>{errorMessage}</span>
           </td>
         </tr>
       )}
-      <tr>
-        <td />
-        <td colSpan={2} className="onchain desktop_only">
-          {tokenInfo[requestedToken].vaults.map((vault, index) => (
-            <a
-              target="_blank"
-              key={index}
-              href={`https://app.zerion.io/${vault}/overview`}
-              className="button _medium"
-              style={{ marginLeft: "15px" }}
-            >
-              Onchain Validation
-              {tokenInfo[requestedToken].vaults.length === 1
-                ? ""
-                : `-${index + 1}`}
-            </a>
-          ))}
-        </td>
-        <td className="desktop_only">
-          <a
-            className={
-              "button _full" + (canPerformTokenRequest ? "" : " _disabled")
-            }
-            href
-            onClick={performTokenRequest}
+      {smallSum && (
+        <tr className="desktop_only">
+          <td colSpan={2} style={{ borderBottomWidth: 0 }} />
+          <td
+            colSpan={2}
+            className="redirect"
+            style={{ borderBottomWidth: 0, padding: 0, textAlign: "left" }}
           >
-            Create request
-          </a>
-        </td>
-      </tr>
+            <span className="redirect">
+              Dear user,{" "}
+              <span className="redirect_error">
+                Token Request works for amounts over $10,000 USDT / USDC / DAI
+              </span>
+              <br />
+              For smaller amounts kindly proceed to Uniswap, Sushiswap or 1Inch
+            </span>
+          </td>
+        </tr>
+      )}
+      {!smallSum && (
+        <tr>
+          <td colSpan={3} />
+          <td className="desktop_only">
+            <a
+              className={
+                "button _full" + (canPerformTokenRequest ? "" : " _disabled")
+              }
+              href
+              onClick={performTokenRequest}
+            >
+              Create request
+            </a>
+          </td>
+        </tr>
+      )}
+      {smallSum && (
+        <tr>
+          <td colSpan={2} />
+          <td colSpan={2}>
+            <div className="buttons_container">
+              {Object.keys(exchanges).map((exchange) => (
+                <a
+                  key={exchange}
+                  className={
+                    "button _medium" +
+                    (canPerformTokenRequest ? "" : " _disabled")
+                  }
+                  href={tokenExchanges[requestedToken][exchange] || "#"}
+                  onClick={performTokenRequest}
+                >
+                  Buy on {exchanges[exchange]}
+                </a>
+              ))}
+            </div>
+          </td>
+        </tr>
+      )}
     </>
   );
 }

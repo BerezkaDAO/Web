@@ -38,10 +38,10 @@ const Application = () => {
 
   useEffect(() => {
     const fn = async () => {
-      const geo = await fetch("http://ip-api.com/json").then((res) =>
-        res.json()
-      );
-      setCountryCode(geo.countryCode);
+      const geo = await fetch(
+        "https://api.ipgeolocation.io/ipgeo?apiKey=aafb8b776cde407aacde27b6ee55b018"
+      ).then((res) => res.json());
+      setCountryCode(geo.country_code2);
     };
     fn();
   });

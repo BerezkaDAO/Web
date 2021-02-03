@@ -111,6 +111,7 @@ function TokenRequestController(props) {
   const [requestedAmount, setRequestedAmount] = useState(0);
   const [offeredAmount, setOfferedAmount] = useState(0);
   const [errorMessage, setErrorMessage] = useState();
+  const [smallSum, setSmallSum] = useState(false);
   const { loading, data } = useQuery(gql(GET_LAST_PRICE), {
     variables: {
       tokenAddress: tokenInfo[requestedToken].address,
@@ -154,12 +155,20 @@ function TokenRequestController(props) {
         offeredAmount * 10 ** currencyInfo[offeredToken].decimals;
       const offeredTokenAddress = currencyInfo[offeredToken].address;
       const daoAddress = tokenInfo[requestedToken].dao;
+      const isDexEnabled = tokenInfo[requestedToken].isDexEnabled;
+
+      // Check for small sum first
+      //
+      if (isDexEnabled && offeredAmount < 10000) {
+        setSmallSum(true);
+        return;
+      }
 
       // Check eth balance and offered token balance
       //
       const ethBalance = await web3.eth.getBalance(address);
       if (ethBalance <= 0) {
-        setErrorMessage("Not enough eth on balance to pay transaction fee");
+        setErrorMessage("Not enough ETH to pay transaction fees");
         return;
       }
 
@@ -172,7 +181,7 @@ function TokenRequestController(props) {
         .call();
       const balanceFloat = Number.parseFloat(balance);
       if (!balanceFloat || balanceFloat < offeredAmountDecimals) {
-        setErrorMessage("Not enough tokens on balance");
+        setErrorMessage("Not enough USDT / USDC / DAI on balance");
         return;
       }
       // Check allowance
@@ -227,6 +236,7 @@ function TokenRequestController(props) {
       performTokenRequest={doPerformTokenRequest}
       canPerformTokenRequest={canPerformTokenRequest}
       errorMessage={errorMessage}
+      smallSum={smallSum}
     />
   );
 }

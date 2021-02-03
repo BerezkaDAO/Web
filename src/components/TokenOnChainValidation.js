@@ -11,6 +11,8 @@ function TokenOnChainValidation(props) {
         className="validation desktop_only"
         style={{ marginBottom: "-30px", marginTop: "5px" }}
       >
+        <span className="validation__caption">ONCHAIN VALIDATION:</span>
+
         {vaults &&
           vaults.map((vault, index) => (
             <a
@@ -20,15 +22,15 @@ function TokenOnChainValidation(props) {
               style={{ zIndex: 2 }}
             >
               <div style={{ display: "flex" }}>
-                <span>
-                  ONCHAIN VALIDATION{vaults.length > 1 ? ` - ${index + 1}` : ""}
+                <span class="validation__button">
+                  WALLET{vaults.length > 1 ? ` ${index + 1}` : ""}
                 </span>
                 {index !== vaults.length - 1 && (
                   <div
                     style={{
                       width: "1px",
                       height: "16px",
-                      margin: "2px 10px",
+                      margin: "2px 24px",
                       backgroundColor: "white",
                       opacity: ".8",
                     }}

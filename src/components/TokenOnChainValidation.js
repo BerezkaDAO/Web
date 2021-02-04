@@ -19,7 +19,7 @@ function TokenOnChainValidation(props) {
               target="_blank"
               key={index}
               className="validation__item"
-              href={`https://app.zerion.io/${vault}/overview`}
+              href={`https://debank.com/profile/${vault}`}
               style={{ zIndex: 2 }}
             >
               <div style={{ display: "flex" }}>
@@ -31,7 +31,7 @@ function TokenOnChainValidation(props) {
                     style={{
                       width: "1px",
                       height: "16px",
-                      margin: "2px 24px",
+                      margin: "2px 12px",
                       backgroundColor: "white",
                       opacity: ".8",
                     }}

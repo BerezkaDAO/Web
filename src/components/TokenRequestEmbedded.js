@@ -128,6 +128,7 @@ function TokenRequestEmbedded(props) {
             <div className="buttons_container">
               {Object.keys(exchanges).map((exchange) => (
                 <a
+                  target="_blank"
                   key={exchange}
                   className={
                     "button _medium" +

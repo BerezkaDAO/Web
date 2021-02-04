@@ -16,6 +16,7 @@ function TokenOnChainValidation(props) {
         {vaults &&
           vaults.map((vault, index) => (
             <a
+              target="_blank"
               key={index}
               className="validation__item"
               href={`https://app.zerion.io/${vault}/overview`}

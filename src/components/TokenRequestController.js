@@ -124,6 +124,12 @@ function TokenRequestController(props) {
     }
   }, [loading, requestedToken]);
 
+  useEffect(() => {
+    if (offeredAmount && offeredAmount >= 10000) {
+      setSmallSum(false);
+    }
+  }, [offeredAmount]);
+
   const canPerformTokenRequest =
     requestedToken &&
     requestedAmount > 0 &&
@@ -148,21 +154,23 @@ function TokenRequestController(props) {
   };
 
   const doPerformTokenRequest = async () => {
+    const isDexEnabled = tokenInfo[requestedToken].isDexEnabled;
+
+    // Check for small sum first
+    //
+    if (isDexEnabled && offeredAmount < 10000) {
+      setSmallSum(true);
+      return;
+    }
+
     const [web3, address] = await connectWeb3();
+
     if (web3 && address && canPerformTokenRequest) {
       const requestedAmountDecimals = requestedAmount * 10 ** 18;
       const offeredAmountDecimals =
         offeredAmount * 10 ** currencyInfo[offeredToken].decimals;
       const offeredTokenAddress = currencyInfo[offeredToken].address;
       const daoAddress = tokenInfo[requestedToken].dao;
-      const isDexEnabled = tokenInfo[requestedToken].isDexEnabled;
-
-      // Check for small sum first
-      //
-      if (isDexEnabled && offeredAmount < 10000) {
-        setSmallSum(true);
-        return;
-      }
 
       // Check eth balance and offered token balance
       //

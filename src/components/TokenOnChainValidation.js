@@ -7,11 +7,10 @@ function TokenOnChainValidation(props) {
 
   return (
     <>
-      <div
-        className="validation desktop_only"
-        style={{ marginBottom: "-30px", marginTop: "5px" }}
-      >
-        <span className="validation__caption">ONCHAIN VALIDATION:</span>
+      <div className="validation">
+        <span className="validation__caption desktop_only">
+          ONCHAIN VALIDATION:
+        </span>
 
         {vaults &&
           vaults.map((vault, index) => (

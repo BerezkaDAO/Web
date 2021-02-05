@@ -1,53 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { useQuery, gql } from "@apollo/react-hooks";
-import { fetchCommon } from "./fetchCommon";
-import { mergeByDayID } from "./merger";
-
-const GET_LAST_PRICE = `
-query GetApy ($tokenAddress: String){
-    dayHistoricalDatas(
-      orderBy: dayId, 
-      orderDirection:desc,
-      where: { token: $tokenAddress }
-    ) {
-      id,
-      dayId,
-      price,
-      token,
-      totalPrice,
-      apy
-    }
-  }
-`;
+import React from "react";
+import { useTokenData } from "./useTokenData";
 
 const APY = (props) => {
   const { tokenAddress, decimals, isLegacy } = props;
+  const { loading, merged } = useTokenData(tokenAddress, isLegacy);
 
-  const { loading, data } = useQuery(gql(GET_LAST_PRICE), {
-    variables: {
-      tokenAddress,
-    },
-    skip: isLegacy,
-  });
-
-  const [historicalData, setHistoricalData] = useState();
-
-  useEffect(() => {
-    const fn = async () => {
-      const historicalData = await fetchCommon(tokenAddress, 3);
-      setHistoricalData(historicalData);
-    };
-    fn();
-  }, [tokenAddress]);
-
-  if (loading || !historicalData) {
+  if (loading) {
     return <>...</>;
   }
-
-  const merged = mergeByDayID(
-    historicalData,
-    data ? data.dayHistoricalDatas : []
-  );
 
   const actualDecimals = decimals === undefined ? 2 : 0;
   const last = merged[0];

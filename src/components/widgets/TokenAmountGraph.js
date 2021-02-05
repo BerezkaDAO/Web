@@ -1,56 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { mergeByDayID } from "./merger";
+import React from "react";
 import { round } from "./round";
-import { fetchCommon } from "./fetchCommon";
-import { useQuery, gql } from "@apollo/react-hooks";
+import { useTokenData } from "./useTokenData";
 import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
 
-const GET_LAST_PRICE = gql`
-  query Get($tokenAddress: String) {
-    dayHistoricalDatas(
-      orderBy: dayId
-      orderDirection: desc
-      where: { token: $tokenAddress }
-    ) {
-      id
-      date
-      dayId
-      price
-      token
-      totalPrice
-    }
-  }
-`;
-
 const TokenAmountGraph = (props) => {
   const { tokenAddress, isLegacy } = props;
+  const { loading, merged } = useTokenData(tokenAddress, isLegacy);
 
-  const { loading, data } = useQuery(GET_LAST_PRICE, {
-    variables: {
-      tokenAddress,
-    },
-    skip: isLegacy,
-  });
-
-  const [historicalData, setHistoricalData] = useState();
-
-  useEffect(() => {
-    const fn = async () => {
-      const historicalData = await fetchCommon(tokenAddress, 3);
-      setHistoricalData(historicalData);
-    };
-    fn();
-  }, [tokenAddress]);
-
-  if (loading || !historicalData) {
+  if (loading) {
     return <>Loading...</>;
   }
-
-  const merged = mergeByDayID(
-    historicalData,
-    data ? data.dayHistoricalDatas : []
-  );
 
   const chartData = merged
     .map((it) => {

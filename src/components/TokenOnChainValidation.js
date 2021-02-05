@@ -26,15 +26,7 @@ function TokenOnChainValidation(props) {
                   WALLET{vaults.length > 1 ? ` ${index + 1}` : ""}
                 </span>
                 {index !== vaults.length - 1 && (
-                  <div
-                    style={{
-                      width: "1px",
-                      height: "16px",
-                      margin: "0px 12px",
-                      backgroundColor: "white",
-                      opacity: ".8",
-                    }}
-                  />
+                  <div className="validation__separator" />
                 )}
               </div>
             </a>

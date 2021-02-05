@@ -30,7 +30,7 @@ function TokenOnChainValidation(props) {
                     style={{
                       width: "1px",
                       height: "16px",
-                      margin: "2px 12px",
+                      margin: "0px 12px",
                       backgroundColor: "white",
                       opacity: ".8",
                     }}

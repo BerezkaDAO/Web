@@ -1,19 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { tokenInfo, currencyInfo } from "./data/tokens";
+import { useTokenData } from "./widgets/useTokenData";
 import { round } from "./widgets/round";
-import { useQuery, gql } from "@apollo/react-hooks";
-
-const GET_LAST_PRICE = `
-query GetLastHourPrice ($tokenAddress: String){
-    hourHistoricalDatas(
-      orderBy: hourId, 
-      orderDirection:desc,
-      where: { token: $tokenAddress }
-    ) {
-      price
-    }
-  }
-`;
 
 const DAO_ABI = [
   {
@@ -112,11 +100,10 @@ function TokenRequestController(props) {
   const [offeredAmount, setOfferedAmount] = useState(0);
   const [errorMessage, setErrorMessage] = useState();
   const [smallSum, setSmallSum] = useState(false);
-  const { loading, data } = useQuery(gql(GET_LAST_PRICE), {
-    variables: {
-      tokenAddress: tokenInfo[requestedToken].address,
-    },
-  });
+  const { loading, merged } = useTokenData(
+    tokenInfo[requestedToken].address,
+    false
+  );
 
   useEffect(() => {
     if (!loading) {
@@ -139,18 +126,20 @@ function TokenRequestController(props) {
 
   const doSetRequestedAmount = (amount) => {
     const actualAmount = amount || 0;
-    const price =
-      Number.parseFloat(data.hourHistoricalDatas[0].price) / 10 ** 6;
     setRequestedAmount(actualAmount);
-    setOfferedAmount(round(actualAmount * price, 2));
+    if (!loading) {
+      const price = Number.parseFloat(merged[0].price) / 10 ** 6;
+      setOfferedAmount(round(actualAmount * price, 2));
+    }
   };
 
   const doSetOfferedAmount = (amount) => {
     var actualAmount = amount || 0;
-    const price =
-      Number.parseFloat(data.hourHistoricalDatas[0].price) / 10 ** 6;
     setOfferedAmount(actualAmount);
-    setRequestedAmount(round(actualAmount / price, 2));
+    if (!loading) {
+      const price = Number.parseFloat(merged[0].price) / 10 ** 6;
+      setRequestedAmount(round(actualAmount / price, 2));
+    }
   };
 
   const doPerformTokenRequest = async () => {

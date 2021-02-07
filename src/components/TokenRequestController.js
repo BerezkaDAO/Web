@@ -3,6 +3,7 @@ import { tokenInfo, currencyInfo } from "./data/tokens";
 import { useTokenData } from "./widgets/useTokenData";
 import { round } from "./widgets/round";
 
+const TOKEN_REQUST_MIN_AMOUNT = 2000;
 const DAO_ABI = [
   {
     inputs: [
@@ -112,7 +113,7 @@ function TokenRequestController(props) {
   }, [loading, requestedToken]);
 
   useEffect(() => {
-    if (offeredAmount && offeredAmount >= 10000) {
+    if (offeredAmount && offeredAmount >= TOKEN_REQUST_MIN_AMOUNT) {
       setSmallSum(false);
     }
   }, [offeredAmount]);
@@ -147,7 +148,7 @@ function TokenRequestController(props) {
 
     // Check for small sum first
     //
-    if (isDexEnabled && offeredAmount < 10000) {
+    if (isDexEnabled && offeredAmount < TOKEN_REQUST_MIN_AMOUNT) {
       setSmallSum(true);
       return;
     }

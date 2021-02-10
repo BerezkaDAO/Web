@@ -156,9 +156,16 @@ function TokenRequestController(props) {
     const [web3, address] = await connectWeb3();
 
     if (web3 && address && canPerformTokenRequest) {
-      const requestedAmountDecimals = requestedAmount * 10 ** 18;
-      const offeredAmountDecimals =
-        offeredAmount * 10 ** currencyInfo[offeredToken].decimals;
+      const BN = web3.utils.BN;
+      new web3.utils.BN(6000)
+        .mul(new web3.utils.BN(10).pow(new web3.utils.BN(18)))
+        .toString();
+      const requestedAmountDecimals = new BN(requestedAmount).mul(
+        new BN(10).pow(new BN(18))
+      );
+      const offeredAmountDecimals = new BN(offeredAmount).mul(
+        new BN(10).pow(new BN(currencyInfo[offeredToken].decimals))
+      );
       const offeredTokenAddress = currencyInfo[offeredToken].address;
       const daoAddress = tokenInfo[requestedToken].dao;
 
@@ -178,7 +185,7 @@ function TokenRequestController(props) {
         .balanceOf(address)
         .call();
       const balanceFloat = Number.parseFloat(balance);
-      if (!balanceFloat || balanceFloat < offeredAmountDecimals) {
+      if (!balanceFloat || web3.utils.toBN(balance).lt(offeredAmountDecimals)) {
         setErrorMessage("Not enough USDT / USDC / DAI on balance");
         return;
       }
@@ -188,7 +195,10 @@ function TokenRequestController(props) {
         .allowance(address, daoAddress)
         .call();
       const allowanceFloat = Number.parseFloat(allowance);
-      if (!allowanceFloat || allowanceFloat < offeredAmountDecimals) {
+      if (
+        !allowanceFloat ||
+        web3.utils.toBN(allowance).lt(offeredAmountDecimals)
+      ) {
         // If allowance != 0 and token is USDT reset approval first,
         // otherwise transaction will fail
         //
@@ -202,7 +212,7 @@ function TokenRequestController(props) {
         // Require approval first
         //
         await offeredTokenContract.methods
-          .approve(daoAddress, toBigNumberString(10 ** 28))
+          .approve(daoAddress, new BN(10).pow(new BN(28)))
           .send({
             from: address,
           });
@@ -211,8 +221,8 @@ function TokenRequestController(props) {
       await daoContract.methods
         .createTokenRequest(
           offeredTokenAddress,
-          toBigNumberString(offeredAmountDecimals),
-          toBigNumberString(requestedAmountDecimals),
+          toBigNumberString(offeredAmountDecimals.toString()),
+          toBigNumberString(requestedAmountDecimals.toString()),
           ""
         )
         .send({

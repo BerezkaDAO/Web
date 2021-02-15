@@ -47,7 +47,7 @@ function Main(props) {
           </Switch>
           <Switch>
             <Route exact path="/">
-              <Index connectWeb3={connectWeb3} />
+              <Index connectWeb3={connectWeb3} web3Global={web3Global} />
             </Route>
             <Route path="/dashboard">
               <Dashboard web3Global={web3Global} address={address} />

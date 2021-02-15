@@ -5,7 +5,7 @@ import AssetTableRow from "./AssetTableRow";
 import AssetTableHeader from "./AssetTableHeader";
 
 function AssetTable(props) {
-  const { connectWeb3 } = props;
+  const { connectWeb3, web3Global } = props;
 
   const [open, setOpen] = useState();
   const location = useLocation();
@@ -31,6 +31,7 @@ function AssetTable(props) {
           key={token}
           tokenName={token}
           connectWeb3={connectWeb3}
+          web3Global={web3Global}
         />
       ))}
 

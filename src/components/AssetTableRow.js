@@ -8,7 +8,7 @@ import TokenPriceLegacy from "./widgets/legacy/TokenPriceLegacy";
 import TokenPrice from "./widgets/TokenPrice";
 
 function AssetTableRow(props) {
-  const { tokenName, connectWeb3, open, onClick, legacy } = props;
+  const { tokenName, connectWeb3, open, onClick, legacy, web3Global } = props;
 
   const { address, tableName } = tokenInfo[tokenName];
 
@@ -67,6 +67,7 @@ function AssetTableRow(props) {
         legacy={legacy}
         connectWeb3={connectWeb3}
         tokenName={tokenName}
+        web3Global={web3Global}
       />
     </>
   );

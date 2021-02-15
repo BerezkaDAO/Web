@@ -7,12 +7,12 @@ import HowItWorks from "./HowItWorks";
 import Title from "./Title";
 
 function Index(props) {
-  const { connectWeb3 } = props;
+  const { connectWeb3, web3Global } = props;
 
   return (
     <div className="index">
       <Title />
-      <AssetTable connectWeb3={connectWeb3} />
+      <AssetTable connectWeb3={connectWeb3} web3Global={web3Global} />
       <Brands />
       <Audit />
       <AuditAbout />

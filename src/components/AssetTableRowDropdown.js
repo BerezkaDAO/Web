@@ -5,7 +5,7 @@ import TokenRequestController from "./TokenRequestController";
 import TokenRequestEmbedded from "./TokenRequestEmbedded";
 
 function AssetTableRowDropdown(props) {
-  const { tokenName, connectWeb3, legacy } = props;
+  const { tokenName, connectWeb3, legacy, web3Global } = props;
 
   return (
     <div className="main-table__dropdown">
@@ -28,6 +28,7 @@ function AssetTableRowDropdown(props) {
               initialToken={tokenName}
               initialCurrency={"usdt"}
               connectWeb3={connectWeb3}
+              web3Global={web3Global}
               Component={TokenRequestEmbedded}
             />
           ) : (

@@ -3,7 +3,7 @@ import { tokenInfo, currencyInfo } from "./data/tokens";
 import { useTokenData } from "./widgets/useTokenData";
 import { round } from "./widgets/round";
 
-const TOKEN_REQUST_MIN_AMOUNT = 2000;
+const TOKEN_REQUST_MIN_AMOUNT = 0;
 const DAO_ABI = [
   {
     inputs: [
@@ -57,7 +57,7 @@ const ERC20_ABI = [
       },
     ],
     name: "allowance",
-    outputs: [],
+    outputs: [{ name: "allowance", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },
@@ -93,7 +93,13 @@ function toBigNumberString(num) {
 }
 
 function TokenRequestController(props) {
-  const { initialToken, initialCurrency, connectWeb3, Component } = props;
+  const {
+    initialToken,
+    initialCurrency,
+    connectWeb3,
+    web3Global,
+    Component,
+  } = props;
 
   const [requestedToken, setRequestedToken] = useState(initialToken);
   const [offeredToken, setOfferedToken] = useState(initialCurrency);
@@ -157,9 +163,6 @@ function TokenRequestController(props) {
 
     if (web3 && address && canPerformTokenRequest) {
       const BN = web3.utils.BN;
-      new web3.utils.BN(6000)
-        .mul(new web3.utils.BN(10).pow(new web3.utils.BN(18)))
-        .toString();
       const requestedAmountDecimals = new BN(requestedAmount).mul(
         new BN(10).pow(new BN(18))
       );
@@ -181,7 +184,12 @@ function TokenRequestController(props) {
         ERC20_ABI,
         offeredTokenAddress
       );
-      const balance = await offeredTokenContract.methods
+      const offeredTokenContractRO = new web3Global.eth.Contract(
+        ERC20_ABI,
+        offeredTokenAddress
+      );
+
+      const balance = await offeredTokenContractRO.methods
         .balanceOf(address)
         .call();
       const balanceFloat = Number.parseFloat(balance);
@@ -191,7 +199,7 @@ function TokenRequestController(props) {
       }
       // Check allowance
       //
-      const allowance = await offeredTokenContract.methods
+      const allowance = await offeredTokenContractRO.methods
         .allowance(address, daoAddress)
         .call();
       const allowanceFloat = Number.parseFloat(allowance);
@@ -221,8 +229,8 @@ function TokenRequestController(props) {
       await daoContract.methods
         .createTokenRequest(
           offeredTokenAddress,
-          toBigNumberString(offeredAmountDecimals.toString()),
-          toBigNumberString(requestedAmountDecimals.toString()),
+          offeredAmountDecimals.toString(),
+          requestedAmountDecimals.toString(),
           ""
         )
         .send({

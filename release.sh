@@ -11,3 +11,4 @@ then
 else
   echo "Could not build docker" >&2
 fi
+git checkout develop

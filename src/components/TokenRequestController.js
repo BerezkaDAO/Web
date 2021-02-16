@@ -197,6 +197,7 @@ function TokenRequestController(props) {
         setErrorMessage("Not enough USDT / USDC / DAI on balance");
         return;
       }
+      let nonce = await web3.eth.getTransactionCount(address);
       // Check allowance
       //
       const allowance = await offeredTokenContractRO.methods
@@ -211,19 +212,23 @@ function TokenRequestController(props) {
         // otherwise transaction will fail
         //
         if (allowanceFloat && allowanceFloat > 0 && offeredToken === "usdt") {
-          await offeredTokenContract.methods
+          offeredTokenContract.methods
             .approve(daoAddress, toBigNumberString("0"))
             .send({
               from: address,
+              nonce: nonce,
             });
+          nonce++;
         }
         // Require approval first
         //
-        await offeredTokenContract.methods
+        offeredTokenContract.methods
           .approve(daoAddress, new BN(10).pow(new BN(28)))
           .send({
             from: address,
+            nonce: nonce,
           });
+        nonce++;
       }
       const daoContract = new web3.eth.Contract(DAO_ABI, daoAddress);
       await daoContract.methods
@@ -235,7 +240,10 @@ function TokenRequestController(props) {
         )
         .send({
           from: address,
+          gas: 500000,
+          nonce: nonce,
         });
+      nonce++;
     }
   };
 

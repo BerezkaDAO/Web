@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { mergeByDayID } from "./merger";
-import { fetchCommonAll } from "./fetchCommon";
+import React from "react";
 import { useQuery, gql } from "@apollo/react-hooks";
 import { computeDailyPrices } from "./computeCost";
+import { useTokenDatas } from "./useTokenData";
 
 const GET_ACCOUNT_GRAPH = gql`
   query GetTokenAccountGraphAccountPortfolioProfit(
@@ -17,23 +16,6 @@ const GET_ACCOUNT_GRAPH = gql`
       amount
       token
       wallet
-    }
-  }
-`;
-
-const GET_LAST_PRICE = gql`
-  query GetAccountPortfolioProfit($tokens: [String]) {
-    dayHistoricalDatas(
-      orderBy: dayId
-      orderDirection: desc
-      where: { token_in: $tokens }
-    ) {
-      id
-      date
-      dayId
-      price
-      token
-      totalPrice
     }
   }
 `;
@@ -75,15 +57,7 @@ const AccountPortfolioProvider = (props) => {
     }
   );
 
-  const { loading: loading2, error: e2, data: prices } = useQuery(
-    GET_LAST_PRICE,
-    {
-      variables: {
-        tokens,
-      },
-      skip: !wallet,
-    }
-  );
+  const { loading: loading2, merged } = useTokenDatas(tokens);
 
   const { loading: loading3, error: e3, data: purchases } = useQuery(
     GET_PURCHASES,
@@ -96,29 +70,11 @@ const AccountPortfolioProvider = (props) => {
     }
   );
 
-  const [historicalData, setHistoricalData] = useState();
-
-  useEffect(() => {
-    const fn = async () => {
-      const all = await fetchCommonAll(tokens);
-      setHistoricalData(all);
-    };
-    fn();
-  }, [tokens]);
-
-  if (
-    loading1 ||
-    loading2 ||
-    loading3 ||
-    !balances ||
-    !prices ||
-    !historicalData ||
-    !purchases
-  ) {
+  if (loading1 || loading2 || loading3 || !balances || !purchases) {
     return <>{childrenLoading()}</>;
   }
 
-  const fullData = mergeByDayID(historicalData, prices.dayHistoricalDatas);
+  const fullData = merged;
   const computedData = computeDailyPrices(balances, fullData).reverse();
 
   // index computed data
@@ -137,8 +93,8 @@ const AccountPortfolioProvider = (props) => {
 
   // Compute APY
   //
-  const last = prices.dayHistoricalDatas[0];
-  const first = prices.dayHistoricalDatas[prices.dayHistoricalDatas.length - 1];
+  const last = fullData[0];
+  const first = fullData[fullData.length - 1];
   const lastPrice2 = last.price;
   let firstPrice = first.price;
   const daysBetween = last.dayId - first.dayId;

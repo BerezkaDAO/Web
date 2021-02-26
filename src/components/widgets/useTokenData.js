@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useQuery, gql } from "@apollo/react-hooks";
 import { fetchCommon } from "./fetchCommon";
 import { mergeByDayID } from "./merger";
-import { nameByAddress, tokenInfo } from "../data/tokens";
+import { nameByAddress, tokenInfo, tokens } from "../data/tokens";
 import { fetchCarry, computeCarry } from "./carry";
 
 const GET_LAST_PRICE = `
@@ -23,6 +23,28 @@ query GetLastDayPrice ($tokenAddress: String){
     }
   }
 `;
+
+export const useTokenDatas = (tokenAddresses) => {
+  const datas = [];
+  for (let address of tokenAddresses) {
+    const { loading, merged } = useTokenData(address, false);
+    datas.push({
+      loading,
+      merged,
+    });
+  }
+  if (datas.filter((it) => it.loading).length > 0) {
+    return {
+      loading: true,
+    };
+  } else {
+    const merged = datas.map((it) => it.merged).flat();
+    return {
+      loading: false,
+      merged,
+    };
+  }
+};
 
 export const useTokenData = (
   tokenAddress,

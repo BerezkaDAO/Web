@@ -9,12 +9,14 @@ import TokenPriceGraph from "./widgets/TokenPriceGraph";
 import TokenAmountGraph from "./widgets/TokenAmountGraph";
 import PortfolioPartsGraph from "./widgets/PortfolioPartsGraph";
 import PortfolioParts from "./widgets/PortfolioParts";
+import TokenCarry from "./widgets/TokenCarry";
 
 function TokenDashboard(props) {
   const token = props.match.params.id;
   const { web3Global, address } = props;
   const tokenAddress = tokenInfo[token].address;
   const isLegacy = tokenInfo[token].isLegacy;
+  const enableCarry = tokenInfo[token].enableCarry;
   const isAdmin = address && admins.includes(address.toLowerCase());
 
   return (
@@ -32,7 +34,7 @@ function TokenDashboard(props) {
           <TokenAmount tokenAddress={tokenAddress} isLegacy={isLegacy} />
         </div>
       </div>
-      <div className="info-main grid-col-4 grid-md-12">
+      <div className={`info-main grid-col-${enableCarry ? 3 : 4} grid-md-12`}>
         <div className="info-main__header">
           <div className="info-main__title">Portfolio, USD</div>
           <div className="info-main__icon">
@@ -48,7 +50,27 @@ function TokenDashboard(props) {
           />
         </div>
       </div>
-      <div className="info-main grid-col-4 grid-md-12">
+      {enableCarry ? (
+        <div className="info-main grid-col-3 grid-md-12">
+          <div className="info-main__header">
+            <div className="info-main__title">Accumulated carry</div>
+            <div className="info-main__icon">
+              <i className="icon icon-eye" />
+            </div>
+          </div>
+          <div className="info-main__value">
+            <TokenCarry
+              tokenAddress={tokenAddress}
+              dollarSeparator=" "
+              separator=" "
+              isLegacy={isLegacy}
+            />
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+      <div className={`info-main grid-col-${enableCarry ? 2 : 4} grid-md-12`}>
         <div className="info-main__header">
           <div className="info-main__title">APY, %</div>
           <div className="info-main__icon">

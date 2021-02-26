@@ -9,6 +9,7 @@ export const tokenInfo = {
     dao: "0xac3f8e8518139f732218ff542d21cd6968e8209d",
     onChainDayIdStart: 18550,
     maximumDiff: 3,
+    enableCarry: true,
     vaults: [
       "0xf8a8d25049ebfaf36cf1dd7ff51ebd0777fc9b32",
       "0xc6f7cb66f28954d1eb265d3ae3e24ff20d45d433",
@@ -24,6 +25,7 @@ export const tokenInfo = {
     dao: "0xef5d72e2d0cd8943e02aa4118bf94424017c8fdf",
     onChainDayIdStart: 18550,
     maximumDiff: 3,
+    enableCarry: true,
     vaults: [
       "0xe327b30c414a94382d1a5b6416f0f241eea1f653",
       "0x64079ab1273b22405a302347fe627760e462f0c3",
@@ -38,6 +40,7 @@ export const tokenInfo = {
     dao: "0x95c4c0bcffd5ff8b5796f395b20db7414b34954c",
     onChainDayIdStart: 18550,
     maximumDiff: 1,
+    enableCarry: true,
     vaults: ["0xd7b25a928f2de0beff34247a42fcb219b04323cc"],
     isDexEnabled: true,
   },
@@ -50,6 +53,7 @@ export const tokenInfo = {
     dao: "0xf5ac13a709e7bc86001b7107c8839b6d6f6046a3",
     onChainDayIdStart: 18613,
     maximumDiff: 1,
+    enableCarry: true,
     vaults: [
       "0xac1c30c8ae96a6cdd392bc2593a6e00d964b73c2",
       "0xbea828430c546b7a439ad6322e1d7fb428b0bed0",
@@ -124,6 +128,14 @@ export const apiNameByAddress = (address) =>
     .map((token) => tokenInfo[token])
     .find((info) => info.address.toLowerCase() === address.toLowerCase())
     .apiName;
+
+export const nameByAddress = (address) =>
+  [...tokens, ...legacyTokens]
+    .map((token) => ({
+      ...tokenInfo[token],
+      name: token,
+    }))
+    .find((info) => info.address.toLowerCase() === address.toLowerCase()).name;
 
 export const onChainDayIdStart = (address) =>
   tokens

@@ -78,7 +78,10 @@ const TokenPriceGraph = (props) => {
       .map((it) => {
         return [
           Number.parseInt(it.dayId) * 1000 * 86400,
-          round(Number.parseFloat(it.price / 10 ** 6), precision),
+          round(
+            Number.parseFloat((it.priceAfterCarry || it.price) / 10 ** 6),
+            precision
+          ),
         ];
       })
       .reverse();

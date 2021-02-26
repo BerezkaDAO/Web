@@ -51,10 +51,16 @@ export const mergeByDayID = (_hist, _actual) => {
       100 * Math.abs((aValPrice - hValPrice) / ((aValPrice + hValPrice) / 2));
 
     if (dayId < onChainDayIdStart(token)) {
-      return hVal;
+      return {
+        ...hVal,
+        supply: aVal.supply,
+      };
     } else {
       if (valPercDiff > maximumDiff(token)) {
-        return hVal;
+        return {
+          ...hVal,
+          supply: aVal.supply,
+        };
       } else {
         return aVal;
       }

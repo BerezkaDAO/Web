@@ -143,7 +143,7 @@ const AccountPortfolioProvider = (props) => {
   let firstPrice = first.price;
   const daysBetween = last.dayId - first.dayId;
   const apy = (((lastPrice2 / firstPrice - 1) * 100) / daysBetween) * 365;
-  const lastPrice = fullData[0].price;
+  const lastPrice = fullData[0].priceAfterCarry || fullData[0].price;
   return (
     <>
       {children({

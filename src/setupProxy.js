@@ -16,4 +16,12 @@ module.exports = function (app) {
       changeOrigin: true,
     })
   );
+
+  app.use(
+    "/carry",
+    createProxyMiddleware({
+      target: "https://data.berezka.io",
+      changeOrigin: true,
+    })
+  );
 };

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useQuery, gql } from "@apollo/react-hooks";
 import { fetchCommon } from "./fetchCommon";
 import { mergeByDayID } from "./merger";
+import { nameByAddress, tokenInfo } from "../data/tokens";
+import { fetchCarry, computeCarry } from "./carry";
 
 const GET_LAST_PRICE = `
 query GetLastDayPrice ($tokenAddress: String){
@@ -16,7 +18,8 @@ query GetLastDayPrice ($tokenAddress: String){
       price,
       token,
       totalPrice,
-      apy
+      apy,
+      supply
     }
   }
 `;
@@ -37,6 +40,16 @@ export const useTokenData = (
   });
 
   const [historicalData, setHistoricalData] = useState();
+  const [carryData, setCarryData] = useState();
+
+  useEffect(() => {
+    const fn = async () => {
+      console.log(`Getting carry`);
+      const carryData = await fetchCarry(tokenAddress);
+      setCarryData(carryData);
+    };
+    fn();
+  }, [tokenAddress]);
 
   useEffect(() => {
     const fn = async () => {
@@ -46,14 +59,20 @@ export const useTokenData = (
     fn();
   }, [tokenAddress]);
 
-  if (loading || !historicalData) {
+  if (loading || !historicalData || !carryData) {
     return {
       loading: true,
     };
   }
 
   const dayHistoricalDatas = data ? data.dayHistoricalDatas : [];
-  const merged = mergeByDayID(historicalData, dayHistoricalDatas);
+  let merged = mergeByDayID(historicalData, dayHistoricalDatas);
+
+  const tokenName = nameByAddress(tokenAddress);
+  const enableCarry = tokenInfo[tokenName].enableCarry;
+  if (enableCarry) {
+    merged = computeCarry(tokenAddress, merged, carryData);
+  }
 
   if (options.computeSeparate) {
     const graphOnly = mergeByDayID([], [...dayHistoricalDatas]);

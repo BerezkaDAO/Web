@@ -12,7 +12,11 @@ const TokenPrice = (props) => {
 
   const amount = loading
     ? 0
-    : round(Number.parseFloat(merged[0].price) / 10 ** 6, 3);
+    : round(
+        Number.parseFloat(merged[0].priceAfterCarry || merged[0].price) /
+          10 ** 6,
+        3
+      );
 
   return <>$ {amount.toFixed(2)}</>;
 };

@@ -24,9 +24,11 @@ query GetLastDayPrice ($tokenAddress: String){
   }
 `;
 
+// eslint-disable-next-line react-hooks/rules-of-hooks
 export const useTokenDatas = (tokenAddresses) => {
   const datas = [];
   for (let address of tokenAddresses) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const { loading, merged } = useTokenData(address, false);
     datas.push({
       loading,

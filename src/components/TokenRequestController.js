@@ -3,7 +3,7 @@ import { tokenInfo, currencyInfo } from "./data/tokens";
 import { useTokenData } from "./widgets/useTokenData";
 import { round } from "./widgets/round";
 
-const TOKEN_REQUST_MIN_AMOUNT = 0;
+const TOKEN_REQUST_MIN_AMOUNT = 500;
 const DAO_ABI = [
   {
     inputs: [

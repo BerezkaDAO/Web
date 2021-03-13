@@ -119,7 +119,10 @@ function TokenRequestController(props) {
   }, [loading, requestedToken]);
 
   useEffect(() => {
-    if (offeredAmount && offeredAmount >= TOKEN_REQUST_MIN_AMOUNT) {
+    if (
+      (offeredAmount && offeredAmount >= TOKEN_REQUST_MIN_AMOUNT) ||
+      offeredAmount === 0
+    ) {
       setSmallSum(false);
     }
   }, [offeredAmount]);

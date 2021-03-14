@@ -71,7 +71,8 @@ const TokenTableInfo = (props) => {
     }
   }, []);
 
-  const profitPercent = totalInvested == 0 ? 0 : (totalProfit / total) * 100;
+  const profitPercent =
+    totalInvested == 0 ? 0 : (totalProfit / totalInvested) * 100;
 
   return (
     <table class="table table-account">

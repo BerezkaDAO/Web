@@ -81,7 +81,7 @@ const RowDataC = (props) => {
   const priceUSD = lastPrice / 10 ** 6;
   const portfolioPrice = balance * priceUSD;
   const profit = portfolioPrice - iAmount;
-  const profitPercent = iAmount == 0 ? 0 : (profit / portfolioPrice) * 100;
+  const profitPercent = iAmount == 0 ? 0 : (profit / iAmount) * 100;
 
   useEffect(() => {
     setTimeout(() => {

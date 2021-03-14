@@ -22,16 +22,7 @@ const GET_ACCOUNT_GRAPH = gql`
 
 const GET_PURCHASES = gql`
   query GetAccountPortfolioPurchases($wallet: String, $tokens: [String]) {
-    balanceEvents(
-      where: {
-        counterparty_in: [
-          "0x0000000000000000000000000000000000000000"
-          "0xf8a8d25049ebfaf36cf1dd7ff51ebd0777fc9b32"
-        ]
-        wallet: $wallet
-        token_in: $tokens
-      }
-    ) {
+    balanceEvents(where: { wallet: $wallet, token_in: $tokens, kind: 1 }) {
       id
       kind
       dayId
@@ -42,6 +33,33 @@ const GET_PURCHASES = gql`
     }
   }
 `;
+
+const GET_TOKEN_REQUESTS = gql`
+  query GetTokenRequests($wallet: String, $tokens: [String]) {
+    tokenRequests(
+      where: { requestedToken_in: $tokens, requestor: $wallet, status: 2 }
+    ) {
+      id
+      dateCreated
+      dateFinished
+      requestor
+      dayIdCreated
+      dayIdFinished
+      offeredToken
+      offeredTokenAmount
+      offeredTokenPriceUsd
+      price
+      requestedToken
+      requestedTokenAmount
+      status
+    }
+  }
+`;
+
+// counterparty_in: [
+//  "0x0000000000000000000000000000000000000000"
+//  "0xf8a8d25049ebfaf36cf1dd7ff51ebd0777fc9b32"
+// ]
 
 const AccountPortfolioProvider = (props) => {
   const { tokens, wallet, childrenLoading, children } = props;
@@ -54,6 +72,9 @@ const AccountPortfolioProvider = (props) => {
         wallet,
       },
       skip: !wallet,
+      context: {
+        clientName: "tokens",
+      },
     }
   );
 
@@ -67,28 +88,74 @@ const AccountPortfolioProvider = (props) => {
         wallet,
       },
       skip: !wallet,
+      context: {
+        clientName: "tokens",
+      },
     }
   );
 
-  if (loading1 || loading2 || loading3 || !balances || !purchases) {
+  const { loading: loading4, error: e4, data: requests } = useQuery(
+    GET_TOKEN_REQUESTS,
+    {
+      variables: {
+        tokens,
+        wallet,
+      },
+      skip: !wallet,
+      context: {
+        clientName: "request",
+      },
+    }
+  );
+
+  if (
+    loading1 ||
+    loading2 ||
+    loading3 ||
+    loading4 ||
+    !balances ||
+    !purchases ||
+    !requests
+  ) {
     return <>{childrenLoading()}</>;
   }
 
   const fullData = merged;
   const computedData = computeDailyPrices(balances, fullData).reverse();
 
-  // index computed data
+  // Index computed data
   //
   const dataIndex = {};
   fullData.forEach((data) => {
     dataIndex[`${data.dayId}_${data.token.toLowerCase()}`] = data;
   });
-  // add purchase price
+
+  // Hardcode for fist BDQ data point
+  //
+  dataIndex[
+    `${18571}_${"0xf6ce9BFA82D1088d3257a76ec2e0ce1C8060BF8c".toLowerCase()}`
+  ] =
+    dataIndex[
+      `${18575}_${"0xf6ce9BFA82D1088d3257a76ec2e0ce1C8060BF8c".toLowerCase()}`
+    ];
+
+  // Index token requsts
+  //
+  const requestIndex = {};
+  requests.tokenRequests.forEach((data) => {
+    requestIndex[
+      `${data.dayIdFinished}_${data.requestedToken.toLowerCase()}`
+    ] = data;
+  });
+
+  // Add purchase price
   //
   const purchasesWithPrice = purchases.balanceEvents.map((p) => ({
     ...p,
     amount: p.kind === 1 ? p.amount : -p.amount,
-    price: dataIndex[`${p.dayId}_${p.token.toLowerCase()}`],
+    price:
+      requestIndex[`${p.dayId}_${p.token.toLowerCase()}`] ||
+      dataIndex[`${p.dayId}_${p.token.toLowerCase()}`],
   }));
 
   // Compute APY

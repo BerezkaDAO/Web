@@ -73,10 +73,11 @@ const RowDataC = (props) => {
         apy ${apy} 
     `);
 
-  const iAmount = investedAmount(purchasesWithPrice);
   const avgInvPrice = avgInvestedPrice(
     purchasesWithPrice.filter((p) => p.kind === 1)
   );
+  // const iAmount = investedAmount(purchasesWithPrice);
+  const iAmount = balance * avgInvPrice;
   const priceUSD = lastPrice / 10 ** 6;
   const portfolioPrice = balance * priceUSD;
   const profit = portfolioPrice - iAmount;

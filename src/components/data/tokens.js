@@ -58,6 +58,7 @@ export const tokenInfo = {
       "0xac1c30c8ae96a6cdd392bc2593a6e00d964b73c2",
       "0xbea828430c546b7a439ad6322e1d7fb428b0bed0",
     ],
+    withdrawEnabled: true,
   },
   skyflex: {
     address: "0x26677EB24FD007Ad279FC55f367De31482E1bF54",

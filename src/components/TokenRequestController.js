@@ -4,7 +4,7 @@ import { useTokenData } from "./widgets/useTokenData";
 import { round } from "./widgets/round";
 import { oracle } from "./widgets/oracle";
 
-const WITHDRAW_CONTRACT = "";
+const WITHDRAW_CONTRACT = "0xcb947e889f7dda1df9d1fa5932ebfeee99bc893b";
 const TOKEN_REQUST_MIN_AMOUNT = 500;
 const WITHDRAW_ABI = [
   {
@@ -701,6 +701,7 @@ function TokenRequestController(props) {
     !loading;
 
   const canPerformTokenWithdraw = canPerformTokenRequest;
+  const withdrawEnabled = tokenInfo[requestedToken].withdrawEnabled;
 
   const doSetRequestedAmount = (amount) => {
     const actualAmount = amount || 0;
@@ -853,16 +854,17 @@ function TokenRequestController(props) {
         !balanceFloat ||
         web3.utils.toBN(balance).lt(requestedAmountDecimals)
       ) {
-        //setErrorMessage(`Not enough ${requestedTokenSymbol} on balance`);
-        //return;
+        setErrorMessage(`Not enough ${requestedTokenSymbol} on balance`);
+        return;
       }
-      let nonce = await web3.eth.getTransactionCount(address);
 
       // GET AND CHECK ACTUAL PRICE FROM ORACLE SCRIPT
       //
       const optimisticPrice = await oracle(requestedTokenAddress);
       if (!optimisticPrice) {
-        setErrorMessage(`High volatility`);
+        setErrorMessage(
+          `It is impossible to make a withdrawal due to high volatility (This is when the price of Dex differs greatly from ours)`
+        );
         return;
       }
       console.log(`Got optimistic price: ${optimisticPrice}`);
@@ -883,11 +885,8 @@ function TokenRequestController(props) {
         )
         .send({
           from: address,
-          gas: 400000,
           value: 33000000000000000,
-          nonce: nonce,
         });
-      nonce++;
     }
   };
 
@@ -905,6 +904,7 @@ function TokenRequestController(props) {
       performTokenWithdraw={doPerformTokenWithdraw}
       canPerformTokenRequest={canPerformTokenRequest}
       canPerformTokenWithdraw={canPerformTokenWithdraw}
+      withdrawEnabled={withdrawEnabled}
       errorMessage={errorMessage}
       smallSum={smallSum}
     />

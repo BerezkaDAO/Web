@@ -1,5 +1,9 @@
+const UNISWAP = require("@uniswap/sdk");
+
+const USDC_TOKEN = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
+
 export const oracle = async (token) => {
-  // Test token
+  // Test token (for testnet usage)
   //
   if (
     token.toLowerCase() ===
@@ -10,11 +14,18 @@ export const oracle = async (token) => {
     token = "0x0D7DeA5922535087078dd3D7c554EA9f2655d4cB".toLowerCase();
   }
 
-  const reference = await uniswapPrice(token);
+  // Determine Reference (DEX) price
+  //
+  const reference = await uniswapPrice2(token);
+
+  // Get actual price from API server
+  //
   const berezka = await berezkaPrice(token);
 
   let result = 0;
 
+  // Check that both queries are successfull
+  //
   if (reference.success && berezka.success) {
     // Check price actuality
     //
@@ -36,46 +47,24 @@ export const oracle = async (token) => {
   return result;
 };
 
-const uniswapPrice = async (token) => {
-  const query = {
-    query: `{tokenDayDatas(first: 3, orderBy: date, orderDirection: desc, where: { token: \"${token.toLowerCase()}\"}) { id date token { id symbol } priceUSD } }`,
+const uniswapPrice2 = async (token) => {
+  const TOKEN = new UNISWAP.Token(UNISWAP.ChainId.MAINNET, token, 18);
+  const USDC = new UNISWAP.Token(UNISWAP.ChainId.MAINNET, USDC_TOKEN, 6);
+
+  const pair = await UNISWAP.Fetcher.fetchPairData(TOKEN, USDC);
+  const route = new UNISWAP.Route([pair], TOKEN);
+
+  const price = Number.parseFloat(route.midPrice.toSignificant()) * 10 ** 6;
+
+  return {
+    success: true,
+    price,
+    date: new Date().getTime() / 1000,
   };
-  const result = await fetch("/subgraphs/name/uniswap/uniswap-v2", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(query),
-  })
-    .then((res) => res.json())
-    .catch((_) => ({}));
-
-  const isFetchSuccess =
-    result.data && result.data.tokenDayDatas && result.data.tokenDayDatas[0];
-
-  if (isFetchSuccess) {
-    try {
-      const price = result.data.tokenDayDatas[0].priceUSD;
-      const priceAdjusted = Math.round(price * 10 ** 6);
-      return {
-        success: true,
-        date: result.data.tokenDayDatas[0].date,
-        price: priceAdjusted,
-      };
-    } catch (e) {
-      return {
-        success: false,
-      };
-    }
-  } else {
-    return {
-      success: false,
-    };
-  }
 };
 
 const berezkaPrice = async (token) => {
-  const result = await fetch(`/price/${token}`)
+  const result = await fetch(`https://data.berezka.io/price/${token}`)
     .then((res) => res.json())
     .catch((_) => ({}));
 

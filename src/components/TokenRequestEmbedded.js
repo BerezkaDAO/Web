@@ -18,6 +18,7 @@ function TokenRequestEmbedded(props) {
     performTokenWithdraw,
     canPerformTokenWithdraw,
     errorMessage,
+    withdrawEnabled,
     smallSum,
   } = props;
 
@@ -110,17 +111,21 @@ function TokenRequestEmbedded(props) {
       {!smallSum && (
         <tr>
           <td colSpan={2} />
-          <td className="desktop_only">
-            <a
-              className={
-                "button _full" + (canPerformTokenWithdraw ? "" : " _disabled")
-              }
-              href
-              onClick={performTokenWithdraw}
-            >
-              Withdraw
-            </a>
-          </td>
+          {withdrawEnabled ? (
+            <td className="desktop_only">
+              <a
+                className={
+                  "button _full" + (canPerformTokenWithdraw ? "" : " _disabled")
+                }
+                href
+                onClick={performTokenWithdraw}
+              >
+                Withdraw
+              </a>
+            </td>
+          ) : (
+            <td />
+          )}
           <td className="desktop_only">
             <a
               className={

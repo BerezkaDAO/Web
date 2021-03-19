@@ -831,6 +831,11 @@ function TokenRequestController(props) {
       const requestedTokenAddress = tokenInfo[requestedToken].address;
       const requestedTokenSymbol = tokenInfo[requestedToken].symbol;
 
+      if (offeredToken != "dai") {
+        setErrorMessage("At the moment, only DAI withdrawal is allowd");
+        return;
+      }
+
       // Check eth balance and offered token balance
       //
       const ethBalance = await web3.eth.getBalance(address);
@@ -870,12 +875,24 @@ function TokenRequestController(props) {
       console.log(`Got optimistic price: ${optimisticPrice}`);
       // -----
 
-      // Call withdraw
-      //
       const withdrawContract = new web3.eth.Contract(
         WITHDRAW_ABI,
         WITHDRAW_CONTRACT
       );
+
+      // Determine Eth Amount for oracle callback
+      //
+      const gasPriceBNString = await web3.eth.getGasPrice();
+      const getPrice = new BN(gasPriceBNString);
+      const callbackGasBNString = await withdrawContract.methods
+        .oracleCallbackGas()
+        .call();
+      const callbackGas = new BN(callbackGasBNString);
+      const oracleFee = new BN(10000);
+      const totalEthToCall = getPrice.mul(callbackGas.add(oracleFee));
+
+      // Call withdraw
+      //
       await withdrawContract.methods
         .withdraw(
           requestedAmountDecimals.toString(),
@@ -885,7 +902,8 @@ function TokenRequestController(props) {
         )
         .send({
           from: address,
-          value: 33000000000000000,
+          gasPrice: getPrice,
+          value: totalEthToCall,
         });
     }
   };

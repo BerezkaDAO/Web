@@ -29,8 +29,8 @@ export const oracle = async (token) => {
   if (reference.success && berezka.success) {
     // Check price actuality
     //
-    const refDayId = Math.ceil(reference.date / 86400);
-    const berDayId = Math.ceil(berezka.date / 86400);
+    const refDayId = Math.floor(reference.date / 86400);
+    const berDayId = Math.floor(berezka.date / 86400);
 
     if (refDayId <= berDayId) {
       // Check price difference
@@ -64,7 +64,7 @@ const uniswapPrice2 = async (token) => {
 };
 
 const berezkaPrice = async (token) => {
-  const result = await fetch(`https://data.berezka.io/price/${token}`)
+  const result = await fetch(`price/${token}`)
     .then((res) => res.json())
     .catch((_) => ({}));
 

@@ -23,7 +23,7 @@ function TokenDashboard(props) {
     <>
       {enableCarry ? (
         <div class="info-carry">
-          Accumulated Carry -{" "}
+          Accumulated Carry:{" "}
           <TokenCarry
             tokenAddress={tokenAddress}
             dollarSeparator=" "

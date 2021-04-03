@@ -3,6 +3,50 @@ import { tokenInfo, currencies, currencyInfo } from "./data/tokens";
 import { exchanges, tokenExchanges } from "./data/exchanges";
 import Select from "./Select";
 
+function Deposit(props) {
+  const { canPerformTokenRequest, performTokenRequest } = props;
+  return (
+    <td className="desktop_only">
+      <a
+        className={
+          "button _full" + (canPerformTokenRequest ? "" : " _disabled")
+        }
+        href
+        onClick={performTokenRequest}
+      >
+        Deposit
+      </a>
+    </td>
+  );
+}
+
+function Withdraw(props) {
+  const {
+    withdrawEnabled,
+    canPerformTokenWithdraw,
+    performTokenWithdraw,
+  } = props;
+  return (
+    <>
+      {withdrawEnabled ? (
+        <td className="desktop_only">
+          <a
+            className={
+              "button _full" + (canPerformTokenWithdraw ? "" : " _disabled")
+            }
+            href
+            onClick={performTokenWithdraw}
+          >
+            Withdraw
+          </a>
+        </td>
+      ) : (
+        <td />
+      )}
+    </>
+  );
+}
+
 function TokenRequestEmbedded(props) {
   const {
     setRequestedToken,
@@ -112,31 +156,26 @@ function TokenRequestEmbedded(props) {
         <tr>
           <td colSpan={2} />
           {withdrawEnabled ? (
-            <td className="desktop_only">
-              <a
-                className={
-                  "button _full" + (canPerformTokenWithdraw ? "" : " _disabled")
-                }
-                href
-                onClick={performTokenWithdraw}
-              >
-                Withdraw
-              </a>
-            </td>
+            <>
+              <Deposit
+                canPerformTokenRequest={canPerformTokenRequest}
+                performTokenRequest={performTokenRequest}
+              />
+              <Withdraw
+                withdrawEnabled={withdrawEnabled}
+                canPerformTokenWithdraw={canPerformTokenWithdraw}
+                performTokenWithdraw={performTokenWithdraw}
+              />
+            </>
           ) : (
-            <td />
+            <>
+              <td />
+              <Deposit
+                canPerformTokenRequest={canPerformTokenRequest}
+                performTokenRequest={performTokenRequest}
+              />{" "}
+            </>
           )}
-          <td className="desktop_only">
-            <a
-              className={
-                "button _full" + (canPerformTokenRequest ? "" : " _disabled")
-              }
-              href
-              onClick={performTokenRequest}
-            >
-              Deposit
-            </a>
-          </td>
         </tr>
       )}
       {smallSum && (

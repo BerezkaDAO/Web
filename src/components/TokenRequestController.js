@@ -673,6 +673,7 @@ function TokenRequestController(props) {
   const [offeredAmount, setOfferedAmount] = useState(0);
   const [errorMessage, setErrorMessage] = useState();
   const [smallSum, setSmallSum] = useState(false);
+  const [pendingWithdraw, setPendingWithdraw] = useState(false);
   const { loading, merged } = useTokenData(
     tokenInfo[requestedToken].address,
     false
@@ -692,6 +693,8 @@ function TokenRequestController(props) {
       setSmallSum(false);
     }
   }, [offeredAmount]);
+
+  useEffect(() => {});
 
   const canPerformTokenRequest =
     requestedToken &&
@@ -832,7 +835,7 @@ function TokenRequestController(props) {
       const requestedTokenSymbol = tokenInfo[requestedToken].symbol;
 
       if (offeredToken != "dai") {
-        setErrorMessage("At the moment, only DAI withdrawal is allowd");
+        setErrorMessage("At the moment, only DAI withdrawal is allowed");
         return;
       }
 
@@ -905,6 +908,8 @@ function TokenRequestController(props) {
           gasPrice: getPrice,
           value: totalEthToCall,
         });
+
+      setPendingWithdraw(true);
     }
   };
 

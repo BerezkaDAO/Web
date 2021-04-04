@@ -3,6 +3,8 @@ import { tokenInfo, currencyInfo } from "./data/tokens";
 import { useTokenData } from "./widgets/useTokenData";
 import { round } from "./widgets/round";
 import { oracle } from "./widgets/oracle";
+import { useLocalStorage } from "./widgets/useLocalStorage";
+import { useInterval } from "./widgets/useInterval";
 
 const WITHDRAW_CONTRACT = "0xcb947e889f7dda1df9d1fa5932ebfeee99bc893b";
 const TOKEN_REQUST_MIN_AMOUNT = 500;
@@ -674,6 +676,10 @@ function TokenRequestController(props) {
   const [errorMessage, setErrorMessage] = useState();
   const [smallSum, setSmallSum] = useState(false);
   const [pendingWithdraw, setPendingWithdraw] = useState(false);
+  const [withdrawAccount, setWithdrawAccount] = useLocalStorage(
+    "withdraw_account",
+    null
+  );
   const { loading, merged } = useTokenData(
     tokenInfo[requestedToken].address,
     false
@@ -694,7 +700,34 @@ function TokenRequestController(props) {
     }
   }, [offeredAmount]);
 
-  useEffect(() => {});
+  useInterval(
+    async () => {
+      if (withdrawAccount) {
+        console.log(`Got withdraw account ${withdrawAccount}`);
+        const withdrawContractR0 = new web3Global.eth.Contract(
+          WITHDRAW_ABI,
+          WITHDRAW_CONTRACT
+        );
+
+        const result = await withdrawContractR0.methods
+          .pendingQueries(withdrawAccount)
+          .call();
+
+        console.log(`Result ${result}`);
+
+        if (
+          "" + result !==
+          "0x0000000000000000000000000000000000000000000000000000000000000000"
+        ) {
+          setPendingWithdraw(true);
+        } else {
+          setPendingWithdraw(false);
+        }
+      }
+    },
+    5000,
+    [withdrawAccount]
+  );
 
   const canPerformTokenRequest =
     requestedToken &&
@@ -703,7 +736,7 @@ function TokenRequestController(props) {
     offeredAmount > 0 &&
     !loading;
 
-  const canPerformTokenWithdraw = canPerformTokenRequest;
+  const canPerformTokenWithdraw = canPerformTokenRequest && !pendingWithdraw;
   const withdrawEnabled = tokenInfo[requestedToken].withdrawEnabled;
 
   const doSetRequestedAmount = (amount) => {
@@ -830,11 +863,17 @@ function TokenRequestController(props) {
       const requestedAmountDecimals = new BN(requestedAmount).mul(
         new BN(10).pow(new BN(18))
       );
+      const offeredAmountDecimals = new BN(offeredAmount).mul(
+        new BN(10).pow(new BN(currencyInfo[offeredToken].decimals))
+      );
+
       const offeredTokenAddress = currencyInfo[offeredToken].address;
       const requestedTokenAddress = tokenInfo[requestedToken].address;
+      const agentAddress = tokenInfo[requestedToken].withdrawAgent;
       const requestedTokenSymbol = tokenInfo[requestedToken].symbol;
+      const offeredTokenSymbol = currencyInfo[offeredToken].symbol;
 
-      if (offeredToken != "dai") {
+      if (offeredToken !== "dai") {
         setErrorMessage("At the moment, only DAI withdrawal is allowed");
         return;
       }
@@ -863,6 +902,25 @@ function TokenRequestController(props) {
         web3.utils.toBN(balance).lt(requestedAmountDecimals)
       ) {
         setErrorMessage(`Not enough ${requestedTokenSymbol} on balance`);
+        return;
+      }
+
+      const offeredTokenContract = new web3Global.eth.Contract(
+        ERC20_ABI,
+        offeredTokenAddress
+      );
+
+      // Check balance of offered token on agent
+      //
+      const agentBalance = await offeredTokenContract.methods
+        .balanceOf(agentAddress)
+        .call();
+      const agentBalanceFloat = Number.parseFloat(agentBalance);
+      if (
+        !agentBalanceFloat ||
+        web3.utils.toBN(agentBalanceFloat).lt(offeredAmountDecimals)
+      ) {
+        setErrorMessage(`Not enough ${offeredTokenSymbol} on agent balance`);
         return;
       }
 
@@ -910,6 +968,7 @@ function TokenRequestController(props) {
         });
 
       setPendingWithdraw(true);
+      setWithdrawAccount(address);
     }
   };
 

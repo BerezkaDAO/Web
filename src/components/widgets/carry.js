@@ -1,9 +1,7 @@
 import { fetchDedupe } from "fetch-dedupe";
-import { nameByAddress } from "../data/tokens";
+import { nameByAddress, tokenInfo } from "../data/tokens";
 
-const CARRY_PERCENT = 0.2;
 const INITIAL_CARRY_DAYID = 18668;
-const DISPLAY_PRICE_FROM_DAY = 18684;
 const INITIAL_CARRY = {
   flex: {
     price: 1.587841891,
@@ -42,6 +40,7 @@ export const fetchCarry = async (tokenAddress) => {
 export const computeCarry = (tokenAddress, mergedRaw, recvCarry) => {
   const token = nameByAddress(tokenAddress);
   const merged = removeDuplicates(mergedRaw);
+  const carryPercent = tokenInfo[token].carryPercent;
   const mutable = [...merged]
     .filter((it) => it.dayId >= INITIAL_CARRY_DAYID)
     .map((x) => ({ ...x }));
@@ -74,7 +73,7 @@ export const computeCarry = (tokenAddress, mergedRaw, recvCarry) => {
     const currentDayTotalCost = Q * P;
     const prevDayTotalCost = Q * PprevAfterCarry;
     const dailyGrowth = currentDayTotalCost - prevDayTotalCost;
-    const dailyCarry = dailyGrowth > 0 ? dailyGrowth * CARRY_PERCENT : 0;
+    const dailyCarry = dailyGrowth > 0 ? dailyGrowth * carryPercent : 0;
     const nav = currentDayTotalCost;
     let priceAfterCarry =
       (nav - dailyCarry) / Q === P ? PprevAfterCarry : (nav - dailyCarry) / Q;

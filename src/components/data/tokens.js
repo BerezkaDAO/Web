@@ -15,6 +15,7 @@ export const tokenInfo = {
       "0xc6f7cb66f28954d1eb265d3ae3e24ff20d45d433",
     ],
     isDexEnabled: true,
+    carryPercent: 0.2,
   },
   emiflex: {
     name: "EmiFlex",
@@ -30,6 +31,7 @@ export const tokenInfo = {
       "0xe327b30c414a94382d1a5b6416f0f241eea1f653",
       "0x64079ab1273b22405a302347fe627760e462f0c3",
     ],
+    carryPercent: 0.2,
   },
   dyna: {
     name: "Dynamic",
@@ -43,6 +45,7 @@ export const tokenInfo = {
     enableCarry: true,
     vaults: ["0xd7b25a928f2de0beff34247a42fcb219b04323cc"],
     isDexEnabled: true,
+    carryPercent: 0.2,
   },
   deposit: {
     name: "Deposit",
@@ -60,6 +63,7 @@ export const tokenInfo = {
     ],
     withdrawAgent: "0xac1c30c8ae96a6cdd392bc2593a6e00d964b73c2",
     withdrawEnabled: true,
+    carryPercent: 0.15,
   },
   skyflex: {
     address: "0x26677EB24FD007Ad279FC55f367De31482E1bF54",
@@ -73,12 +77,14 @@ export const tokenInfo = {
       "0x60d231e8da6673b20b2aee67bdf2d8251784625b",
       "0x753fe5ddb9d4e4888e2959a3c5a48233e461070a",
     ],
+    carryPercent: 0.2,
   },
   btceth: {
     address: "0x0586cfc19dbf0894a7ab0949b7c0cde1608d126c",
     apiName: "cbdao",
     name: "BTC/ETH",
     tableName: "BTC/ETH",
+    carryPercent: 0.2,
   },
 };
 

@@ -8,7 +8,7 @@ export const tokenInfo = {
     symbol: "FLEX",
     dao: "0xac3f8e8518139f732218ff542d21cd6968e8209d",
     onChainDayIdStart: 18550,
-    maximumDiff: 3,
+    maximumDiff: 2,
     enableCarry: true,
     vaults: [
       "0xf8a8d25049ebfaf36cf1dd7ff51ebd0777fc9b32",
@@ -25,7 +25,7 @@ export const tokenInfo = {
     symbol: "EFLX",
     dao: "0xef5d72e2d0cd8943e02aa4118bf94424017c8fdf",
     onChainDayIdStart: 18550,
-    maximumDiff: 3,
+    maximumDiff: 2,
     enableCarry: true,
     vaults: [
       "0xe327b30c414a94382d1a5b6416f0f241eea1f653",
@@ -41,7 +41,7 @@ export const tokenInfo = {
     symbol: "DYNA",
     dao: "0x95c4c0bcffd5ff8b5796f395b20db7414b34954c",
     onChainDayIdStart: 18550,
-    maximumDiff: 1,
+    maximumDiff: 3,
     enableCarry: true,
     vaults: ["0xd7b25a928f2de0beff34247a42fcb219b04323cc"],
     isDexEnabled: true,
@@ -79,6 +79,27 @@ export const tokenInfo = {
     ],
     carryPercent: 0.2,
   },
+  moneytree: {
+    address: "0xb4c482fbbc3a9fa956af48a9749cc26e001f19f7",
+    apiName: "moneytree",
+    name: "MoneyTree",
+    tableName: "MoneyTree",
+    isLegacy: true,
+    carryPercent: 0.2,
+    vaults: ["0xe917a3954e301f153e0157e2537a7a49dd6eceaf"],
+  },
+  rumuflex: {
+    address: "0xc0174b778f5a0792f681e5429730ee7445e8ea9f",
+    apiName: "rumuflex",
+    name: "RumuFlex",
+    tableName: "RumuFlex",
+    isLegacy: true,
+    carryPercent: 0.2,
+    vaults: [
+      "0x68adb99cf632a996c406b68be4c4124121df2972",
+      "0x716cf745300939675618c3f9f48089b62bd0a728",
+    ],
+  },
   btceth: {
     address: "0x0586cfc19dbf0894a7ab0949b7c0cde1608d126c",
     apiName: "cbdao",
@@ -96,9 +117,11 @@ export const dashboardTokens = [
   "dyna",
   "emiflex",
   "skyflex",
+  "moneytree",
+  "rumuflex",
 ];
 
-export const legacyTokens = ["skyflex", "btceth"];
+export const legacyTokens = ["skyflex", "btceth", "moneytree", "rumuflex"];
 
 export const allTokens = tokens.map((token) => tokenInfo[token]);
 

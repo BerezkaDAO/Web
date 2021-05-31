@@ -1,28 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useQuery, gql } from "@apollo/react-hooks";
 import { fetchCommon } from "./fetchCommon";
 import { mergeByDayID } from "./merger";
 import { nameByAddress, tokenInfo, tokens } from "../data/tokens";
+import { fetchDedupe } from "fetch-dedupe";
 import { fetchCarry, computeCarry } from "./carry";
-
-const GET_LAST_PRICE = `
-query GetLastDayPrice ($tokenAddress: String){
-    dayHistoricalDatas(
-      orderBy: dayId, 
-      orderDirection:desc,
-      where: { token: $tokenAddress }
-    ) {
-      id,
-      date,
-      dayId,
-      price,
-      token,
-      totalPrice,
-      apy,
-      supply
-    }
-  }
-`;
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
 export const useTokenDatas = (tokenAddresses) => {
@@ -56,15 +37,27 @@ export const useTokenData = (
     computeSeparate: false,
   }
 ) => {
-  const { loading, data } = useQuery(gql(GET_LAST_PRICE), {
-    variables: {
-      tokenAddress,
-    },
-    skip: isLegacy,
-  });
-
+  const [data, setData] = useState();
   const [historicalData, setHistoricalData] = useState();
   const [carryData, setCarryData] = useState();
+
+  useEffect(() => {
+    const fn = async () => {
+      console.log(`Getting price`);
+      if (!isLegacy) {
+        const data = await fetchDedupe(`/rawprice/${tokenAddress}`)
+          .then((res) => {
+            return res;
+          })
+          .then((res) => res.data);
+        setData(data.data);
+      } else {
+        setData([]);
+      }
+    };
+    setData(null);
+    fn();
+  }, [tokenAddress]);
 
   useEffect(() => {
     const fn = async () => {
@@ -83,14 +76,13 @@ export const useTokenData = (
     fn();
   }, [tokenAddress]);
 
-  if (loading || !historicalData || !carryData) {
+  if (!data || !historicalData || !carryData) {
     return {
       loading: true,
     };
   }
 
-  const dayHistoricalDatas = data ? data.dayHistoricalDatas : [];
-  let merged = mergeByDayID(historicalData, dayHistoricalDatas);
+  let merged = mergeByDayID(historicalData, data);
 
   const tokenName = nameByAddress(tokenAddress);
   const enableCarry = tokenInfo[tokenName].enableCarry;
@@ -99,7 +91,7 @@ export const useTokenData = (
   }
 
   if (options.computeSeparate) {
-    const graphOnly = mergeByDayID([], [...dayHistoricalDatas]);
+    const graphOnly = mergeByDayID([], [...data]);
     const excelOnly = mergeByDayID([...historicalData], []);
     return {
       loading: false,

@@ -5,18 +5,18 @@ const INITIAL_CARRY_DAYID = 18668;
 const INITIAL_CARRY = {
   flex: {
     price: 1.587841891,
-    totalCarry: 29767.81,
+    totalCarry: 29767.91,
   },
   dyna: {
-    price: 3.4888414,
-    totalCarry: 48091.24,
+    price: 3.255011,
+    totalCarry: 48091.28,
   },
   emiflex: {
     price: 1.7563574,
     totalCarry: 6391.09,
   },
   deposit: {
-    price: 1.1294819,
+    price: 1.12880471717,
     totalCarry: 647.41,
   },
 };
@@ -28,10 +28,10 @@ const removeDuplicates = (array) => {
 
 export const fetchCarry = async (tokenAddress) => {
   const name = nameByAddress(tokenAddress);
-  console.log(`fetchCarry: Got name by address: ${name}`);
+  //console.log(`fetchCarry: Got name by address: ${name}`);
   return await fetchDedupe(`/carry/${name}`)
     .then((res) => {
-      console.log(`fetchCarry: ${JSON.stringify(res)}`);
+      //console.log(`fetchCarry: ${JSON.stringify(res)}`);
       return res;
     })
     .then((res) => res.data);
@@ -48,7 +48,7 @@ export const computeCarry = (tokenAddress, mergedRaw, recvCarry) => {
   const daysAgo = merged[0].dayId - INITIAL_CARRY_DAYID - 1;
   for (let i = daysAgo; i >= 0; i--) {
     const dayId = mutable[i].dayId;
-    console.log(`Computing daily carry for day: ${dayId}`);
+    //console.log(`Computing daily carry for day: ${dayId}`);
     const currentDayData = mutable[i];
     const prevDayData = mutable[i + 1];
     const Q = currentDayData.supply / 10 ** 18;
@@ -56,13 +56,13 @@ export const computeCarry = (tokenAddress, mergedRaw, recvCarry) => {
     let PprevAfterCarry = 0;
     let totalCarry = 0;
     if (prevDayData.carry) {
-      console.log(`Got carry`);
+      //console.log(`Got carry`);
       PprevAfterCarry = prevDayData.carry.priceAfterCarry;
       totalCarry = prevDayData.carry.totalCarry;
     } else if (prevDayData.dayId === INITIAL_CARRY_DAYID) {
-      console.log(
-        `Got default carry ${INITIAL_CARRY[token].price} ${INITIAL_CARRY[token].totalCarry}`
-      );
+      //console.log(
+      //  `Got default carry ${INITIAL_CARRY[token].price} ${INITIAL_CARRY[token].totalCarry}`
+      //);
       PprevAfterCarry = INITIAL_CARRY[token].price;
       totalCarry = INITIAL_CARRY[token].totalCarry;
     } else {
@@ -81,7 +81,7 @@ export const computeCarry = (tokenAddress, mergedRaw, recvCarry) => {
       priceAfterCarry = PprevAfterCarry;
     }
     totalCarry += dailyCarry;
-    console.log(`Got dailyCarry ${dailyCarry} ${totalCarry}`);
+    //console.log(`Got dailyCarry ${dailyCarry} ${totalCarry}`);
     let deductCarry = 0;
     recvCarry
       .filter((c) => c.dayId === dayId)
@@ -90,8 +90,8 @@ export const computeCarry = (tokenAddress, mergedRaw, recvCarry) => {
         deductCarry += sum;
       });
     totalCarry -= deductCarry;
-    console.log(`Got deductCarry ${deductCarry}`);
-    const priceAfterCarryReal = (nav - dailyCarry) / Q;
+    //console.log(`Got deductCarry ${deductCarry}`);
+    const priceAfterCarryReal = (nav - totalCarry) / Q;
     mutable[i] = {
       ...mutable[i],
       totalCarry: totalCarry,

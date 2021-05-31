@@ -144,7 +144,7 @@ function TokenRequestEmbedded(props) {
             <span className="redirect">
               Dear user,{" "}
               <span className="redirect_error">
-                Token Request works for amounts over $2,000 USDT / USDC / DAI
+                Token Request works for amounts over $3,000 USDT / USDC / DAI
               </span>
               <br />
               For smaller amounts kindly proceed to Uniswap, Sushiswap or 1Inch

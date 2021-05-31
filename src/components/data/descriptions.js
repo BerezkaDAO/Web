@@ -148,6 +148,62 @@ const btceth = {
   ),
 };
 
+const moneytree = {
+  name: <>MoneyTree</>,
+  shortDesc: (
+    <>
+      {" "}
+      Partnering product with our collegues from MoneyTree copying Berezka Flex
+      principles
+    </>
+  ),
+  fullDesc: (
+    <>
+      Stable coins are allocated across decentralized exchanges (Uniswap, dydx,
+      etc.) and are split in trading pairs (ETH/USDC, USDC/Dai, etc). Each
+      exchange charges a commission on each trade in such pairs and shares the
+      commission with you. Flex strategy may include other investment
+      instruments which are introduced after DAO voting
+    </>
+  ),
+  benefits: (
+    <>
+      - instant withdrawal
+      <br />- limited exposure to volatile assets (e.g. ETH, if selected in
+      traded pair), smoothed by earned trading commissions
+      <br />- higher returns with longer investment periods
+    </>
+  ),
+};
+
+const rumuflex = {
+  name: <>RumuFlex</>,
+  shortDesc: (
+    <>
+      {" "}
+      Partnering product with our collegues from MoneyTree copying Berezka Flex
+      principles
+    </>
+  ),
+  fullDesc: (
+    <>
+      Stable coins are allocated across decentralized exchanges (Uniswap, dydx,
+      etc.) and are split in trading pairs (ETH/USDC, USDC/Dai, etc). Each
+      exchange charges a commission on each trade in such pairs and shares the
+      commission with you. Flex strategy may include other investment
+      instruments which are introduced after DAO voting
+    </>
+  ),
+  benefits: (
+    <>
+      - instant withdrawal
+      <br />- limited exposure to volatile assets (e.g. ETH, if selected in
+      traded pair), smoothed by earned trading commissions
+      <br />- higher returns with longer investment periods
+    </>
+  ),
+};
+
 export const texts = {
   flex,
   dyna,
@@ -155,4 +211,6 @@ export const texts = {
   deposit,
   skyflex,
   btceth,
+  moneytree,
+  rumuflex,
 };

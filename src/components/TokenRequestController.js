@@ -7,7 +7,7 @@ import { useLocalStorage } from "./widgets/useLocalStorage";
 import { useInterval } from "./widgets/useInterval";
 
 const WITHDRAW_CONTRACT = "0xcb947e889f7dda1df9d1fa5932ebfeee99bc893b";
-const TOKEN_REQUST_MIN_AMOUNT = 500;
+const TOKEN_REQUST_MIN_AMOUNT = 3000;
 const WITHDRAW_ABI = [
   {
     inputs: [],
@@ -743,7 +743,9 @@ function TokenRequestController(props) {
     const actualAmount = amount || 0;
     setRequestedAmount(actualAmount);
     if (!loading) {
-      const price = Number.parseFloat(merged[0].price) / 10 ** 6;
+      const price =
+        Number.parseFloat(merged[0].priceAfterCarry || merged[0].price) /
+        10 ** 6;
       setOfferedAmount(round(actualAmount * price, 2));
     }
   };
@@ -752,7 +754,9 @@ function TokenRequestController(props) {
     var actualAmount = amount || 0;
     setOfferedAmount(actualAmount);
     if (!loading) {
-      const price = Number.parseFloat(merged[0].price) / 10 ** 6;
+      const price =
+        Number.parseFloat(merged[0].priceAfterCarry || merged[0].price) /
+        10 ** 6;
       setRequestedAmount(round(actualAmount / price, 2));
     }
   };

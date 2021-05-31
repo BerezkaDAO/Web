@@ -28,6 +28,7 @@ export const fetchCommon = async (tokenAddress, precision = 3) => {
           dayId: Math.floor(data[0] / 1000 / 86400),
           price: "" + round(data[1] * 10 ** 6, precision),
           token: tokenAddress.toLowerCase(),
+          supply: round(Number.parseFloat(data[3] / data[1]) * 10 ** 18, 0),
           apy: data[2],
           totalPrice: round(Number.parseFloat(data[3]) * 10 ** 6 * 10 ** 18, 3),
         };

@@ -8,11 +8,12 @@ export const tokenInfo = {
     symbol: "FLEX",
     dao: "0xac3f8e8518139f732218ff542d21cd6968e8209d",
     onChainDayIdStart: 18550,
-    maximumDiff: 2,
+    maximumDiff: 4,
     enableCarry: true,
     vaults: [
       "0xf8a8d25049ebfaf36cf1dd7ff51ebd0777fc9b32",
       "0xc6f7cb66f28954d1eb265d3ae3e24ff20d45d433",
+      "0x99e9891ceb85b9eebe2e29a2b525d3b13a5b390c",
     ],
     isDexEnabled: true,
     carryPercent: 0.2,
@@ -41,7 +42,7 @@ export const tokenInfo = {
     symbol: "DYNA",
     dao: "0x95c4c0bcffd5ff8b5796f395b20db7414b34954c",
     onChainDayIdStart: 18550,
-    maximumDiff: 3,
+    maximumDiff: 4,
     enableCarry: true,
     vaults: ["0xd7b25a928f2de0beff34247a42fcb219b04323cc"],
     isDexEnabled: true,
@@ -60,6 +61,9 @@ export const tokenInfo = {
     vaults: [
       "0xac1c30c8ae96a6cdd392bc2593a6e00d964b73c2",
       "0xbea828430c546b7a439ad6322e1d7fb428b0bed0",
+      "0x919bba8bcde41b5845e8d7a94ed0543577cf26b1",
+      "0x01a4244a5FD99f2d29704438fa5cBb89B59657d7",
+      "0x6d36BCC57Ee91Ccf5860BA8361031661697686d5",
     ],
     withdrawAgent: "0xac1c30c8ae96a6cdd392bc2593a6e00d964b73c2",
     withdrawEnabled: true,
@@ -76,6 +80,9 @@ export const tokenInfo = {
       "0x1eb038f9c4d3a081577a061dfa644ec2ea3288c3",
       "0x60d231e8da6673b20b2aee67bdf2d8251784625b",
       "0x753fe5ddb9d4e4888e2959a3c5a48233e461070a",
+      "0x369D9617fFCF1B6C5d1427CD7A060c17D3c414db",
+      "0x1c68896d5d16a45675e862868812a01197a4fa02",
+      "0xac98b1b553d41117ff76f327803f614af21c088e",
     ],
     carryPercent: 0.2,
   },
@@ -86,7 +93,10 @@ export const tokenInfo = {
     tableName: "MoneyTree",
     isLegacy: true,
     carryPercent: 0.2,
-    vaults: ["0xe917a3954e301f153e0157e2537a7a49dd6eceaf"],
+    vaults: [
+      "0xe917a3954e301f153e0157e2537a7a49dd6eceaf",
+      "0xb549779cd03170521601bb05e33d929f1ccfb382",
+    ],
   },
   rumuflex: {
     address: "0xc0174b778f5a0792f681e5429730ee7445e8ea9f",
@@ -106,6 +116,7 @@ export const tokenInfo = {
     name: "BTC/ETH",
     tableName: "BTC/ETH",
     carryPercent: 0.2,
+    vaults: ["0xc0cc06ed6a8932fde3d760b3704062fe45dfc739"],
   },
 };
 

@@ -922,7 +922,7 @@ function TokenRequestController(props) {
       const agentBalanceFloat = Number.parseFloat(agentBalance);
       if (
         !agentBalanceFloat ||
-        web3.utils.toBN(agentBalanceFloat).lt(offeredAmountDecimals)
+        web3.utils.toBN(agentBalance).lt(offeredAmountDecimals)
       ) {
         setErrorMessage(`Not enough ${offeredTokenSymbol} on agent balance`);
         return;

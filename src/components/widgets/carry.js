@@ -81,7 +81,7 @@ export const computeCarry = (tokenAddress, mergedRaw, recvCarry) => {
     const currentDayTotalCost = Q * P;
     const prevDayTotalCost = Q * PprevAfterCarry;
     const dailyGrowth = currentDayTotalCost - prevDayTotalCost;
-    const dailyCarry = dailyGrowth > 0 ? dailyGrowth * carryPercent : 0;
+    let dailyCarry = dailyGrowth > 0 ? dailyGrowth * carryPercent : 0;
     const nav = currentDayTotalCost;
     let priceAfterCarry =
       (nav - dailyCarry) / Q === P ? PprevAfterCarry : (nav - dailyCarry) / Q;

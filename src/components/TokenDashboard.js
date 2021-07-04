@@ -29,6 +29,7 @@ function TokenDashboard(props) {
             dollarSeparator=" "
             separator=" "
             isLegacy={isLegacy}
+            isAdmin={isAdmin}
           />
         </div>
       ) : (

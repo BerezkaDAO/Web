@@ -12,7 +12,10 @@ const TokenCarry = (props) => {
 
   const amount = loading
     ? 0
-    : Number.parseInt(round(Number.parseFloat(merged[0].totalCarry), 0));
+    : Math.max(
+        0,
+        Number.parseInt(round(Number.parseFloat(merged[0].totalCarry), 0))
+      );
 
   return (
     <>

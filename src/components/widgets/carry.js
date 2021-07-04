@@ -21,9 +21,17 @@ const INITIAL_CARRY = {
   },
 };
 
+const CORRECTION_START = 1619921282 * 1000;
+
 const removeDuplicates = (array) => {
   let uniq = {};
   return array.filter((obj) => !uniq[obj.date] && (uniq[obj.date] = true));
+};
+
+const checkIsLastDay = (dt) => {
+  var test = new Date(dt.getTime());
+  test.setDate(test.getDate() + 1);
+  return test.getDate() === 1;
 };
 
 export const fetchCarry = async (tokenAddress) => {
@@ -80,6 +88,22 @@ export const computeCarry = (tokenAddress, mergedRaw, recvCarry) => {
     if (priceAfterCarry < PprevAfterCarry) {
       priceAfterCarry = PprevAfterCarry;
     }
+    const date = new Date(currentDayData.dayId * 86400 * 1000);
+    let isLastDay = false;
+    let correction = 0;
+    if (
+      checkIsLastDay(date) &&
+      priceAfterCarry > P &&
+      date.getTime() > CORRECTION_START
+    ) {
+      const priceAfterCarry2 = P;
+      const prevDayTotalCost2 = Q * priceAfterCarry;
+      const dailyGrowth2 = currentDayTotalCost - prevDayTotalCost2;
+      dailyCarry = dailyGrowth2 * carryPercent;
+      correction = priceAfterCarry / priceAfterCarry2;
+      priceAfterCarry = priceAfterCarry2;
+      isLastDay = true;
+    }
     totalCarry += dailyCarry;
     //console.log(`Got dailyCarry ${dailyCarry} ${totalCarry}`);
     let deductCarry = 0;
@@ -110,6 +134,8 @@ export const computeCarry = (tokenAddress, mergedRaw, recvCarry) => {
         totalCarry,
         deductCarry,
         priceAfterCarryReal,
+        isLastDay,
+        correction,
       },
     };
   }

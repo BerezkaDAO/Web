@@ -14,7 +14,7 @@ const TokenPrice = (props) => {
     ? 0
     : Number.parseInt(
         round(Number.parseFloat(merged[0].totalPrice) / 10 ** 18 / 10 ** 6, 0) -
-          (merged[0].totalCarry || 0)
+          (merged[0].totalCarry > 0 ? merged[0].totalCarry : 0 || 0)
       );
 
   return (

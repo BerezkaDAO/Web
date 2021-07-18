@@ -115,7 +115,8 @@ export const computeCarry = (tokenAddress, mergedRaw, recvCarry) => {
       });
     totalCarry -= deductCarry;
     //console.log(`Got deductCarry ${deductCarry}`);
-    const priceAfterCarryReal = (nav - totalCarry) / Q;
+    const adaptedCarry = totalCarry > 0 ? totalCarry : 0;
+    const priceAfterCarryReal = (nav - adaptedCarry) / Q;
     mutable[i] = {
       ...mutable[i],
       totalCarry: totalCarry,

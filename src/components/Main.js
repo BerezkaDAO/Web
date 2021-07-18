@@ -13,6 +13,7 @@ import Account from "./Account";
 import TokenRequest from "./TokenRequest";
 import CookiePolicy from "./CookiePolicy";
 import PrivacyPolicy from "./PrivacyPolicy";
+import ReferralHandler from "./ReferralHandler";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "./graphClient";
 
@@ -23,6 +24,7 @@ function Main(props) {
   return (
     <ApolloProvider client={client}>
       <Router>
+        <ReferralHandler />
         <main className="main">
           <SidebarActivation />
           <Sidebar />

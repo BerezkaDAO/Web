@@ -19,6 +19,7 @@ const Application = () => {
   const [web3Global, setweb3Global] = useState(null);
   const [address, setAddress] = useState(null);
   const [countryCode, setCountryCode] = useState(null);
+
   const connectWeb3 = useCallback(async () => {
     const provider = await web3Modal.connect();
     const web3 = new Web3(provider);

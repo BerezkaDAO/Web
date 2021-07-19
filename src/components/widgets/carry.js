@@ -22,6 +22,7 @@ const INITIAL_CARRY = {
 };
 
 const CORRECTION_START = 1619921282 * 1000;
+const NEGATIVE_CERRY_START = 1626555600 * 1000;
 
 const removeDuplicates = (array) => {
   let uniq = {};
@@ -115,7 +116,10 @@ export const computeCarry = (tokenAddress, mergedRaw, recvCarry) => {
       });
     totalCarry -= deductCarry;
     //console.log(`Got deductCarry ${deductCarry}`);
-    const adaptedCarry = totalCarry > 0 ? totalCarry : 0;
+    let adaptedCarry = totalCarry;
+    if (date.getTime() > NEGATIVE_CERRY_START) {
+      adaptedCarry = totalCarry > 0 ? totalCarry : 0;
+    }
     const priceAfterCarryReal = (nav - adaptedCarry) / Q;
     mutable[i] = {
       ...mutable[i],

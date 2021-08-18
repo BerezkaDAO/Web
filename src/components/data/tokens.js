@@ -110,6 +110,15 @@ export const tokenInfo = {
       "0x716cf745300939675618c3f9f48089b62bd0a728",
     ],
   },
+  yolka: {
+    address: "0x1a8051e22bFEeeE50d01475bf8489Ac489234122",
+    apiName: "yolka",
+    name: "Yolka",
+    tableName: "Yolka",
+    isLegacy: true,
+    carryPercent: 0.2,
+    vaults: [],
+  },
   btceth: {
     address: "0x0586cfc19dbf0894a7ab0949b7c0cde1608d126c",
     apiName: "cbdao",
@@ -130,9 +139,16 @@ export const dashboardTokens = [
   "skyflex",
   "moneytree",
   "rumuflex",
+  "yolka",
 ];
 
-export const legacyTokens = ["skyflex", "btceth", "moneytree", "rumuflex"];
+export const legacyTokens = [
+  "skyflex",
+  "btceth",
+  "moneytree",
+  "rumuflex",
+  "yolka",
+];
 
 export const allTokens = tokens.map((token) => tokenInfo[token]);
 

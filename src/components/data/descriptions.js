@@ -204,6 +204,24 @@ const rumuflex = {
   ),
 };
 
+const yolka = {
+  name: <>Yolka</>,
+  shortDesc: <>Imagine that you place a deposit in a bank</>,
+  fullDesc: (
+    <>
+      Stable coins are deposited across DeFi protocols (Compound, Curve, DDEX,
+      Aave, etc.) and moved between resources in search for a higher deposit
+      interest rate
+    </>
+  ),
+  benefits: (
+    <>
+      - instant withdrawal; smart contract can be insured for breach; zero
+      volatility risk (unlike BTC, ETH, etc.)
+    </>
+  ),
+};
+
 export const texts = {
   flex,
   dyna,
@@ -213,4 +231,5 @@ export const texts = {
   btceth,
   moneytree,
   rumuflex,
+  yolka,
 };

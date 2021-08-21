@@ -149,6 +149,7 @@ export const dashboardTokens = [
   "moneytree",
   "rumuflex",
   "yolka",
+  "hedge",
 ];
 
 export const legacyTokens = [
@@ -157,6 +158,7 @@ export const legacyTokens = [
   "moneytree",
   "rumuflex",
   "yolka",
+  "hedge",
 ];
 
 export const allTokens = tokens.map((token) => tokenInfo[token]);

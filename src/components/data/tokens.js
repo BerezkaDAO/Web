@@ -119,6 +119,15 @@ export const tokenInfo = {
     carryPercent: 0.2,
     vaults: [],
   },
+  hedge: {
+    address: "0x6408da01CdCE025265652e8a3DAb88C85301111b",
+    apiName: "hedge",
+    name: "Hedge DAO",
+    tableName: "Hedge DAO",
+    isLegacy: true,
+    carryPercent: 0.2,
+    vaults: ["0xc0b1408a2dc7a60b9a2edc7c8ae3d33fa36a38a2"],
+  },
   btceth: {
     address: "0x0586cfc19dbf0894a7ab0949b7c0cde1608d126c",
     apiName: "cbdao",

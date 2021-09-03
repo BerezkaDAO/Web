@@ -8,7 +8,7 @@ export const tokenInfo = {
     symbol: "FLEX",
     dao: "0xac3f8e8518139f732218ff542d21cd6968e8209d",
     onChainDayIdStart: 18550,
-    maximumDiff: 4,
+    maximumDiff: 10,
     enableCarry: true,
     vaults: [
       "0xf8a8d25049ebfaf36cf1dd7ff51ebd0777fc9b32",
@@ -26,7 +26,7 @@ export const tokenInfo = {
     symbol: "EFLX",
     dao: "0xef5d72e2d0cd8943e02aa4118bf94424017c8fdf",
     onChainDayIdStart: 18550,
-    maximumDiff: 2,
+    maximumDiff: 10,
     enableCarry: true,
     vaults: [
       "0xe327b30c414a94382d1a5b6416f0f241eea1f653",
@@ -42,7 +42,7 @@ export const tokenInfo = {
     symbol: "DYNA",
     dao: "0x95c4c0bcffd5ff8b5796f395b20db7414b34954c",
     onChainDayIdStart: 18550,
-    maximumDiff: 4,
+    maximumDiff: 10,
     enableCarry: true,
     vaults: ["0xd7b25a928f2de0beff34247a42fcb219b04323cc"],
     isDexEnabled: true,
@@ -56,7 +56,7 @@ export const tokenInfo = {
     symbol: "BDQ",
     dao: "0xf5ac13a709e7bc86001b7107c8839b6d6f6046a3",
     onChainDayIdStart: 18613,
-    maximumDiff: 1,
+    maximumDiff: 10,
     enableCarry: true,
     vaults: [
       "0xac1c30c8ae96a6cdd392bc2593a6e00d964b73c2",

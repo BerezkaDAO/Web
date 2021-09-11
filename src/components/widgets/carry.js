@@ -25,7 +25,7 @@ const FIX_CARRY = {
   18881: {
     flex: 27482.58,
     dyna: 4953.62,
-    deposit: 0,
+    deposit: 0.1,
   },
 };
 

@@ -147,7 +147,7 @@ export const dashboardTokens = [
   "emiflex",
   "skyflex",
   "moneytree",
-  "rumuflex",
+  //"rumuflex",
   "yolka",
   "hedge",
 ];

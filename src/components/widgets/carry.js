@@ -21,6 +21,14 @@ const INITIAL_CARRY = {
   },
 };
 
+const FIX_CARRY = {
+  18881: {
+    flex: 27482.58,
+    dyna: 4953.62,
+    deposit: 0,
+  },
+};
+
 const CORRECTION_START = 1619921282 * 1000;
 const NEGATIVE_CERRY_START = 1626555600 * 1000;
 
@@ -119,6 +127,9 @@ export const computeCarry = (tokenAddress, mergedRaw, recvCarry) => {
     let adaptedCarry = totalCarry;
     if (date.getTime() > NEGATIVE_CERRY_START) {
       adaptedCarry = totalCarry > 0 ? totalCarry : 0;
+    }
+    if (FIX_CARRY[dayId] && FIX_CARRY[dayId][token]) {
+      adaptedCarry = FIX_CARRY[dayId][token];
     }
     const priceAfterCarryReal = (nav - adaptedCarry) / Q;
     mutable[i] = {

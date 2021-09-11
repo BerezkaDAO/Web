@@ -130,6 +130,7 @@ export const computeCarry = (tokenAddress, mergedRaw, recvCarry) => {
     }
     if (FIX_CARRY[dayId] && FIX_CARRY[dayId][token]) {
       adaptedCarry = FIX_CARRY[dayId][token];
+      totalCarry = adaptedCarry;
     }
     const priceAfterCarryReal = (nav - adaptedCarry) / Q;
     mutable[i] = {

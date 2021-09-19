@@ -128,6 +128,16 @@ export const tokenInfo = {
     carryPercent: 0.2,
     vaults: ["0xc0b1408a2dc7a60b9a2edc7c8ae3d33fa36a38a2"],
   },
+  afford: {
+    address: "0x949DF40227F764C258557EFD1b5A71A760E42162",
+    apiName: "afford-capital",
+    name: "Forta DAO",
+    tableName: "Forta DAO",
+    dao: "0xe6563a2e20c6025174d63a5af64b157a59b91c7a",
+    isLegacy: true,
+    carryPercent: 0.2,
+    vaults: ["0x80eb71730f63c124db241ce1fd03f2b360436312"],
+  },
   btceth: {
     address: "0x0586cfc19dbf0894a7ab0949b7c0cde1608d126c",
     apiName: "cbdao",
@@ -150,6 +160,7 @@ export const dashboardTokens = [
   //"rumuflex",
   "yolka",
   "hedge",
+  "afford",
 ];
 
 export const legacyTokens = [
@@ -159,6 +170,7 @@ export const legacyTokens = [
   "rumuflex",
   "yolka",
   "hedge",
+  "afford",
 ];
 
 export const allTokens = tokens.map((token) => tokenInfo[token]);

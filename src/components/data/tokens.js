@@ -122,8 +122,8 @@ export const tokenInfo = {
   hedge: {
     address: "0x6408da01CdCE025265652e8a3DAb88C85301111b",
     apiName: "hedge",
-    name: "Afford  Capital DAO",
-    tableName: "Afford  Capital DAO",
+    name: "Hedge DAO",
+    tableName: "Hedge DAO",
     isLegacy: true,
     carryPercent: 0.2,
     vaults: ["0xc0b1408a2dc7a60b9a2edc7c8ae3d33fa36a38a2"],
@@ -131,8 +131,8 @@ export const tokenInfo = {
   afford: {
     address: "0x949DF40227F764C258557EFD1b5A71A760E42162",
     apiName: "afford-capital",
-    name: "Forta DAO",
-    tableName: "Forta DAO",
+    name: "Afford  Capital DAO",
+    tableName: "Afford  Capital DAO",
     dao: "0xe6563a2e20c6025174d63a5af64b157a59b91c7a",
     isLegacy: true,
     carryPercent: 0.2,

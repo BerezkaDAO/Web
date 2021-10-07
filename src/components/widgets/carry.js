@@ -1,23 +1,31 @@
 import { fetchDedupe } from "fetch-dedupe";
 import { nameByAddress, tokenInfo } from "../data/tokens";
 
-const INITIAL_CARRY_DAYID = 18668;
 const INITIAL_CARRY = {
   flex: {
     price: 1.587841891,
     totalCarry: 29767.91,
+    initialDay: 18668,
   },
   dyna: {
     price: 3.255011,
     totalCarry: 48091.28,
+    initialDay: 18668,
   },
   emiflex: {
     price: 1.7563574,
     totalCarry: 6391.09,
+    initialDay: 18668,
   },
   deposit: {
     price: 1.12880471717,
     totalCarry: 647.41,
+    initialDay: 18668,
+  },
+  afford: {
+    price: 1.0,
+    totalCarry: 0.0,
+    initialDay: 18832,
   },
 };
 
@@ -58,11 +66,12 @@ export const computeCarry = (tokenAddress, mergedRaw, recvCarry) => {
   const token = nameByAddress(tokenAddress);
   const merged = removeDuplicates(mergedRaw);
   const carryPercent = tokenInfo[token].carryPercent;
+  const initialDay = INITIAL_CARRY[token].initialDay;
   const mutable = [...merged]
-    .filter((it) => it.dayId >= INITIAL_CARRY_DAYID)
+    .filter((it) => it.dayId >= initialDay)
     .map((x) => ({ ...x }));
-  const rest = merged.filter((it) => it.dayId < INITIAL_CARRY_DAYID);
-  const daysAgo = merged[0].dayId - INITIAL_CARRY_DAYID - 1;
+  const rest = merged.filter((it) => it.dayId < initialDay);
+  const daysAgo = merged[0].dayId - initialDay - 1;
   for (let i = daysAgo; i >= 0; i--) {
     const dayId = mutable[i].dayId;
     //console.log(`Computing daily carry for day: ${dayId}`);
@@ -76,7 +85,7 @@ export const computeCarry = (tokenAddress, mergedRaw, recvCarry) => {
       //console.log(`Got carry`);
       PprevAfterCarry = prevDayData.carry.priceAfterCarry;
       totalCarry = prevDayData.carry.totalCarry;
-    } else if (prevDayData.dayId === INITIAL_CARRY_DAYID) {
+    } else if (prevDayData.dayId === initialDay) {
       //console.log(
       //  `Got default carry ${INITIAL_CARRY[token].price} ${INITIAL_CARRY[token].totalCarry}`
       //);

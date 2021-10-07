@@ -19,9 +19,10 @@ const computeSum = (datas) => {
     const uniqueLastDayDatas = uniqueBy(lastDayDatas, (d) =>
       d.token.toLowerCase()
     );
-    const d = uniqueLastDayDatas[0].totalPrice;
+    const merged = uniqueLastDayDatas;
     const tokenSum = Number.parseInt(
-      round(Number.parseFloat(d) / 10 ** 18 / 10 ** 6, 0)
+      round(Number.parseFloat(merged[0].totalPrice) / 10 ** 18 / 10 ** 6, 0) -
+        (merged[0].totalCarry > 0 ? merged[0].totalCarry : 0 || 0)
     );
     sum += tokenSum;
   }

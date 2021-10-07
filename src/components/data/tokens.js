@@ -130,13 +130,15 @@ export const tokenInfo = {
   },
   afford: {
     address: "0x949DF40227F764C258557EFD1b5A71A760E42162",
+    symbol: "FCLG",
     apiName: "afford-capital",
-    name: "Afford  Capital DAO",
-    tableName: "Afford  Capital DAO",
+    name: "Afford Capital DAO",
+    tableName: "Afford Capital DAO",
     dao: "0xe6563a2e20c6025174d63a5af64b157a59b91c7a",
-    isLegacy: true,
     carryPercent: 0.2,
     vaults: ["0x80eb71730f63c124db241ce1fd03f2b360436312"],
+    maximumDiff: 4,
+    enableCarry: true,
   },
   btceth: {
     address: "0x0586cfc19dbf0894a7ab0949b7c0cde1608d126c",
@@ -148,7 +150,7 @@ export const tokenInfo = {
   },
 };
 
-export const tokens = ["flex", "deposit", "dyna", "emiflex"];
+export const tokens = ["flex", "deposit", "dyna", "emiflex", "afford"];
 
 export const dashboardTokens = [
   "flex",
@@ -170,7 +172,6 @@ export const legacyTokens = [
   //"rumuflex",
   "yolka",
   "hedge",
-  "afford",
 ];
 
 export const allTokens = tokens.map((token) => tokenInfo[token]);

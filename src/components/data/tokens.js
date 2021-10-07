@@ -167,7 +167,7 @@ export const legacyTokens = [
   "skyflex",
   "btceth",
   "moneytree",
-  "rumuflex",
+  //"rumuflex",
   "yolka",
   "hedge",
   "afford",

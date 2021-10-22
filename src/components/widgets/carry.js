@@ -35,6 +35,9 @@ const FIX_CARRY = {
     dyna: 4953.62,
     deposit: 0.1,
   },
+  18911: {
+    emiflex: 23285.12,
+  },
 };
 
 const CORRECTION_START = 1619921282 * 1000;

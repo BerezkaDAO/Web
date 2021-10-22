@@ -12,8 +12,8 @@ const APY = (props) => {
   const actualDecimals = decimals === undefined ? 2 : 0;
   const last = merged[0];
   const first = merged[merged.length - 1];
-  const lastPrice = last.price;
-  let firstPrice = first.price;
+  const lastPrice = last.priceAfterCarry || last.price;
+  const firstPrice = first.priceAfterCarry || first.price;
   const daysBetween = last.dayId - first.dayId;
 
   // ((Pn/P0)-1)*100% /Nдней*365

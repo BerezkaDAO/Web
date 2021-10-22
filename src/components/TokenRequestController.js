@@ -7,7 +7,7 @@ import { useLocalStorage } from "./widgets/useLocalStorage";
 import { useInterval } from "./widgets/useInterval";
 
 const WITHDRAW_CONTRACT = "0xcb947e889f7dda1df9d1fa5932ebfeee99bc893b";
-const TOKEN_REQUST_MIN_AMOUNT = 3000;
+const TOKEN_REQUST_MIN_AMOUNT = 2900;
 const WITHDRAW_ABI = [
   {
     inputs: [],

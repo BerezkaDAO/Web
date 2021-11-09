@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useTokenDatas } from "./useTokenData";
-import { fetchCommonAll } from "./fetchCommon";
+import { fetchCommonAll } from "./daoes";
 import { round } from "./round";
 
 const uniqueBy = (x, f) =>

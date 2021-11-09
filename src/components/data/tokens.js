@@ -56,7 +56,7 @@ export const tokenInfo = {
     symbol: "BDQ",
     dao: "0xf5ac13a709e7bc86001b7107c8839b6d6f6046a3",
     onChainDayIdStart: 18613,
-    maximumDiff: 10,
+    maximumDiff: 0.01,
     enableCarry: true,
     vaults: [
       "0xac1c30c8ae96a6cdd392bc2593a6e00d964b73c2",
@@ -87,7 +87,7 @@ export const tokenInfo = {
     carryPercent: 0.2,
   },
   moneytree: {
-    address: "0xb4c482fbbc3a9fa956af48a9749cc26e001f19f7",
+    address: "0xc0174b778f5a0792f681e5429730ee7445e8ea9f",
     apiName: "moneytree",
     name: "MoneyTree",
     tableName: "MoneyTree",

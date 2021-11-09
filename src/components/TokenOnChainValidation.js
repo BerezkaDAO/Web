@@ -18,7 +18,7 @@ function TokenOnChainValidation(props) {
               target="_blank"
               key={index}
               className="validation__item"
-              href={`https://debank.com/profile/${vault}`}
+              href={`https://zapper.fi/account/${vault}`}
               style={{ zIndex: 2 }}
             >
               <div style={{ display: "flex" }}>

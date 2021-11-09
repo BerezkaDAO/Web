@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchCommon } from "../fetchCommon";
+import { fetchCommon } from "../daoes";
 
 const APYLegacy = (props) => {
   const { tokenAddress, decimals } = props;

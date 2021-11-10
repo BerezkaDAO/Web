@@ -56,7 +56,7 @@ export const tokenInfo = {
     symbol: "BDQ",
     dao: "0xf5ac13a709e7bc86001b7107c8839b6d6f6046a3",
     onChainDayIdStart: 18613,
-    maximumDiff: 10,
+    maximumDiff: 1,
     enableCarry: true,
     vaults: [
       "0xac1c30c8ae96a6cdd392bc2593a6e00d964b73c2",

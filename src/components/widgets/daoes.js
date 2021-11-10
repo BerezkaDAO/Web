@@ -15,11 +15,21 @@ export const fetchCommon = async (tokenAddress, precision = 3) => {
     (res) => res.data
   );
   const dao = daoes.find(
-    (dao) =>
-      dao.token_contract_address.toLowerCase() === tokenAddress.toLowerCase()
+    (dao) => dao.token.contract.toLowerCase() === tokenAddress.toLowerCase()
   );
   if (!dao) {
     console.error(`Unable to get DAO for token address ${tokenAddress}`);
+    return [
+      {
+        date: round(new Date().getTime() / 1000, 0),
+        dayId: round(new Date().getTime() / 1000, 0) / 86400,
+        price: "0",
+        token: tokenAddress.toLowerCase(),
+        supply: "0",
+        totalPrice: "0",
+        totalCarry: "0",
+      },
+    ];
   }
   const daoId = dao.id;
   const prices = await fetchDedupe(

@@ -54,7 +54,7 @@ function AssetTableRow(props) {
         </div>
         <div className="main-table__td">
           {legacy ? (
-            <APYLegacy tokenAddress={address} decimals={0} />
+            <APY tokenAddress={address} decimals={0} />
           ) : (
             <APY tokenAddress={address} decimals={0} />
           )}

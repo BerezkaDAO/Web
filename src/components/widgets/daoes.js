@@ -57,3 +57,50 @@ export const fetchCommon = async (tokenAddress, precision = 3) => {
   });
   return adjusted;
 };
+
+export const fetchWeb3Data = async (tokenAddress) => {
+  const pricePercent = [];
+  pricePercent.push({
+    token: "",
+    pricePercentValue: 90,
+    name: "Token",
+  });
+
+  //return pricePercent;
+
+  const daoes = await fetchDedupe(`/api/v1/public/daoes`).then(
+    (res) => res.data
+  );
+  const dao = daoes.find(
+    (dao) => dao.token.contract.toLowerCase() === tokenAddress.toLowerCase()
+  );
+  if (!dao) {
+    console.error(`Unable to get DAO for token address ${tokenAddress}`);
+    return [
+      {
+        token: "",
+        pricePercentValue: 0,
+        name: "",
+      },
+    ];
+  }
+  const daoId = dao.id;
+  const folio = await fetchDedupe(
+    `/api/v1/public/daoes/${daoId}/portfolio`
+  ).then((res) => res.data);
+  let adjusted = folio.map((data) => {
+    return {
+      token: data.symbol,
+      pricePercentValue: Number.parseFloat(data.percent),
+      name: data.symbol,
+    };
+  });
+
+  adjusted = adjusted.sort((a, b) => b.pricePercentValue - a.pricePercentValue);
+
+  if (adjusted.length > 8) {
+    adjusted = adjusted.slice(0, 8);
+  }
+
+  return adjusted;
+};

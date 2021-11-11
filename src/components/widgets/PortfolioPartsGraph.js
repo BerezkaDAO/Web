@@ -1,141 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { round } from "./round";
 import { colorByIndex } from "./colors";
-import { fetchWeb3Data } from "./fetchWeb3";
+import { fetchWeb3Data } from "./daoes";
 import Highcharts from "highcharts/highcharts";
 import highchartsMore from "highcharts/highcharts-more";
 import solidGauge from "highcharts/modules/solid-gauge";
 import HighchartsReact from "highcharts-react-official";
 
-const ABI = [
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_registryAddress",
-        type: "address",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "constructor",
-  },
-  {
-    inputs: [
-      {
-        internalType: "contract ERC20",
-        name: "_fromToken",
-        type: "address",
-      },
-      {
-        internalType: "contract ERC20",
-        name: "_destToken",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "_amount",
-        type: "uint256",
-      },
-    ],
-    name: "getExpectedReturn",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_token",
-        type: "address",
-      },
-    ],
-    name: "getNonEmptyTokenBalances",
-    outputs: [
-      {
-        components: [
-          {
-            internalType: "address",
-            name: "token",
-            type: "address",
-          },
-          {
-            internalType: "int256",
-            name: "amount",
-            type: "int256",
-          },
-        ],
-        internalType: "struct AdaptedBalance[]",
-        name: "",
-        type: "tuple[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_token",
-        type: "address",
-      },
-    ],
-    name: "getPrice",
-    outputs: [
-      {
-        internalType: "int256",
-        name: "",
-        type: "int256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "int256",
-        name: "_amount",
-        type: "int256",
-      },
-      {
-        internalType: "address",
-        name: "_token",
-        type: "address",
-      },
-    ],
-    name: "getTokenPrice",
-    outputs: [
-      {
-        internalType: "int256",
-        name: "",
-        type: "int256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-];
-
-const ABI_TICKER = [
-  {
-    constant: true,
-    inputs: [],
-    name: "name",
-    outputs: [{ name: "", type: "string" }],
-    type: "function",
-  },
-];
-
 const PortfolioPartsGraph = (props) => {
-  const { tokenAddress, web3 } = props;
+  const { tokenAddress } = props;
 
   const [loading, setLoading] = useState(true);
   const [partList, setPartList] = useState();
@@ -145,11 +18,8 @@ const PortfolioPartsGraph = (props) => {
 
     const fn = async () => {
       setLoading(true);
-      if (!web3) {
-        return;
-      }
 
-      const pricePercent = await fetchWeb3Data(web3, tokenAddress);
+      const pricePercent = await fetchWeb3Data(tokenAddress);
 
       if (!isCancelled) {
         setLoading(false);
@@ -161,7 +31,7 @@ const PortfolioPartsGraph = (props) => {
     return () => {
       isCancelled = true;
     };
-  }, [tokenAddress, web3]);
+  }, [tokenAddress]);
 
   if (!partList || loading) {
     return <p>Loading...</p>;

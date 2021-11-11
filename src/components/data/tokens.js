@@ -157,7 +157,7 @@ export const dashboardTokens = [
   "deposit",
   "dyna",
   "emiflex",
-  "skyflex",
+  //"skyflex",
   "moneytree",
   //"rumuflex",
   "yolka",
@@ -166,8 +166,8 @@ export const dashboardTokens = [
 ];
 
 export const legacyTokens = [
-  "skyflex",
-  "btceth",
+  //"skyflex",
+  //"btceth",
   "moneytree",
   //"rumuflex",
   "yolka",

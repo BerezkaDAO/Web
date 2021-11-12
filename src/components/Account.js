@@ -1,9 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import TokenTableInfo from "./widgets/TokenTableInfo";
-import { allTokens } from "./data/tokens";
+import { fetchTokensFull } from "./widgets/daoes";
 
 function Account(props) {
   const { web3Global, address, connectWeb3, setGlobalTotal } = props;
+  const [tokens, setTokens] = useState([]);
+
+  useEffect(() => {
+    let isCancelled = false;
+    const fn = async () => {
+      const daoTokens = await fetchTokensFull();
+      if (!isCancelled) {
+        setTokens(daoTokens);
+      }
+    };
+    fn();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
 
   return (
     <div className="page account">
@@ -20,7 +36,7 @@ function Account(props) {
         ) : (
           <div className="table-wrapper">
             <TokenTableInfo
-              tokens={allTokens}
+              tokens={tokens}
               walletAddress={address}
               web3={web3Global}
               setGlobalTotal={setGlobalTotal}

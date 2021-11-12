@@ -1,5 +1,6 @@
 import { fetchDedupe } from "fetch-dedupe";
 import { round } from "./round";
+import { tokenInfo, nameByAddress } from "../data/tokens";
 
 export const fetchCommonAll = async (tokens) => {
   let result = [];
@@ -22,6 +23,52 @@ export const fetchDao = async (tokenAddress) => {
     return null;
   }
   return dao;
+};
+
+export const fetchTokens = async () => {
+  const daoes = await fetchDedupe(`/api/v1/public/daoes`).then(
+    (res) => res.data
+  );
+  const tokenAddresses = daoes.map((dao) => dao.token.contract.toLowerCase());
+  const tokenNames = Object.keys(tokenInfo);
+  return tokenNames.filter((token) =>
+    tokenAddresses.includes(tokenInfo[token].address.toLowerCase())
+  );
+};
+
+export const fetchTokensFull = async () => {
+  const daoes = await fetchDedupe(`/api/v1/public/daoes`).then(
+    (res) => res.data
+  );
+
+  const tokenAddresses = daoes.map((dao) => dao.token.contract.toLowerCase());
+  const tokenNames = Object.keys(tokenInfo);
+  const existingTokenAddresses = tokenNames.map((name) =>
+    tokenInfo[name].address.toLowerCase()
+  );
+  const displayTokenAddresses = tokenAddresses.filter((address) =>
+    existingTokenAddresses.includes(address)
+  );
+  const index = {};
+  Object.keys(tokenInfo)
+    .map((name) => tokenInfo[name])
+    .forEach((info) => {
+      index[info.address.toLowerCase()] = info;
+    });
+
+  const result = daoes
+    .filter((dao) =>
+      displayTokenAddresses.includes(dao.token.contract.toLowerCase())
+    )
+    .map((dao) => ({
+      address: dao.token.contract.toLowerCase(),
+      name: index[dao.token.contract.toLowerCase()].name,
+      fullName: index[dao.token.contract.toLowerCase()].fullName,
+      tableName: index[dao.token.contract.toLowerCase()].tableName,
+      symbol: dao.token.symbol,
+    }));
+
+  return result;
 };
 
 export const fetchCommon = async (tokenAddress, precision = 3) => {

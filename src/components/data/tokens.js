@@ -2,7 +2,6 @@ export const tokenInfo = {
   flex: {
     name: "Flex",
     fullName: "Berezka Flex",
-    apiName: "berezka",
     address: "0x0D7DeA5922535087078dd3D7c554EA9f2655d4cB",
     tableName: "Flex",
     symbol: "FLEX",
@@ -14,7 +13,6 @@ export const tokenInfo = {
   },
   emiflex: {
     name: "EmiFlex",
-    apiName: "emiflex",
     address: "0xD68E7b64888F095Ee15f18347ccA7e453E0DBe17",
     tableName: "EmiFlex",
     symbol: "EFLX",
@@ -25,7 +23,6 @@ export const tokenInfo = {
   },
   dyna: {
     name: "Dynamic",
-    apiName: "dyna",
     address: "0xdc76450fd7e6352733fe8550efabff750b2de0e3",
     tableName: "Dynamic",
     symbol: "DYNA",
@@ -37,7 +34,6 @@ export const tokenInfo = {
   },
   deposit: {
     name: "Deposit",
-    apiName: "deposit",
     address: "0xf6ce9BFA82D1088d3257a76ec2e0ce1C8060BF8c",
     tableName: "Deposit",
     symbol: "BDQ",
@@ -50,35 +46,30 @@ export const tokenInfo = {
   },
   skyflex: {
     address: "0x26677EB24FD007Ad279FC55f367De31482E1bF54",
-    apiName: "skyflex",
     name: "SkyFlex",
     tableName: "SkyFlex",
     isLegacy: true,
   },
   moneytree: {
     address: "0xc0174b778f5a0792f681e5429730ee7445e8ea9f",
-    apiName: "moneytree",
     name: "MoneyTree",
     tableName: "MoneyTree",
     isLegacy: true,
   },
   rumuflex: {
     address: "0xc0174b778f5a0792f681e5429730ee7445e8ea9f",
-    apiName: "rumuflex",
     name: "RumuFlex",
     tableName: "RumuFlex",
     isLegacy: true,
   },
   yolka: {
     address: "0x1a8051e22bFEeeE50d01475bf8489Ac489234122",
-    apiName: "yolka",
     name: "Yolka",
     tableName: "Yolka",
     isLegacy: true,
   },
   hedge: {
     address: "0x6408da01CdCE025265652e8a3DAb88C85301111b",
-    apiName: "hedge",
     name: "Hedge DAO",
     tableName: "Hedge DAO",
     isLegacy: true,
@@ -86,7 +77,6 @@ export const tokenInfo = {
   afford: {
     address: "0x949DF40227F764C258557EFD1b5A71A760E42162",
     symbol: "FCLG",
-    apiName: "afford-capital",
     name: "Afford Capital DAO",
     tableName: "Afford Capital DAO",
     dao: "0xe6563a2e20c6025174d63a5af64b157a59b91c7a",
@@ -95,7 +85,6 @@ export const tokenInfo = {
   },
   btceth: {
     address: "0x0586cfc19dbf0894a7ab0949b7c0cde1608d126c",
-    apiName: "cbdao",
     name: "BTC/ETH",
     tableName: "BTC/ETH",
   },
@@ -116,16 +105,7 @@ export const dashboardTokens = [
   "afford",
 ];
 
-export const legacyTokens = [
-  //"skyflex",
-  //"btceth",
-  "moneytree",
-  //"rumuflex",
-  "yolka",
-  "hedge",
-];
-
-export const allTokens = tokens.map((token) => tokenInfo[token]);
+export const legacyTokens = [];
 
 export const tokenAddresses = tokens.map((token) => tokenInfo[token].address);
 
@@ -156,12 +136,6 @@ export const currencyInfo = {
 
 export const currencies = ["usdt", "usdc", "dai"];
 
-export const apiNameByAddress = (address) =>
-  [...tokens, ...legacyTokens]
-    .map((token) => tokenInfo[token])
-    .find((info) => info.address.toLowerCase() === address.toLowerCase())
-    .apiName;
-
 export const nameByAddress = (address) =>
   [...tokens, ...legacyTokens]
     .map((token) => ({
@@ -181,5 +155,3 @@ export const maximumDiff = (address) =>
     .map((token) => tokenInfo[token])
     .find((info) => info.address.toLowerCase() === address.toLowerCase())
     ?.maximumDiff;
-
-// 0x108977FE1Cfd10f27D9591C33b8FE9733FD83D2C

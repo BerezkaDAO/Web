@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { tokenInfo } from "./data/tokens";
+import { fetchVaults } from "./widgets/daoes";
 
 function TokenOnChainValidation(props) {
   const token = props.token;
-  const vaults = tokenInfo[token].vaults;
+  const { requestedToken } = props;
+
+  const [vaults, setVaults] = useState([]);
+  useEffect(() => {
+    const fn = async () => {
+      const fetched = await fetchVaults(tokenInfo[token].address);
+      setVaults(fetched);
+    };
+    fn();
+  }, [requestedToken]);
 
   return (
     <>
@@ -12,25 +22,24 @@ function TokenOnChainValidation(props) {
           ONCHAIN VALIDATION:
         </span>
 
-        {vaults &&
-          vaults.map((vault, index) => (
-            <a
-              target="_blank"
-              key={index}
-              className="validation__item"
-              href={`https://zapper.fi/account/${vault}`}
-              style={{ zIndex: 2 }}
-            >
-              <div style={{ display: "flex" }}>
-                <span class="validation__button">
-                  WALLET{vaults.length > 1 ? ` ${index + 1}` : ""}
-                </span>
-                {index !== vaults.length - 1 && (
-                  <div className="validation__separator" />
-                )}
-              </div>
-            </a>
-          ))}
+        {vaults.map((vault, index) => (
+          <a
+            target="_blank"
+            key={index}
+            className="validation__item"
+            href={`https://zapper.fi/account/${vault}`}
+            style={{ zIndex: 2 }}
+          >
+            <div style={{ display: "flex" }}>
+              <span class="validation__button">
+                WALLET{vaults.length > 1 ? ` ${index + 1}` : ""}
+              </span>
+              {index !== vaults.length - 1 && (
+                <div className="validation__separator" />
+              )}
+            </div>
+          </a>
+        ))}
       </div>
     </>
   );

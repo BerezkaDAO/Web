@@ -59,15 +59,6 @@ export const fetchCommon = async (tokenAddress, precision = 3) => {
 };
 
 export const fetchWeb3Data = async (tokenAddress) => {
-  const pricePercent = [];
-  pricePercent.push({
-    token: "",
-    pricePercentValue: 90,
-    name: "Token",
-  });
-
-  //return pricePercent;
-
   const daoes = await fetchDedupe(`/api/v1/public/daoes`).then(
     (res) => res.data
   );
@@ -102,5 +93,25 @@ export const fetchWeb3Data = async (tokenAddress) => {
     adjusted = adjusted.slice(0, 8);
   }
 
+  return adjusted;
+};
+
+export const fetchVaults = async (tokenAddress) => {
+  const daoes = await fetchDedupe(`/api/v1/public/daoes`).then(
+    (res) => res.data
+  );
+  const dao = daoes.find(
+    (dao) => dao.token.contract.toLowerCase() === tokenAddress.toLowerCase()
+  );
+  if (!dao) {
+    console.error(`Unable to get DAO for token address ${tokenAddress}`);
+    return [];
+  }
+  const daoId = dao.id;
+
+  const folio = await fetchDedupe(`/api/v1/public/daoes/${daoId}/wallets`).then(
+    (res) => res.data
+  );
+  let adjusted = folio.map((data) => data.address);
   return adjusted;
 };

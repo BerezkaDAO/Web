@@ -10,7 +10,7 @@ export const fetchCommonAll = async (tokens) => {
   return result;
 };
 
-export const fetchCommon = async (tokenAddress, precision = 3) => {
+export const fetchDao = async (tokenAddress) => {
   const daoes = await fetchDedupe(`/api/v1/public/daoes`).then(
     (res) => res.data
   );
@@ -19,6 +19,14 @@ export const fetchCommon = async (tokenAddress, precision = 3) => {
   );
   if (!dao) {
     console.error(`Unable to get DAO for token address ${tokenAddress}`);
+    return null;
+  }
+  return dao;
+};
+
+export const fetchCommon = async (tokenAddress, precision = 3) => {
+  const dao = await fetchDao(tokenAddress);
+  if (!dao) {
     return [
       {
         date: round(new Date().getTime() / 1000, 0),
@@ -59,14 +67,8 @@ export const fetchCommon = async (tokenAddress, precision = 3) => {
 };
 
 export const fetchWeb3Data = async (tokenAddress) => {
-  const daoes = await fetchDedupe(`/api/v1/public/daoes`).then(
-    (res) => res.data
-  );
-  const dao = daoes.find(
-    (dao) => dao.token.contract.toLowerCase() === tokenAddress.toLowerCase()
-  );
+  const dao = await fetchDao(tokenAddress);
   if (!dao) {
-    console.error(`Unable to get DAO for token address ${tokenAddress}`);
     return [
       {
         token: "",
@@ -97,14 +99,8 @@ export const fetchWeb3Data = async (tokenAddress) => {
 };
 
 export const fetchVaults = async (tokenAddress) => {
-  const daoes = await fetchDedupe(`/api/v1/public/daoes`).then(
-    (res) => res.data
-  );
-  const dao = daoes.find(
-    (dao) => dao.token.contract.toLowerCase() === tokenAddress.toLowerCase()
-  );
+  const dao = await fetchDao(tokenAddress);
   if (!dao) {
-    console.error(`Unable to get DAO for token address ${tokenAddress}`);
     return [];
   }
   const daoId = dao.id;

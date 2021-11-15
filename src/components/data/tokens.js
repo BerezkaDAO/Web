@@ -6,7 +6,6 @@ export const tokenInfo = {
     tableName: "Flex",
     symbol: "FLEX",
     dao: "0xac3f8e8518139f732218ff542d21cd6968e8209d",
-    onChainDayIdStart: 18550,
     maximumDiff: 10,
     enableCarry: true,
     isDexEnabled: true,
@@ -17,7 +16,6 @@ export const tokenInfo = {
     tableName: "EmiFlex",
     symbol: "EFLX",
     dao: "0xef5d72e2d0cd8943e02aa4118bf94424017c8fdf",
-    onChainDayIdStart: 18550,
     maximumDiff: 10,
     enableCarry: true,
   },
@@ -27,7 +25,6 @@ export const tokenInfo = {
     tableName: "Dynamic",
     symbol: "DYNA",
     dao: "0x95c4c0bcffd5ff8b5796f395b20db7414b34954c",
-    onChainDayIdStart: 18550,
     maximumDiff: 10,
     enableCarry: true,
     isDexEnabled: true,
@@ -38,7 +35,6 @@ export const tokenInfo = {
     tableName: "Deposit",
     symbol: "BDQ",
     dao: "0xf5ac13a709e7bc86001b7107c8839b6d6f6046a3",
-    onChainDayIdStart: 18613,
     maximumDiff: 0.01,
     enableCarry: true,
     withdrawAgent: "0xac1c30c8ae96a6cdd392bc2593a6e00d964b73c2",
@@ -56,12 +52,12 @@ export const tokenInfo = {
     tableName: "MoneyTree",
     isLegacy: true,
   },
-  rumuflex: {
-    address: "0xc0174b778f5a0792f681e5429730ee7445e8ea9f",
-    name: "RumuFlex",
-    tableName: "RumuFlex",
-    isLegacy: true,
-  },
+  //rumuflex: {
+  //  address: "0xc0174b778f5a0792f681e5429730ee7445e8ea9f",
+  //  name: "RumuFlex",
+  //  tableName: "RumuFlex",
+  //  isLegacy: true,
+  //},
   yolka: {
     address: "0x1a8051e22bFEeeE50d01475bf8489Ac489234122",
     name: "Yolka",
@@ -77,8 +73,8 @@ export const tokenInfo = {
   afford: {
     address: "0x949DF40227F764C258557EFD1b5A71A760E42162",
     symbol: "FCLG",
-    name: "Afford Capital DAO",
-    tableName: "Afford Capital DAO",
+    name: "Afford Capital",
+    tableName: "Afford Capital",
     dao: "0xe6563a2e20c6025174d63a5af64b157a59b91c7a",
     maximumDiff: 4,
     enableCarry: true,
@@ -90,19 +86,28 @@ export const tokenInfo = {
   },
 };
 
-export const tokens = ["flex", "deposit", "dyna", "emiflex", "afford"];
+export const tokens = [
+  "flex",
+  "deposit",
+  "dyna",
+  "emiflex",
+  "afford",
+  "moneytree",
+  "yolka",
+  "hedge",
+];
 
 export const dashboardTokens = [
   "flex",
   "deposit",
   "dyna",
   "emiflex",
+  "afford",
   //"skyflex",
   "moneytree",
   //"rumuflex",
   "yolka",
   "hedge",
-  "afford",
 ];
 
 export const legacyTokens = [];

@@ -1,6 +1,6 @@
 import { fetchDedupe } from "fetch-dedupe";
 import { round } from "./round";
-import { tokenInfo, nameByAddress } from "../data/tokens";
+import { tokenInfo, tokens } from "../data/tokens";
 
 export const fetchCommonAll = async (tokens) => {
   let result = [];
@@ -31,9 +31,10 @@ export const fetchTokens = async () => {
   );
   const tokenAddresses = daoes.map((dao) => dao.token.contract.toLowerCase());
   const tokenNames = Object.keys(tokenInfo);
-  return tokenNames.filter((token) =>
+  const remoteTokenNames = tokenNames.filter((token) =>
     tokenAddresses.includes(tokenInfo[token].address.toLowerCase())
   );
+  return tokens.filter((t) => remoteTokenNames.includes(t));
 };
 
 export const fetchTokensFull = async () => {

@@ -1,11 +1,29 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import { dashboardTokens, tokenInfo } from "./data/tokens";
+import { fetchTokens } from "./widgets/daoes";
+import { tokenInfo } from "./data/tokens";
 
 function TokenDashboardNavigation() {
+  const [tokens, setTokens] = useState([]);
+
+  useEffect(() => {
+    let isCancelled = false;
+    const fn = async () => {
+      const daoTokens = await fetchTokens();
+      if (!isCancelled) {
+        setTokens(daoTokens);
+      }
+    };
+    fn();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
+
   return (
     <div className="breadcrumbs">
-      {dashboardTokens.map((token) => (
+      {tokens.map((token) => (
         <NavLink
           key={token}
           className="breadcrumbs__item"

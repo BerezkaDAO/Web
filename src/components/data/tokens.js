@@ -7,7 +7,6 @@ export const tokenInfo = {
     symbol: "FLEX",
     dao: "0xac3f8e8518139f732218ff542d21cd6968e8209d",
     maximumDiff: 10,
-    enableCarry: true,
     isDexEnabled: true,
   },
   emiflex: {
@@ -17,7 +16,6 @@ export const tokenInfo = {
     symbol: "EFLX",
     dao: "0xef5d72e2d0cd8943e02aa4118bf94424017c8fdf",
     maximumDiff: 10,
-    enableCarry: true,
   },
   dyna: {
     name: "Dynamic",
@@ -26,7 +24,6 @@ export const tokenInfo = {
     symbol: "DYNA",
     dao: "0x95c4c0bcffd5ff8b5796f395b20db7414b34954c",
     maximumDiff: 10,
-    enableCarry: true,
     isDexEnabled: true,
   },
   deposit: {
@@ -36,7 +33,6 @@ export const tokenInfo = {
     symbol: "BDQ",
     dao: "0xf5ac13a709e7bc86001b7107c8839b6d6f6046a3",
     maximumDiff: 0.01,
-    enableCarry: true,
     withdrawAgent: "0xac1c30c8ae96a6cdd392bc2593a6e00d964b73c2",
     withdrawEnabled: true,
   },
@@ -77,7 +73,6 @@ export const tokenInfo = {
     tableName: "Afford Capital",
     dao: "0xe6563a2e20c6025174d63a5af64b157a59b91c7a",
     maximumDiff: 4,
-    enableCarry: true,
   },
   btceth: {
     address: "0x0586cfc19dbf0894a7ab0949b7c0cde1608d126c",

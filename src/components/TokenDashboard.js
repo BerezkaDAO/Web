@@ -16,25 +16,20 @@ function TokenDashboard(props) {
   const { web3Global, address } = props;
   const tokenAddress = tokenInfo[token].address;
   const isLegacy = tokenInfo[token].isLegacy;
-  const enableCarry = tokenInfo[token].enableCarry;
   const isAdmin = address && admins.includes(address.toLowerCase());
 
   return (
     <>
-      {enableCarry ? (
-        <div class="info-carry">
-          Accumulated Carry:{" "}
-          <TokenCarry
-            tokenAddress={tokenAddress}
-            dollarSeparator=" "
-            separator=" "
-            isLegacy={isLegacy}
-            isAdmin={isAdmin}
-          />
-        </div>
-      ) : (
-        ""
-      )}
+      <div class="info-carry">
+        Accumulated Carry:{" "}
+        <TokenCarry
+          tokenAddress={tokenAddress}
+          dollarSeparator=" "
+          separator=" "
+          isLegacy={isLegacy}
+          isAdmin={isAdmin}
+        />
+      </div>
       <div className="info-list grid">
         <div className="info-main grid-col-4 grid-md-12">
           <div className="info-main__header">

@@ -78,7 +78,7 @@ export const fetchCommon = async (tokenAddress, precision = 3) => {
     return [
       {
         date: round(new Date().getTime() / 1000, 0),
-        dayId: round(new Date().getTime() / 1000, 0) / 86400,
+        dayId: round(new Date().getTime() / 1000 / 86400, 0),
         price: "0",
         token: tokenAddress.toLowerCase(),
         supply: "0",
@@ -94,7 +94,7 @@ export const fetchCommon = async (tokenAddress, precision = 3) => {
   const adjusted = prices.map((data) => {
     return {
       date: round(new Date(data.dt).getTime() / 1000, 0),
-      dayId: round(new Date(data.dt).getTime() / 1000, 0) / 86400,
+      dayId: round(new Date(data.dt).getTime() / 1000 / 86400, 0),
       price:
         "" +
         round(Number.parseFloat(data.dao_token_price) * 10 ** 6, precision),

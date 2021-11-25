@@ -4,7 +4,6 @@ import { fetchVaults } from "./widgets/daoes";
 
 function TokenOnChainValidation(props) {
   const token = props.token;
-  const { requestedToken } = props;
 
   const [vaults, setVaults] = useState([]);
   useEffect(() => {
@@ -13,7 +12,7 @@ function TokenOnChainValidation(props) {
       setVaults(fetched);
     };
     fn();
-  }, [requestedToken]);
+  }, [token]);
 
   return (
     <>

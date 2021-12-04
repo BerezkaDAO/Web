@@ -11,10 +11,15 @@ export const fetchCommonAll = async (tokens) => {
   return result;
 };
 
-export const fetchDao = async (tokenAddress) => {
+export const fetchDaos = async () => {
   const daoes = await fetchDedupe(`/api/v1/public/daoes`).then(
     (res) => res.data
   );
+  return daoes.filter((dao) => dao.active);
+};
+
+export const fetchDao = async (tokenAddress) => {
+  const daoes = await fetchDaos();
   const dao = daoes.find(
     (dao) => dao.token.contract.toLowerCase() === tokenAddress.toLowerCase()
   );
@@ -26,9 +31,7 @@ export const fetchDao = async (tokenAddress) => {
 };
 
 export const fetchTokens = async () => {
-  const daoes = await fetchDedupe(`/api/v1/public/daoes`).then(
-    (res) => res.data
-  );
+  const daoes = await fetchDaos();
   const tokenAddresses = daoes.map((dao) => dao.token.contract.toLowerCase());
   const tokenNames = Object.keys(tokenInfo);
   const remoteTokenNames = tokenNames.filter((token) =>
@@ -38,9 +41,7 @@ export const fetchTokens = async () => {
 };
 
 export const fetchTokensFull = async () => {
-  const daoes = await fetchDedupe(`/api/v1/public/daoes`).then(
-    (res) => res.data
-  );
+  const daoes = await fetchDaos();
 
   const tokenAddresses = daoes.map((dao) => dao.token.contract.toLowerCase());
   const tokenNames = Object.keys(tokenInfo);

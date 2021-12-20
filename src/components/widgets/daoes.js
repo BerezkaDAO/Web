@@ -160,3 +160,26 @@ export const fetchVaults = async (tokenAddress) => {
   let adjusted = folio.map((data) => data.address);
   return adjusted;
 };
+
+export const fetchCurrentPrice = async (tokenAddress) => {
+  let daoId = "";
+  if (tokenAddress === "0xa579b0ee7f64ea4da01bf43ab173a597d9bb7bd4") {
+    daoId = "10000000-0000-0000-0000-000000000000";
+  } else {
+    const dao = await fetchDao(tokenAddress);
+    if (!dao) {
+      return [];
+    }
+    daoId = dao.id;
+  }
+
+  const rawPrice = await fetchDedupe(
+    `/api/v1/public/daos/${daoId}/current_price`
+  ).then((res) => res.data);
+  let adjusted = {
+    price: rawPrice.PriceBigInt,
+    ts: rawPrice.DTBigInt,
+    signature: rawPrice.signature,
+  };
+  return adjusted;
+};

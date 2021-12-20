@@ -34,6 +34,7 @@ export const tokenInfo = {
     dao: "0xf5ac13a709e7bc86001b7107c8839b6d6f6046a3",
     maximumDiff: 0.01,
     withdrawAgent: "0xac1c30c8ae96a6cdd392bc2593a6e00d964b73c2",
+    testWithdrawAgent: "0x7814c16cdf57758070c53d2366deda3a393a6145",
     withdrawEnabled: true,
   },
   skyflex: {

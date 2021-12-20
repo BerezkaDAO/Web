@@ -42,6 +42,14 @@ module.exports = function (app) {
   );
 
   app.use(
+    "/notification",
+    createProxyMiddleware({
+      target: "https://data.berezka.io",
+      changeOrigin: true,
+    })
+  );
+
+  app.use(
     "/api",
     createProxyMiddleware({
       target: "https://berezka.xyz",

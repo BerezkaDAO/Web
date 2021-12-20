@@ -279,11 +279,11 @@ function TokenRequestController(props) {
 
     if (web3 && address && canPerformTokenWithdraw) {
       const BN = web3.utils.BN;
-      const requestedAmountDecimals = new BN(requestedAmount).mul(
-        new BN(10).pow(new BN(18))
+      const requestedAmountDecimals = new BN(requestedAmount * 100).mul(
+        new BN(10).pow(new BN(16))
       );
-      const offeredAmountDecimals = new BN(offeredAmount).mul(
-        new BN(10).pow(new BN(currencyInfo[offeredToken].decimals))
+      const offeredAmountDecimals = new BN(offeredAmount * 100).mul(
+        new BN(10).pow(new BN(currencyInfo[offeredToken].decimals - 2))
       );
 
       const net = await web3.eth.net.getId();
@@ -363,18 +363,35 @@ function TokenRequestController(props) {
         }
         const params = {
           address: address,
-          amount: requestedAmountDecimals
-            .div(new BN(10).pow(new BN(18)))
-            .toString(10),
+          amount:
+            Number.parseInt(
+              requestedAmountDecimals
+                .div(new BN(10).pow(new BN(16)))
+                .toString(10)
+            ) / 100,
           token: requestedTokenSymbol.toUpperCase(),
           stable_token: offeredTokenSymbol.toUpperCase(),
-          stable_amount: offeredAmountDecimals
-            .div(new BN(10).pow(new BN(currencyInfo[offeredToken].decimals)))
-            .toString(10),
-          current_stable_amount: web3.utils
-            .toBN(agentBalance)
-            .div(new BN(10).pow(new BN(currencyInfo[offeredToken].decimals)))
-            .toString(10),
+          stable_amount:
+            Number.parseInt(
+              offeredAmountDecimals
+                .div(
+                  new BN(10).pow(
+                    new BN(currencyInfo[offeredToken].decimals - 2)
+                  )
+                )
+                .toString(10)
+            ) / 100,
+          current_stable_amount:
+            Number.parseInt(
+              web3.utils
+                .toBN(agentBalance)
+                .div(
+                  new BN(10).pow(
+                    new BN(currencyInfo[offeredToken].decimals - 2)
+                  )
+                )
+                .toString(10)
+            ) / 100,
           network: network,
         };
         fireNotification("AGENT_FUNDS_REQUEST", params);
@@ -398,8 +415,7 @@ function TokenRequestController(props) {
         withdrawContractAddress
       );
 
-      // Determine Eth Amount for oracle callback
-      //
+      setErrorMessage(null);
 
       // Call withdraw
       //

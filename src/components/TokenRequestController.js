@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { tokenInfo, currencyInfo } from "./data/tokens";
 import { useTokenData } from "./widgets/useTokenData";
 import { round } from "./widgets/round";
@@ -8,7 +9,7 @@ import WITHDRAW_ABI from "./abi/Withdraw";
 import { fireNotification } from "./widgets/notification";
 
 const WITHDRAW_CONTRACT_TESTNET = "0xe282295a28482e937b0d1cf45af91fb484a2f490";
-const WITHDRAW_CONTRACT = "0xe282295a28482e937b0d1cf45af91fb484a2f490";
+const WITHDRAW_CONTRACT = "0xCe90D38B084Aad57bc26C5C66F377d6DF7882846";
 const TOKEN_REQUST_MIN_AMOUNT = 2900;
 
 const ROPSTEN_TESTNET_DAO_TOKEN = "0xa579b0ee7f64ea4da01bf43ab173a597d9bb7bd4";
@@ -309,10 +310,12 @@ function TokenRequestController(props) {
         withdrawContractAddress = WITHDRAW_CONTRACT_TESTNET;
       }
 
+      /*
       if (offeredToken !== "dai" && net !== 4) {
         setErrorMessage("At the moment, only DAI withdrawal is allowed");
         return;
       }
+      */
 
       // Check eth balance and offered token balance
       //

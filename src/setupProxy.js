@@ -1,5 +1,15 @@
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
+const api = () => {
+  if (process.env["BEREZKA_USE_PROD"]) {
+    console.log(`Using !! PRODUCTION !! API URL`);
+    return "https://berezka.xyz";
+  } else {
+    console.log(`Using DEV API URL`);
+    return "https://dev.berezka.xyz";
+  }
+};
+
 module.exports = function (app) {
   app.use(
     "/subgraphs",
@@ -42,9 +52,17 @@ module.exports = function (app) {
   );
 
   app.use(
+    "/notification",
+    createProxyMiddleware({
+      target: "https://data.berezka.io",
+      changeOrigin: true,
+    })
+  );
+
+  app.use(
     "/api",
     createProxyMiddleware({
-      target: "https://berezka.xyz",
+      target: api(),
       changeOrigin: true,
     })
   );

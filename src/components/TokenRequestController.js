@@ -1,576 +1,21 @@
 import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { tokenInfo, currencyInfo } from "./data/tokens";
 import { useTokenData } from "./widgets/useTokenData";
 import { round } from "./widgets/round";
 import { oracle } from "./widgets/oracle";
 import { useLocalStorage } from "./widgets/useLocalStorage";
-import { useInterval } from "./widgets/useInterval";
+import WITHDRAW_ABI from "./abi/Withdraw";
+import { fireNotification } from "./widgets/notification";
 
-const WITHDRAW_CONTRACT = "0xcb947e889f7dda1df9d1fa5932ebfeee99bc893b";
+const WITHDRAW_CONTRACT_TESTNET = "0xe282295a28482e937b0d1cf45af91fb484a2f490";
+const WITHDRAW_CONTRACT = "0xCe90D38B084Aad57bc26C5C66F377d6DF7882846";
 const TOKEN_REQUST_MIN_AMOUNT = 2900;
-const WITHDRAW_ABI = [
-  {
-    inputs: [],
-    payable: false,
-    stateMutability: "nonpayable",
-    type: "constructor",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "previousOwner",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "newOwner",
-        type: "address",
-      },
-    ],
-    name: "OwnershipTransferred",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "_amountToWithdraw",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "address",
-        name: "_tokenToWithraw",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "address",
-        name: "_withdrawTo",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "bytes32",
-        name: "_queryId",
-        type: "bytes32",
-      },
-    ],
-    name: "WithdrawRequestCreated",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "bytes32",
-        name: "_queryId",
-        type: "bytes32",
-      },
-    ],
-    name: "WithdrawRequestFailed",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "_finalPrice",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "bytes32",
-        name: "_queryId",
-        type: "bytes32",
-      },
-    ],
-    name: "WithdrawRequestSucceeded",
-    type: "event",
-  },
-  {
-    constant: false,
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "_queryID",
-        type: "bytes32",
-      },
-      {
-        internalType: "string",
-        name: "_result",
-        type: "string",
-      },
-    ],
-    name: "__callback",
-    outputs: [],
-    payable: false,
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    constant: false,
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "_myid",
-        type: "bytes32",
-      },
-      {
-        internalType: "string",
-        name: "_result",
-        type: "string",
-      },
-      {
-        internalType: "bytes",
-        name: "_proof",
-        type: "bytes",
-      },
-    ],
-    name: "__callback",
-    outputs: [],
-    payable: false,
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    constant: false,
-    inputs: [
-      {
-        internalType: "address",
-        name: "_token",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "_tokens",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "_agent",
-        type: "address",
-      },
-    ],
-    name: "addDao",
-    outputs: [],
-    payable: false,
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    constant: false,
-    inputs: [
-      {
-        internalType: "address[]",
-        name: "_whitelisted",
-        type: "address[]",
-      },
-    ],
-    name: "addWhitelistTokens",
-    outputs: [],
-    payable: false,
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    constant: false,
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "_queryId",
-        type: "bytes32",
-      },
-    ],
-    name: "cancel",
-    outputs: [],
-    payable: false,
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    constant: false,
-    inputs: [],
-    name: "cancel",
-    outputs: [],
-    payable: false,
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    constant: true,
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_amount",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "_price",
-        type: "uint256",
-      },
-      {
-        internalType: "address",
-        name: "_targetToken",
-        type: "address",
-      },
-    ],
-    name: "computeExchange",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    payable: false,
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    constant: true,
-    inputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    name: "daoConfig",
-    outputs: [
-      {
-        internalType: "address",
-        name: "agent",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "tokens",
-        type: "address",
-      },
-    ],
-    payable: false,
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    constant: false,
-    inputs: [
-      {
-        internalType: "address",
-        name: "_token",
-        type: "address",
-      },
-    ],
-    name: "deleteDao",
-    outputs: [],
-    payable: false,
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    constant: true,
-    inputs: [],
-    name: "gasprice",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    payable: false,
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    constant: true,
-    inputs: [],
-    name: "lastExchangePrice",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    payable: false,
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    constant: true,
-    inputs: [],
-    name: "oracleAddress",
-    outputs: [
-      {
-        internalType: "string",
-        name: "",
-        type: "string",
-      },
-    ],
-    payable: false,
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    constant: true,
-    inputs: [],
-    name: "oracleCallbackGas",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    payable: false,
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    constant: true,
-    inputs: [],
-    name: "owner",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    payable: false,
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    constant: true,
-    inputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    name: "pendingQueries",
-    outputs: [
-      {
-        internalType: "bytes32",
-        name: "",
-        type: "bytes32",
-      },
-    ],
-    payable: false,
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    constant: true,
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "",
-        type: "bytes32",
-      },
-    ],
-    name: "pendingRequests",
-    outputs: [
-      {
-        internalType: "bytes32",
-        name: "requestId",
-        type: "bytes32",
-      },
-      {
-        internalType: "address",
-        name: "sender",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-      {
-        internalType: "address",
-        name: "token",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "targetToken",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "lastValidBlock",
-        type: "uint256",
-      },
-    ],
-    payable: false,
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    constant: false,
-    inputs: [
-      {
-        internalType: "address[]",
-        name: "_whitelisted",
-        type: "address[]",
-      },
-    ],
-    name: "removeWhitelistTokens",
-    outputs: [],
-    payable: false,
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    constant: false,
-    inputs: [],
-    name: "renounceOwnership",
-    outputs: [],
-    payable: false,
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    constant: true,
-    inputs: [],
-    name: "requestValidityDurationBlocks",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    payable: false,
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    constant: false,
-    inputs: [
-      {
-        internalType: "string",
-        name: "_oracleAddres",
-        type: "string",
-      },
-    ],
-    name: "setOracleAddress",
-    outputs: [],
-    payable: false,
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    constant: false,
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_oracleCallbackGas",
-        type: "uint256",
-      },
-    ],
-    name: "setOracleGas",
-    outputs: [],
-    payable: false,
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    constant: false,
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_duration",
-        type: "uint256",
-      },
-    ],
-    name: "setRequestDuration",
-    outputs: [],
-    payable: false,
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    constant: false,
-    inputs: [
-      {
-        internalType: "address",
-        name: "newOwner",
-        type: "address",
-      },
-    ],
-    name: "transferOwnership",
-    outputs: [],
-    payable: false,
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    constant: true,
-    inputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    name: "whitelist",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    payable: false,
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    constant: false,
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_amount",
-        type: "uint256",
-      },
-      {
-        internalType: "address",
-        name: "_token",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "_targetToken",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "_optimisticPrice",
-        type: "uint256",
-      },
-    ],
-    name: "withdraw",
-    outputs: [],
-    payable: true,
-    stateMutability: "payable",
-    type: "function",
-  },
-];
+
+const ROPSTEN_TESTNET_DAO_TOKEN = "0xa579b0ee7f64ea4da01bf43ab173a597d9bb7bd4";
+const ROPSTEN_TETSTNET_DAI_TOKEN = "0xc7ad46e0b8a400bb3c915120d284aafba8fc4735";
+const ROPSTEN_TETSTNET_USDT_TOKEN =
+  "0xd92e713d051c37ebb2561803a3b5fbabc4962431";
 
 const DAO_ABI = [
   {
@@ -699,35 +144,6 @@ function TokenRequestController(props) {
       setSmallSum(false);
     }
   }, [offeredAmount]);
-
-  useInterval(
-    async () => {
-      if (withdrawAccount) {
-        console.log(`Got withdraw account ${withdrawAccount}`);
-        const withdrawContractR0 = new web3Global.eth.Contract(
-          WITHDRAW_ABI,
-          WITHDRAW_CONTRACT
-        );
-
-        const result = await withdrawContractR0.methods
-          .pendingQueries(withdrawAccount)
-          .call();
-
-        console.log(`Result ${result}`);
-
-        if (
-          "" + result !==
-          "0x0000000000000000000000000000000000000000000000000000000000000000"
-        ) {
-          setPendingWithdraw(true);
-        } else {
-          setPendingWithdraw(false);
-        }
-      }
-    },
-    5000,
-    [withdrawAccount]
-  );
 
   const canPerformTokenRequest =
     requestedToken &&
@@ -864,23 +280,42 @@ function TokenRequestController(props) {
 
     if (web3 && address && canPerformTokenWithdraw) {
       const BN = web3.utils.BN;
-      const requestedAmountDecimals = new BN(requestedAmount).mul(
-        new BN(10).pow(new BN(18))
+      const requestedAmountDecimals = new BN(requestedAmount * 100).mul(
+        new BN(10).pow(new BN(16))
       );
-      const offeredAmountDecimals = new BN(offeredAmount).mul(
-        new BN(10).pow(new BN(currencyInfo[offeredToken].decimals))
+      const offeredAmountDecimals = new BN(offeredAmount * 100).mul(
+        new BN(10).pow(new BN(currencyInfo[offeredToken].decimals - 2))
       );
 
-      const offeredTokenAddress = currencyInfo[offeredToken].address;
-      const requestedTokenAddress = tokenInfo[requestedToken].address;
-      const agentAddress = tokenInfo[requestedToken].withdrawAgent;
+      const net = await web3.eth.net.getId();
+
+      let offeredTokenAddress = currencyInfo[offeredToken].address;
+      let requestedTokenAddress = tokenInfo[requestedToken].address;
+      let agentAddress = tokenInfo[requestedToken].withdrawAgent;
       const requestedTokenSymbol = tokenInfo[requestedToken].symbol;
       const offeredTokenSymbol = currencyInfo[offeredToken].symbol;
+      let withdrawContractAddress = WITHDRAW_CONTRACT;
+      if (net === 4) {
+        // Ropsten testnet
+        requestedTokenAddress = ROPSTEN_TESTNET_DAO_TOKEN;
+        if (offeredToken === "dai") {
+          offeredTokenAddress = ROPSTEN_TETSTNET_DAI_TOKEN;
+        } else if (offeredToken === "usdt") {
+          offeredTokenAddress = ROPSTEN_TETSTNET_USDT_TOKEN;
+        } else {
+          setErrorMessage("In testnet, only DAI & USDT withdrawal is allowed");
+          return;
+        }
+        agentAddress = tokenInfo[requestedToken].testWithdrawAgent;
+        withdrawContractAddress = WITHDRAW_CONTRACT_TESTNET;
+      }
 
-      if (offeredToken !== "dai") {
+      /*
+      if (offeredToken !== "dai" && net !== 4) {
         setErrorMessage("At the moment, only DAI withdrawal is allowed");
         return;
       }
+      */
 
       // Check eth balance and offered token balance
       //
@@ -890,7 +325,7 @@ function TokenRequestController(props) {
         return;
       }
 
-      const requestedTokenContract = new web3Global.eth.Contract(
+      const requestedTokenContract = new web3.eth.Contract(
         ERC20_ABI,
         requestedTokenAddress
       );
@@ -909,7 +344,7 @@ function TokenRequestController(props) {
         return;
       }
 
-      const offeredTokenContract = new web3Global.eth.Contract(
+      const offeredTokenContract = new web3.eth.Contract(
         ERC20_ABI,
         offeredTokenAddress
       );
@@ -925,36 +360,65 @@ function TokenRequestController(props) {
         web3.utils.toBN(agentBalance).lt(offeredAmountDecimals)
       ) {
         setErrorMessage(`Not enough ${offeredTokenSymbol} on agent balance`);
+        let network = "Ethereum [Mainnet]";
+        if (net === 4) {
+          network = "Ropsten [Testnet]";
+        }
+        const params = {
+          address: address,
+          amount:
+            Number.parseInt(
+              requestedAmountDecimals
+                .div(new BN(10).pow(new BN(16)))
+                .toString(10)
+            ) / 100,
+          token: requestedTokenSymbol.toUpperCase(),
+          stable_token: offeredTokenSymbol.toUpperCase(),
+          stable_amount:
+            Number.parseInt(
+              offeredAmountDecimals
+                .div(
+                  new BN(10).pow(
+                    new BN(currencyInfo[offeredToken].decimals - 2)
+                  )
+                )
+                .toString(10)
+            ) / 100,
+          current_stable_amount:
+            Number.parseInt(
+              web3.utils
+                .toBN(agentBalance)
+                .div(
+                  new BN(10).pow(
+                    new BN(currencyInfo[offeredToken].decimals - 2)
+                  )
+                )
+                .toString(10)
+            ) / 100,
+          network: network,
+        };
+        fireNotification("AGENT_FUNDS_REQUEST", params);
         return;
       }
 
       // GET AND CHECK ACTUAL PRICE FROM ORACLE SCRIPT
       //
       const optimisticPrice = await oracle(requestedTokenAddress);
-      if (!optimisticPrice) {
+      if (!optimisticPrice || !optimisticPrice.price) {
         setErrorMessage(
-          `It is impossible to make a withdrawal due to high volatility (This is when the price of Dex differs greatly from ours)`
+          `It is impossible to make a withdrawal due to undefined price`
         );
         return;
       }
-      console.log(`Got optimistic price: ${optimisticPrice}`);
+      console.log(`Got optimistic price: ${optimisticPrice.price}`);
       // -----
 
       const withdrawContract = new web3.eth.Contract(
         WITHDRAW_ABI,
-        WITHDRAW_CONTRACT
+        withdrawContractAddress
       );
 
-      // Determine Eth Amount for oracle callback
-      //
-      const gasPriceBNString = await web3.eth.getGasPrice();
-      const getPrice = new BN(gasPriceBNString);
-      const callbackGasBNString = await withdrawContract.methods
-        .oracleCallbackGas()
-        .call();
-      const callbackGas = new BN(callbackGasBNString);
-      const oracleFee = new BN(10000);
-      const totalEthToCall = getPrice.mul(callbackGas.add(oracleFee));
+      setErrorMessage(null);
 
       // Call withdraw
       //
@@ -963,12 +427,12 @@ function TokenRequestController(props) {
           requestedAmountDecimals.toString(),
           requestedTokenAddress,
           offeredTokenAddress,
-          optimisticPrice.toString()
+          optimisticPrice.price,
+          optimisticPrice.ts,
+          optimisticPrice.signature
         )
         .send({
           from: address,
-          gasPrice: getPrice,
-          value: totalEthToCall,
         });
 
       setPendingWithdraw(true);

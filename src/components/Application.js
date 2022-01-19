@@ -17,6 +17,7 @@ const providerOptions = {
 const web3Modal = new Web3Modal({
   network: "mainnet",
   cacheProvider: true,
+  theme: "dark",
   providerOptions,
 });
 

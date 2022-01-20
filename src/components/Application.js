@@ -3,14 +3,21 @@ import Main from "./Main";
 import Web3 from "web3";
 import Web3Modal from "web3modal";
 import CountryBlock from "./CountryBlock";
+import WalletConnectProvider from "@walletconnect/web3-provider";
 
 const providerOptions = {
-  /* See Provider Options Section */
+  walletconnect: {
+    package: WalletConnectProvider,
+    options: {
+      infuraId: "253ee0e1efea46419ff33ef9f4ce2998",
+    },
+  },
 };
 
 const web3Modal = new Web3Modal({
   network: "mainnet",
   cacheProvider: true,
+  theme: "dark",
   providerOptions,
 });
 

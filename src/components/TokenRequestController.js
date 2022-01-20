@@ -3,7 +3,6 @@ import { tokenInfo, currencyInfo } from "./data/tokens";
 import { useTokenData } from "./widgets/useTokenData";
 import { round } from "./widgets/round";
 import { oracle } from "./widgets/oracle";
-import { useLocalStorage } from "./widgets/useLocalStorage";
 import WITHDRAW_ABI from "./abi/Withdraw";
 import { fireNotification } from "./widgets/notification";
 
@@ -119,11 +118,6 @@ function TokenRequestController(props) {
   const [offeredAmount, setOfferedAmount] = useState(0);
   const [errorMessage, setErrorMessage] = useState();
   const [smallSum, setSmallSum] = useState(false);
-  const [pendingWithdraw, setPendingWithdraw] = useState(false);
-  const [withdrawAccount, setWithdrawAccount] = useLocalStorage(
-    "withdraw_account",
-    null
-  );
   const { loading, merged } = useTokenData(
     tokenInfo[requestedToken].address,
     false
@@ -151,7 +145,7 @@ function TokenRequestController(props) {
     offeredAmount > 0 &&
     !loading;
 
-  const canPerformTokenWithdraw = canPerformTokenRequest && !pendingWithdraw;
+  const canPerformTokenWithdraw = canPerformTokenRequest;
   const withdrawEnabled = tokenInfo[requestedToken].withdrawEnabled;
 
   const doSetRequestedAmount = (amount) => {
@@ -339,7 +333,9 @@ function TokenRequestController(props) {
         !balanceFloat ||
         web3.utils.toBN(balance).lt(requestedAmountDecimals)
       ) {
-        setErrorMessage(`Not enough ${requestedTokenSymbol} on balance`);
+        setErrorMessage(
+          `Not enough ${requestedTokenSymbol} on balance. Your request has been sent to DAO, try again later`
+        );
         return;
       }
 
@@ -433,9 +429,6 @@ function TokenRequestController(props) {
         .send({
           from: address,
         });
-
-      setPendingWithdraw(true);
-      setWithdrawAccount(address);
     }
   };
 

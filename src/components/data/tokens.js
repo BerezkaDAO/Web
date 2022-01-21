@@ -25,6 +25,9 @@ export const tokenInfo = {
     dao: "0x95c4c0bcffd5ff8b5796f395b20db7414b34954c",
     maximumDiff: 10,
     isDexEnabled: true,
+    withdrawAgent: "0xd7b25a928f2de0beff34247a42fcb219b04323cc",
+    testWithdrawAgent: "0x7814c16cdf57758070c53d2366deda3a393a6145",
+    withdrawEnabled: true,
   },
   deposit: {
     name: "Deposit",

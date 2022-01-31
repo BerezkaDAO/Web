@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { defaultToken } from "./data/tokens";
 
 function Header(props) {
   const { connectWeb3, address } = props;
@@ -68,7 +69,7 @@ function Header(props) {
         <Link className="button _light" to="/dashboard">
           Dashboard
         </Link>
-        <Link className="button" to="/#flex">
+        <Link className="button" to={`/#${defaultToken[0]}`}>
           Join Dao
         </Link>
       </div>

@@ -1,9 +1,8 @@
 import React, { useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import AssetTableRowDropdown from "./AssetTableRowDropdown";
-import { tokenInfo } from "./data/tokens";
+import { tokenInfo, defaultToken } from "./data/tokens";
 import APY from "./widgets/APY";
-import APYLegacy from "./widgets/legacy/APYLegacy";
 import TokenPriceLegacy from "./widgets/legacy/TokenPriceLegacy";
 import TokenPrice from "./widgets/TokenPrice";
 
@@ -18,8 +17,8 @@ function AssetTableRow(props) {
     if (
       myRef &&
       location.hash &&
-      location.hash.endsWith("#flex") &&
-      tokenName === "flex"
+      location.hash.endsWith(`#${defaultToken[0]}`) &&
+      tokenName === defaultToken[0]
     ) {
       setTimeout(() => {
         if (myRef.current) {

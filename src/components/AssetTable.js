@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { fetchTokens } from "./widgets/daoes";
+import { defaultToken } from "./data/tokens";
 import AssetTableRow from "./AssetTableRow";
 import AssetTableHeader from "./AssetTableHeader";
 
@@ -11,8 +12,8 @@ function AssetTable(props) {
   const [tokens, setTokens] = useState([]);
   const location = useLocation();
   useEffect(() => {
-    if (location.hash && location.hash.endsWith("#flex")) {
-      setOpen("flex");
+    if (location.hash && location.hash.endsWith(`#${defaultToken[0]}`)) {
+      setOpen(defaultToken[0]);
     }
   }, [location]);
 

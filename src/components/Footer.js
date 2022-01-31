@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { defaultToken } from "./data/tokens";
 
 function Footer(props) {
   const { isBlocked } = props;
@@ -33,7 +34,7 @@ function Footer(props) {
             <Link className="button _light" to="/dashboard">
               Dashboard
             </Link>
-            <Link className="button" to="/#flex">
+            <Link className="button" to={`/#${defaultToken[0]}`}>
               Join Dao
             </Link>
           </div>

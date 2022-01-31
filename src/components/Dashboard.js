@@ -2,7 +2,7 @@ import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import TokenDashboard from "./TokenDashboard";
 import TokenDashboardNavigation from "./TokenDashboardNavigation";
-import TokenOnChainValidation from "./TokenOnChainValidation";
+import { defaultToken } from "./data/tokens";
 
 function Dashboard(props) {
   const { web3Global, address } = props;
@@ -27,7 +27,7 @@ function Dashboard(props) {
               />
             )}
           />
-          <Redirect from="/dashboard" to="/dashboard/flex" />
+          <Redirect from="/dashboard" to={`/dashboard/${defaultToken[0]}`} />
         </Switch>
       </section>
     </div>

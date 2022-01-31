@@ -1,4 +1,6 @@
+export const defaultToken = [];
 export const tokenInfo = {
+  /*
   flex: {
     name: "Flex",
     fullName: "Berezka Flex",
@@ -25,6 +27,9 @@ export const tokenInfo = {
     dao: "0x95c4c0bcffd5ff8b5796f395b20db7414b34954c",
     maximumDiff: 10,
     isDexEnabled: true,
+    withdrawAgent: "0xd7b25a928f2de0beff34247a42fcb219b04323cc",
+    testWithdrawAgent: "0x7814c16cdf57758070c53d2366deda3a393a6145",
+    withdrawEnabled: true,
   },
   deposit: {
     name: "Deposit",
@@ -49,12 +54,7 @@ export const tokenInfo = {
     tableName: "MoneyTree",
     isLegacy: true,
   },
-  //rumuflex: {
-  //  address: "0xc0174b778f5a0792f681e5429730ee7445e8ea9f",
-  //  name: "RumuFlex",
-  //  tableName: "RumuFlex",
-  //  isLegacy: true,
-  //},
+
   yolka: {
     address: "0x1a8051e22bFEeeE50d01475bf8489Ac489234122",
     name: "Yolka",
@@ -79,10 +79,11 @@ export const tokenInfo = {
     address: "0x0586cfc19dbf0894a7ab0949b7c0cde1608d126c",
     name: "BTC/ETH",
     tableName: "BTC/ETH",
-  },
+  },*/
 };
 
 export const tokens = [
+  /*
   "flex",
   "deposit",
   "dyna",
@@ -91,28 +92,10 @@ export const tokens = [
   "moneytree",
   "yolka",
   "hedge",
+  */
 ];
 
-export const dashboardTokens = [
-  "flex",
-  "deposit",
-  "dyna",
-  "emiflex",
-  "afford",
-  //"skyflex",
-  "moneytree",
-  //"rumuflex",
-  "yolka",
-  "hedge",
-];
-
-export const legacyTokens = [];
-
-export const tokenAddresses = tokens.map((token) => tokenInfo[token].address);
-
-export const legacyTokenAddresses = legacyTokens.map(
-  (token) => tokenInfo[token].address
-);
+export const tokenAddresses = [];
 
 export const currencyInfo = {
   usdt: {
@@ -138,21 +121,9 @@ export const currencyInfo = {
 export const currencies = ["usdt", "usdc", "dai"];
 
 export const nameByAddress = (address) =>
-  [...tokens, ...legacyTokens]
+  [...tokens]
     .map((token) => ({
       ...tokenInfo[token],
       name: token,
     }))
     .find((info) => info.address.toLowerCase() === address.toLowerCase()).name;
-
-export const onChainDayIdStart = (address) =>
-  tokens
-    .map((token) => tokenInfo[token])
-    .find((info) => info.address.toLowerCase() === address.toLowerCase())
-    ?.onChainDayIdStart;
-
-export const maximumDiff = (address) =>
-  tokens
-    .map((token) => tokenInfo[token])
-    .find((info) => info.address.toLowerCase() === address.toLowerCase())
-    ?.maximumDiff;

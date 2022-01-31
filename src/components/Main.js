@@ -10,7 +10,6 @@ import Footer from "./Footer";
 import Index from "./Index";
 import Dashboard from "./Dashboard";
 import Account from "./Account";
-import TokenRequest from "./TokenRequest";
 import CookiePolicy from "./CookiePolicy";
 import PrivacyPolicy from "./PrivacyPolicy";
 import ReferralHandler from "./ReferralHandler";
@@ -67,9 +66,6 @@ function Main(props) {
             </Route>
             <Route path="/privacy">
               <PrivacyPolicy />
-            </Route>
-            <Route path="/request">
-              <TokenRequest connectWeb3={connectWeb3} />
             </Route>
           </Switch>
           <Footer />

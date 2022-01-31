@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useTokenDatas } from "./useTokenData";
-import { fetchCommonAll } from "./daoes";
 import { round } from "./round";
 
 const uniqueBy = (x, f) =>
@@ -30,25 +29,14 @@ const computeSum = (datas) => {
 };
 
 const TotalPrice = (props) => {
-  const { tokens, legacyTokens } = props;
+  const { tokens } = props;
   const { loading, merged } = useTokenDatas(tokens);
 
-  const [historicalData, setHistoricalData] = useState();
-  useEffect(() => {
-    const fn = async () => {
-      const historicalData = await fetchCommonAll(legacyTokens);
-      setHistoricalData(historicalData);
-    };
-    fn();
-  }, [legacyTokens]);
-
-  if (loading || !merged || !historicalData) {
+  if (loading || !merged) {
     return <>...</>;
   }
 
-  const graphPrice = computeSum(merged);
-  const legacyPrice = computeSum(historicalData);
-  const totalPrice = graphPrice + legacyPrice;
+  const totalPrice = computeSum(merged);
 
   return (
     <>

@@ -1,11 +1,24 @@
-import React from "react";
-import { texts } from "./data/descriptions";
+import React, { useState, useEffect } from "react";
+import parse from "html-react-parser";
+import { fetchDaoByName } from "./widgets/daoes";
 import OnChainValidation from "./OnChainValidation";
 import TokenRequestController from "./TokenRequestController";
 import TokenRequestEmbedded from "./TokenRequestEmbedded";
 
 function AssetTableRowDropdown(props) {
   const { tokenName, connectWeb3, legacy, web3Global } = props;
+  const [dao, setDao] = useState();
+  useEffect(() => {
+    const fn = async () => {
+      const result = await fetchDaoByName(tokenName);
+      setDao(result);
+    };
+    fn();
+  }, [tokenName]);
+
+  if (!dao) {
+    return <></>;
+  }
 
   return (
     <div className="main-table__dropdown">
@@ -18,10 +31,10 @@ function AssetTableRowDropdown(props) {
             <td>Risk</td>
           </tr>
           <tr>
-            <td>{texts[tokenName].name}</td>
-            <td>{texts[tokenName].shortDesc}</td>
-            <td>{texts[tokenName].fullDesc}</td>
-            <td>{texts[tokenName].benefits}</td>
+            <td>{parse("" + dao.display_name)}</td>
+            <td>{parse("" + dao.display_short_description)}</td>
+            <td>{parse("" + dao.display_full_description)}</td>
+            <td>{parse("" + dao.display_benefits)}</td>
           </tr>
           {!legacy ? (
             <TokenRequestController

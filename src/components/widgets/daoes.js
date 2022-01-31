@@ -1,6 +1,11 @@
 import { fetchDedupe } from "fetch-dedupe";
 import { round } from "./round";
-import { tokenInfo, tokens } from "../data/tokens";
+import {
+  tokenInfo,
+  tokens,
+  defaultToken,
+  tokenAddresses,
+} from "../data/tokens";
 
 export const fetchCommonAll = async (tokens) => {
   let result = [];
@@ -12,10 +17,34 @@ export const fetchCommonAll = async (tokens) => {
 };
 
 export const fetchDaos = async () => {
-  const daoes = await fetchDedupe(`/api/v1/public/daoes`).then(
-    (res) => res.data
-  );
-  return daoes.filter((dao) => dao.active);
+  const daoes = await fetchDedupe(
+    `/api/v1/public/daoes?sort=display_position`
+  ).then((res) => res.data);
+  return daoes.filter((dao) => dao.active).filter((dao) => dao.visible);
+};
+
+export const fillTokens = async () => {
+  const daoes = await fetchDaos();
+  tokens.splice(0, tokens.length);
+  tokenAddresses.splice(0, tokenAddresses.length);
+  defaultToken[0] = daoes[0].id;
+  for (let dao of daoes) {
+    tokenInfo[dao.id] = {
+      name: dao.display_name,
+      fullName: dao.display_name,
+      address: dao.token.contract,
+      tableName: dao.display_name,
+      symbol: dao.token.symbol,
+      dao: dao.token_request_contract_address,
+      withdrawAgent: dao.withdraw_agent_address,
+      withdrawEnabled: dao.withdraw_enabled,
+      testWithdrawAgent: "0x7814c16cdf57758070c53d2366deda3a393a6145",
+      isDexEnabled: false,
+    };
+
+    tokens.push(dao.id);
+    tokenAddresses.push(dao.token.contract);
+  }
 };
 
 export const fetchDao = async (tokenAddress) => {
@@ -28,6 +57,14 @@ export const fetchDao = async (tokenAddress) => {
     return null;
   }
   return dao;
+};
+
+export const fetchDaoByName = async (name) => {
+  if (!tokenInfo[name]) {
+    console.error(`Unable to find DAO for name ${name}`);
+    return null;
+  }
+  return fetchDao(tokenInfo[name].address);
 };
 
 export const fetchTokens = async () => {

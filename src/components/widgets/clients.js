@@ -1,17 +1,8 @@
-import { fetchDedupe } from "fetch-dedupe";
+import { fetchCached } from "./cache";
 import { tokenInfo, nameByAddress } from "../data/tokens";
 
-/*
-          tableName={info.tableName}
-          symbol={info.symbol}
-          address={info.address}
-          balance={info.balance} !
-          avgInvPrice={info.avgInvPrice} !
-          lastPrice={info.lastPrice} !
-          apy={info.apy} !
-*/
 export const fetchClient = async (address) => {
-  const result = await fetchDedupe(
+  const result = await fetchCached(
     `/api/v1/public/clients/${address}/info`
   ).then((res) => res.data);
 

@@ -34,28 +34,6 @@ export const useTokenData = (
   }
 ) => {
   const [data, setData] = useState();
-  //const [historicalData, setHistoricalData] = useState();
-  //const [carryData, setCarryData] = useState();
-
-  /*
-  useEffect(() => {
-    const fn = async () => {
-      console.log(`Getting price`);
-      if (!isLegacy) {
-        const data = await fetchDedupe(`/rawprice/${tokenAddress}`)
-          .then((res) => {
-            return res;
-          })
-          .then((res) => res.data);
-        setData(data.data);
-      } else {
-        setData([]);
-      }
-    };
-    setData(null);
-    fn();
-  }, [tokenAddress]);
-*/
 
   useEffect(() => {
     const fn = async () => {

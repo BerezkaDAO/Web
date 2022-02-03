@@ -13723,6 +13723,11 @@ thunky@^1.0.2:
   resolved "https://registry.yarnpkg.com/thunky/-/thunky-1.1.0.tgz#5abaf714a9405db0504732bbccd2cedd9ef9537d"
   integrity sha512-eHY7nBftgThBqOyHGVN+l8gF0BucP09fMo0oO/Lb0w1OF80dJv+lDVpXG60WMQvkcxAkNybKsrEIE3ZtKGmPrA==
 
+timed-cache@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/timed-cache/-/timed-cache-1.1.5.tgz#2f3da24366c588a5f080f72c3579501b08d59439"
+  integrity sha512-+pWNc00bPujFdOufjBqPmX5kYoVR2dLmCrA0ZyoN/qg7vLjaazGqOQu8MaKIOh6sSKairUMwP/gNDcnQPtxryg==
+
 timed-out@^4.0.0, timed-out@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/timed-out/-/timed-out-4.0.1.tgz#f32eacac5a175bea25d7fab565ab3ed8741ef56f"

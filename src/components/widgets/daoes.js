@@ -1,4 +1,4 @@
-import { fetchDedupe } from "fetch-dedupe";
+import { fetchCached } from "./cache";
 import { round } from "./round";
 import {
   tokenInfo,
@@ -17,7 +17,7 @@ export const fetchCommonAll = async (tokens) => {
 };
 
 export const fetchDaos = async () => {
-  const daoes = await fetchDedupe(
+  const daoes = await fetchCached(
     `/api/v1/public/daoes?sort=display_position`
   ).then((res) => res.data);
   return daoes.filter((dao) => dao.active).filter((dao) => dao.visible);
@@ -126,7 +126,7 @@ export const fetchCommon = async (tokenAddress, precision = 3) => {
     ];
   }
   const daoId = dao.id;
-  const prices = await fetchDedupe(
+  const prices = await fetchCached(
     `/api/v1/public/daoes/${daoId}/token_price_history_daily`
   ).then((res) => res.data);
   const adjusted = prices.map((data) => {
@@ -164,7 +164,7 @@ export const fetchWeb3Data = async (tokenAddress) => {
     ];
   }
   const daoId = dao.id;
-  const folio = await fetchDedupe(
+  const folio = await fetchCached(
     `/api/v1/public/daoes/${daoId}/portfolio`
   ).then((res) => res.data);
   let adjusted = folio.map((data) => {
@@ -191,7 +191,7 @@ export const fetchVaults = async (tokenAddress) => {
   }
   const daoId = dao.id;
 
-  const folio = await fetchDedupe(`/api/v1/public/daoes/${daoId}/wallets`).then(
+  const folio = await fetchCached(`/api/v1/public/daoes/${daoId}/wallets`).then(
     (res) => res.data
   );
   let adjusted = folio.map((data) => data.address);
@@ -210,7 +210,7 @@ export const fetchCurrentPrice = async (tokenAddress) => {
     daoId = dao.id;
   }
 
-  const rawPrice = await fetchDedupe(
+  const rawPrice = await fetchCached(
     `/api/v1/public/daos/${daoId}/current_price`
   ).then((res) => res.data);
   let adjusted = {

@@ -417,7 +417,7 @@ function TokenRequestController(props) {
 
       // Call withdraw
       //
-      await withdrawContract.methods
+      withdrawContract.methods
         .withdraw(
           requestedAmountDecimals.toString(),
           requestedTokenAddress,
@@ -428,6 +428,49 @@ function TokenRequestController(props) {
         )
         .send({
           from: address,
+        })
+        .on("transactionHash", (hash) => {
+          let network = "Ethereum [Mainnet]";
+          if (net === 4) {
+            network = "Ropsten [Testnet]";
+          }
+
+          const params = {
+            address: address,
+            amount:
+              Number.parseInt(
+                requestedAmountDecimals
+                  .div(new BN(10).pow(new BN(16)))
+                  .toString(10)
+              ) / 100,
+            token: requestedTokenSymbol.toUpperCase(),
+            stable_token: offeredTokenSymbol.toUpperCase(),
+            stable_amount:
+              Number.parseInt(
+                offeredAmountDecimals
+                  .div(
+                    new BN(10).pow(
+                      new BN(currencyInfo[offeredToken].decimals - 2)
+                    )
+                  )
+                  .toString(10)
+              ) / 100,
+            current_stable_amount:
+              Number.parseInt(
+                web3.utils
+                  .toBN(agentBalance)
+                  .div(
+                    new BN(10).pow(
+                      new BN(currencyInfo[offeredToken].decimals - 2)
+                    )
+                  )
+                  .toString(10)
+              ) / 100,
+            network: network,
+            tx_id: hash,
+          };
+
+          fireNotification("AGENT_FUNDS_WITHDRAWN", params);
         });
     }
   };

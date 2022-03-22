@@ -51,7 +51,12 @@ const Application = () => {
       if (!countryCode) {
         const geo = await fetch(
           "https://api.ipgeolocation.io/ipgeo?apiKey=aafb8b776cde407aacde27b6ee55b018"
-        ).then((res) => res.json());
+        )
+          .then((res) => res.json())
+          .catch((err) => {
+            console.log(err);
+            return { country_code2: "RU" };
+          });
         setCountryCode(geo.country_code2);
       }
     };

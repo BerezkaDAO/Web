@@ -59,7 +59,11 @@ function Header(props) {
             className="connect__value header__title"
             style={{ margin: "0 10px 0 0" }}
           >
-            {address.slice(0, 9)}...{address.slice(-5)}
+            <div className={"wallet-address__desktop"}>{address}</div>
+
+            <div className={"wallet-address__mobile"}>
+              {address.slice(0, 9)}...{address.slice(-5)}
+            </div>
           </div>
         ) : (
           <a className="desktop_only button _light" href onClick={connectWeb3}>

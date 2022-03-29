@@ -31,4 +31,4 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ## Deploying
 
-Run `sh build-docker` to build and deploy docker image
+Run `./release.sh XX.XX.XX` to build and push docker image

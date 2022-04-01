@@ -7,6 +7,12 @@ import {
   tokenAddresses,
 } from "../data/tokens";
 
+const API_BASE = "/api/v1/public/daos";
+const DEFAULT_PAGINATION = {
+  per_page: 1000,
+  page: 1,
+};
+
 export const fetchCommonAll = async (tokens) => {
   let result = [];
   for (let token of tokens) {
@@ -17,9 +23,10 @@ export const fetchCommonAll = async (tokens) => {
 };
 
 export const fetchDaos = async () => {
-  const daoes = await fetchCached(
-    `/api/v1/public/daos?sort=display_position`
-  ).then((res) => res.data);
+  const daoes = await fetchCached(API_BASE, {
+    sort: "display_position",
+    ...DEFAULT_PAGINATION,
+  }).then((res) => res.data);
   return daoes.filter((dao) => dao.active).filter((dao) => dao.visible);
 };
 
@@ -127,7 +134,8 @@ export const fetchCommon = async (tokenAddress, precision = 3) => {
   }
   const daoId = dao.id;
   const prices = await fetchCached(
-    `/api/v1/public/daos/${daoId}/token_price_history_daily`
+    `${API_BASE}/${daoId}/token_price_history_daily`,
+    DEFAULT_PAGINATION
   ).then((res) => res.data);
   const adjusted = prices.map((data) => {
     return {
@@ -165,7 +173,8 @@ export const fetchWeb3Data = async (tokenAddress) => {
   }
   const daoId = dao.id;
   const folio = await fetchCached(
-    `/api/v1/public/daos/${daoId}/portfolio`
+    `${API_BASE}/${daoId}/portfolio`,
+    DEFAULT_PAGINATION
   ).then((res) => res.data);
   let adjusted = folio.map((data) => {
     return {
@@ -191,9 +200,10 @@ export const fetchVaults = async (tokenAddress) => {
   }
   const daoId = dao.id;
 
-  const folio = await fetchCached(`/api/v1/public/daos/${daoId}/wallets`).then(
-    (res) => res.data
-  );
+  const folio = await fetchCached(
+    `${API_BASE}/${daoId}/wallets`,
+    DEFAULT_PAGINATION
+  ).then((res) => res.data);
   let adjusted = folio.map((data) => data.address);
   return adjusted;
 };
@@ -211,7 +221,8 @@ export const fetchCurrentPrice = async (tokenAddress) => {
   }
 
   const rawPrice = await fetchCached(
-    `/api/v1/public/daos/${daoId}/current_price`
+    `${API_BASE}/${daoId}/current_price`,
+    DEFAULT_PAGINATION
   ).then((res) => res.data);
   let adjusted = {
     price: rawPrice.PriceBigInt,

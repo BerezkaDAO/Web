@@ -171,11 +171,13 @@ function TokenRequestController(props) {
   };
 
   const doPerformTokenRequest = async () => {
-    const isDexEnabled = tokenInfo[requestedToken].isDexEnabled;
+    //const isDexEnabled = tokenInfo[requestedToken].isDexEnabled;
+    const minDepositAmount =
+      tokenInfo[requestedToken].minDepositAmount || TOKEN_REQUST_MIN_AMOUNT;
 
     // Check for small sum first
     //
-    if (isDexEnabled && offeredAmount < TOKEN_REQUST_MIN_AMOUNT) {
+    if (/*isDexEnabled && */ offeredAmount < minDepositAmount) {
       setSmallSum(true);
       return;
     }

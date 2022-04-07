@@ -47,6 +47,7 @@ export const fillTokens = async () => {
       withdrawEnabled: dao.withdraw_enabled,
       testWithdrawAgent: "0x7814c16cdf57758070c53d2366deda3a393a6145",
       isDexEnabled: false,
+      minDepositAmount: dao.min_deposit_amount,
     };
 
     tokens.push(dao.id);

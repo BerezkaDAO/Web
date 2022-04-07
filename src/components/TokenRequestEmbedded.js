@@ -183,20 +183,26 @@ function TokenRequestEmbedded(props) {
           <td colSpan={2} />
           <td colSpan={2}>
             <div className="buttons_container">
-              {Object.keys(exchanges).map((exchange) => (
-                <a
-                  target="_blank"
-                  key={exchange}
-                  className={
-                    "button _medium" +
-                    (canPerformTokenRequest ? "" : " _disabled")
-                  }
-                  href={tokenExchanges[requestedToken][exchange] || "#"}
-                  onClick={performTokenRequest}
-                >
-                  Buy on {exchanges[exchange]}
-                </a>
-              ))}
+              {Object.keys(exchanges)
+                .filter(
+                  (exchange) =>
+                    tokenExchanges[requestedToken] &&
+                    tokenExchanges[requestedToken][exchange]
+                )
+                .map((exchange) => (
+                  <a
+                    target="_blank"
+                    key={exchange}
+                    className={
+                      "button _medium" +
+                      (canPerformTokenRequest ? "" : " _disabled")
+                    }
+                    href={tokenExchanges[requestedToken][exchange] || "#"}
+                    onClick={performTokenRequest}
+                  >
+                    Buy on {exchanges[exchange]}
+                  </a>
+                ))}
             </div>
           </td>
         </tr>

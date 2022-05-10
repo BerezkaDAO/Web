@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { defaultToken } from "./data/tokens";
 
 function Header(props) {
-  const { connectWeb3, address } = props;
+  const { connectWeb3, disconnectWeb3, address } = props;
   const [scroll, setScroll] = useState(false);
 
   useEffect(
@@ -58,6 +58,7 @@ function Header(props) {
           <div
             className="connect__value header__title"
             style={{ margin: "0 10px 0 0" }}
+            onClick={disconnectWeb3}
           >
             <div className={"wallet-address__desktop"}>{address}</div>
 

@@ -17,7 +17,7 @@ import { ApolloProvider } from "@apollo/client";
 import { client } from "./graphClient";
 
 function Main(props) {
-  const { connectWeb3, address, web3Global, countryCode } = props;
+  const { connectWeb3, address, web3Global, disconnectWeb3 } = props;
   const [globalTotal, setGlobalTotal] = useState(0);
 
   return (
@@ -27,7 +27,11 @@ function Main(props) {
         <main className="main">
           <SidebarActivation />
           <Sidebar />
-          <Header address={address} connectWeb3={connectWeb3} />
+          <Header
+            address={address}
+            connectWeb3={connectWeb3}
+            disconnectWeb3={disconnectWeb3}
+          />
           <Switch>
             <Route path="/account">
               <HeaderAccountBalance globalTotal={globalTotal} />

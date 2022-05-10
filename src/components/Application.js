@@ -37,6 +37,23 @@ const Application = () => {
     setAddress(address[0]);
     return [web3, address[0]];
   });
+
+  const disconnectWeb3 = useCallback(async () => {
+    web3Modal.clearCachedProvider();
+    setWeb3Local(null);
+    setAddress(null);
+  });
+
+  useEffect(async () => {
+    if (web3Modal.cachedProvider != null && web3Modal.cachedProvider != "") {
+      const provider = await web3Modal.connect();
+      const web3 = new Web3(provider);
+      const address = await web3.currentProvider.enable();
+      setWeb3Local(web3);
+      setAddress(address[0]);
+    }
+  }, []);
+
   useEffect(() => {
     const web3 = new Web3(
       new Web3.providers.HttpProvider(
@@ -83,6 +100,7 @@ const Application = () => {
           web3Local={web3Local}
           web3Global={web3Global}
           connectWeb3={connectWeb3}
+          disconnectWeb3={disconnectWeb3}
           countryCode={countryCode}
         />
       </CountryBlock>

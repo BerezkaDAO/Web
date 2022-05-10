@@ -45,6 +45,7 @@ export const fillTokens = async () => {
       dao: dao.token_request_contract_address,
       withdrawAgent: dao.withdraw_agent_address,
       withdrawEnabled: dao.withdraw_enabled,
+      depositEnabled: dao.deposit_enabled,
       testWithdrawAgent: "0x7814c16cdf57758070c53d2366deda3a393a6145",
       isDexEnabled: false,
       minDepositAmount: dao.min_deposit_amount,

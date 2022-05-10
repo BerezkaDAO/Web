@@ -6,7 +6,7 @@ import Select from "./Select";
 function Deposit(props) {
   const { canPerformTokenRequest, performTokenRequest } = props;
   return (
-    <td className="desktop_only">
+    <td className="mobile_no_border">
       <a
         className={
           "button _full" + (canPerformTokenRequest ? "" : " _disabled")
@@ -29,7 +29,7 @@ function Withdraw(props) {
   return (
     <>
       {withdrawEnabled ? (
-        <td className="desktop_only">
+        <td className="mobile_no_border">
           <a
             className={
               "button _full" + (canPerformTokenWithdraw ? "" : " _disabled")
@@ -74,7 +74,7 @@ function TokenRequestEmbedded(props) {
         <td />
         <td />
       </tr>
-      <tr className="desktop_only">
+      <tr>
         <td className="_right" style={{ borderBottom: "none" }}>
           <div className="table-offer__label">Requested Amount</div>
         </td>
@@ -123,7 +123,7 @@ function TokenRequestEmbedded(props) {
         </td>
       </tr>
       {!smallSum && errorMessage && (
-        <tr className="desktop_only">
+        <tr>
           <td
             colSpan={4}
             className="error"
@@ -134,7 +134,7 @@ function TokenRequestEmbedded(props) {
         </tr>
       )}
       {smallSum && (
-        <tr className="desktop_only">
+        <tr>
           <td colSpan={2} style={{ borderBottomWidth: 0 }} />
           <td
             colSpan={2}

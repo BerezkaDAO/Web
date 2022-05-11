@@ -15,6 +15,7 @@ import CookiePolicy from "./CookiePolicy";
 import PrivacyPolicy from "./PrivacyPolicy";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "./graphClient";
+import Referral from "./Referral";
 
 function Main(props) {
   const { connectWeb3, address, web3Global, countryCode } = props;
@@ -28,6 +29,7 @@ function Main(props) {
           <Sidebar />
           <Header address={address} connectWeb3={connectWeb3} />
           <Switch>
+            <Route path="/referral" render={null} />
             <Route path="/account">
               <HeaderAccountBalance globalTotal={globalTotal} />
             </Route>
@@ -68,6 +70,9 @@ function Main(props) {
             </Route>
             <Route path="/request">
               <TokenRequest connectWeb3={connectWeb3} />
+            </Route>
+            <Route exact path="/referral">
+              <Referral />
             </Route>
           </Switch>
           <Footer />

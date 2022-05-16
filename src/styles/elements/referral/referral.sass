@@ -1,0 +1,83 @@
+.referral
+  +flex(row nowrap, flex-end, flex-end)
+  height: 32rem
+
+
+  &__amount
+    white-space: nowrap
+    font-size: 6rem
+    letter-spacing: -0.04em
+    line-height: 1
+    &--data-slider
+      width: 35rem
+      margin-right: 10rem
+
+  &-instructions
+    width: 46rem
+    position: relative
+    hr
+      margin: 25px 0
+    p
+      +flex(none, space-between, center)
+      font-style: normal
+      font-weight: 400
+      font-size: 30px
+      line-height: 41px
+      color: #FFFFFF
+      span
+        font-weight: bold
+    &_subtitle
+      position: absolute
+      p
+        margin-bottom: 10px
+        font-weight: 300
+        font-size: 25px
+        line-height: 34px
+        color: #FFFFFF
+
+  &__block
+    display: flex
+    margin-top: 40px
+
+.referral__slider-title
+  +flex(none, space-between, center)
+  margin-bottom: 20px
+  font-size: 20px
+  line-height: 28px
+  color: #FFFFFF
+.referral_slider-percent
+  +flex(none, space-between, center)
+
+.referral__slider--input-value
+  width: 100%
+  margin-top: 20px
+  text-align: center
+  font-weight: 700
+  font-size: 20px
+  line-height: 28px
+  color: #FFFFFF
+
+.referral-main__copy
+  width: 46rem
+
+.referral-main__text
+  +flex(none, space-between, center)
+  margin-bottom: 10px
+  & i:before
+    font-size: 24px
+
+.footer-referal
+  +flex(row nowrap, flex-end, flex-end)
+  height: 20rem
+  &__instructions
+    width: 46rem
+    text-align: end
+    p
+      +flex(none, space-between, center)
+      font-style: normal
+      font-weight: 400
+      font-size: 30px
+      line-height: 41px
+      color: #FFFFFF
+      span
+        font-weight: bold

@@ -87,7 +87,7 @@ function Referral(props) {
         </div>
 
         <div className="footer-referal">
-          <div className="referral-instructions">
+          <div className="footer-referal__instructions">
             <p>
               Available to claim <span>{claim} $</span>
             </p>

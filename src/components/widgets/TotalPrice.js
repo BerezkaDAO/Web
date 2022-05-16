@@ -1,64 +1,42 @@
-import React, { useState, useEffect } from "react";
-import { useQuery, gql } from "@apollo/react-hooks";
-import { fetchCommonAll } from "./fetchCommon";
+import React from "react";
+import { useTokenDatas } from "./useTokenData";
 import { round } from "./round";
-
-const GET_LAST_PRICE = `
-query GetTotalPrice($tokens: [String]) {
-    dayHistoricalDatas(
-      where: {
-        token_in: $tokens
-      }
-      orderBy: dayId,
-      orderDirection:desc,
-      first:20
-    ) {
-      token,
-      dayId,
-      totalPrice
-    }
-  }
-`;
 
 const uniqueBy = (x, f) =>
   Object.values(x.reduce((a, b) => ((a[f(b)] = b), a), {}));
 
 const computeSum = (datas) => {
-  const lastDay = datas[0].dayId;
-  const lastDayDatas = datas.filter((d) => d.dayId === lastDay);
-  const uniqueLastDayDatas = uniqueBy(lastDayDatas, (d) => d.token);
-  return uniqueLastDayDatas
-    .map((d) => d.totalPrice)
-    .map((d) =>
-      Number.parseInt(round(Number.parseFloat(d) / 10 ** 18 / 10 ** 6, 0))
-    )
-    .reduce((a, b) => a + b, 0);
+  let unique = (a) => a.filter((item, i, ar) => ar.indexOf(item) === i);
+  let tokens = unique(datas.map((d) => d.token.toLowerCase()));
+  let sum = 0;
+  for (let token of tokens) {
+    const dataz = datas.filter(
+      (d) => d.token.toLowerCase() === token.toLowerCase()
+    );
+    const lastDay = dataz[0].dayId;
+    const lastDayDatas = dataz.filter((d) => d.dayId === lastDay);
+    const uniqueLastDayDatas = uniqueBy(lastDayDatas, (d) =>
+      d.token.toLowerCase()
+    );
+    const merged = uniqueLastDayDatas;
+    const tokenSum = Number.parseInt(
+      round(Number.parseFloat(merged[0].totalPrice) / 10 ** 18 / 10 ** 6, 0) -
+        (merged[0].totalCarry > 0 ? merged[0].totalCarry : 0 || 0)
+    );
+    sum += tokenSum;
+  }
+  return sum;
 };
 
 const TotalPrice = (props) => {
-  const { tokens, legacyTokens } = props;
-  const { loading, data } = useQuery(gql(GET_LAST_PRICE), {
-    variables: {
-      tokens,
-    },
-  });
+  const { tokens } = props;
+  const { loading, merged } = useTokenDatas(tokens);
 
-  const [historicalData, setHistoricalData] = useState();
-  useEffect(() => {
-    const fn = async () => {
-      const historicalData = await fetchCommonAll(legacyTokens);
-      setHistoricalData(historicalData);
-    };
-    fn();
-  }, [legacyTokens]);
-
-  if (loading || !data || !historicalData) {
+  if (loading || !merged) {
     return <>...</>;
   }
 
-  const graphPrice = computeSum(data.dayHistoricalDatas);
-  const legacyPrice = computeSum(historicalData);
-  const totalPrice = graphPrice + legacyPrice;
+  const totalPrice = computeSum(merged);
 
   return (
     <>

@@ -32,4 +32,18 @@
   &__sidebar-open
     display: none
 
+.wallet-address__desktop
+  display: block
+  @media (max-width: 1100px)
+    display: none
+.wallet-address__desktop:hover
+  text-decoration: underline
+  cursor: pointer
+    
+
+.wallet-address__mobile
+  display: none
+  @media (max-width: 1100px)
+    display: block
+
 @import "media"

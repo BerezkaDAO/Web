@@ -22,7 +22,21 @@
   vertical-align: middle;
   color: #ee1b1b;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 16px;
+}
+
+.app .table td.redirect {
+  text-align: left;
+  vertical-align: middle;
+  font-weight: bold;
+  font-size: 16px;
+}
+.app .table td.redirect .redirect {
+  color: #008cb9;
+}
+
+.app .table td.redirect .redirect_error {
+  color: #ee1b1b;
 }
 
 .app .table td.onchain {

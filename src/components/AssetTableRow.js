@@ -1,14 +1,13 @@
 import React, { useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import AssetTableRowDropdown from "./AssetTableRowDropdown";
-import { tokenInfo } from "./data/tokens";
+import { tokenInfo, defaultToken } from "./data/tokens";
 import APY from "./widgets/APY";
-import APYLegacy from "./widgets/legacy/APYLegacy";
 import TokenPriceLegacy from "./widgets/legacy/TokenPriceLegacy";
 import TokenPrice from "./widgets/TokenPrice";
 
 function AssetTableRow(props) {
-  const { tokenName, connectWeb3, open, onClick, legacy } = props;
+  const { tokenName, connectWeb3, open, onClick, legacy, web3Global } = props;
 
   const { address, tableName } = tokenInfo[tokenName];
 
@@ -18,8 +17,8 @@ function AssetTableRow(props) {
     if (
       myRef &&
       location.hash &&
-      location.hash.endsWith("#flex") &&
-      tokenName === "flex"
+      location.hash.endsWith(`#${defaultToken[0]}`) &&
+      tokenName === defaultToken[0]
     ) {
       setTimeout(() => {
         if (myRef.current) {
@@ -54,7 +53,7 @@ function AssetTableRow(props) {
         </div>
         <div className="main-table__td">
           {legacy ? (
-            <APYLegacy tokenAddress={address} decimals={0} />
+            <APY tokenAddress={address} decimals={0} />
           ) : (
             <APY tokenAddress={address} decimals={0} />
           )}
@@ -67,6 +66,7 @@ function AssetTableRow(props) {
         legacy={legacy}
         connectWeb3={connectWeb3}
         tokenName={tokenName}
+        web3Global={web3Global}
       />
     </>
   );

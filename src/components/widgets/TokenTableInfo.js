@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef } from "react";
-import { ftmAmount, fmtDollatAmount } from "./format";
+import { fmtDollatAmount } from "./format";
 import TokenTableInfoRow from "./TokenTableInfoRow";
 import TokenTableValueOutput from "./TokenTableValueOutput";
 
@@ -71,7 +71,8 @@ const TokenTableInfo = (props) => {
     }
   }, []);
 
-  const profitPercent = totalInvested == 0 ? 0 : (totalProfit / total) * 100;
+  const profitPercent =
+    totalInvested == 0 ? 0 : (totalProfit / totalInvested) * 100;
 
   return (
     <table class="table table-account">

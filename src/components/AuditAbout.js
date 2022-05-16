@@ -22,8 +22,11 @@ class AuditAbout extends React.Component {
             </div>
             <div className="information__text">
               Details:&nbsp;
-              <a className="link-color" href="">
-                wiki.aragon.org/association/security/
+              <a
+                className="link-color"
+                href="https://wiki.aragon.org/association/security/audits/audit_whg01_report"
+              >
+                Aragon Audit Report
               </a>
             </div>
           </div>

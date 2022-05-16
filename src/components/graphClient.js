@@ -1,10 +1,35 @@
-import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
+import {
+  ApolloClient,
+  InMemoryCache,
+  createHttpLink,
+  ApolloLink,
+} from "@apollo/client";
 
 // Instantiate required constructor fields
 const cache = new InMemoryCache();
-const link = createHttpLink({
+
+const berezkaDao = createHttpLink({
   uri: "/subgraphs/name/execc/berezka-dao",
 });
+
+const berezkaDaoRequest = createHttpLink({
+  uri: "/subgraphs/name/execc/berezka-dao-request",
+});
+
+const berezkaDaoToken = createHttpLink({
+  uri: "/subgraphs/name/execc/berezka-dao-tokens",
+});
+
+const testContext = (name) => (op) => {
+  const ctx = op.getContext();
+  return ctx && ctx.clientName === name;
+};
+
+const link = ApolloLink.split(
+  testContext("tokens"),
+  berezkaDaoToken,
+  ApolloLink.split(testContext("request"), berezkaDaoRequest, berezkaDao)
+);
 
 export const client = new ApolloClient({
   // Provide required constructor fields

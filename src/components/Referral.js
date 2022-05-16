@@ -22,8 +22,42 @@ function Referral(props) {
       </div>
       <div className="referral-main">
         <h3 className="referral__amount">Default Referral</h3>
-        <div>
-          <Slider />
+        <div className="referral__block">
+          <div className="referral__amount--data-slider">
+            <div className="referral__slider-title">
+              <span>You Receive</span> | <span>Friends Receive</span>
+            </div>
+            <div className="referral_slider-percent">
+              <span>33% / 0%</span>
+              <span>0% / 33%</span>
+            </div>
+            <Slider />
+            <div className="referral__slider--input-value">
+              <p>20% / 13%</p>
+            </div>
+          </div>
+          <div className="referral-main__copy">
+            <p className="referral-main__text">
+              <span>Referal Code</span>
+              <span
+                onClick={() =>
+                  navigator.clipboard.writeText("test 4856897852124")
+                }
+              >
+                4856897852124 <i className="icon icon-copy" />
+              </span>
+            </p>
+            <p className="referral-main__text">
+              <span>Referal Link</span>
+              <span
+                onClick={() =>
+                  navigator.clipboard.writeText("https/Berezka...4856897852124")
+                }
+              >
+                https/Berezka...4856897852124 <i className="icon icon-copy" />
+              </span>
+            </p>
+          </div>
         </div>
       </div>
     </>

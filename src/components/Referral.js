@@ -1,8 +1,26 @@
 import React from "react";
 import Slider from "./Slider";
+import HeaderTableRefaral from "./Table/HeaderTableRefaral";
+import RowTableRefaral from "./Table/RowTableRefaral";
+import { Link } from "react-router-dom";
+
+const mockReferal = [
+  {
+    link: "https/Berezka... 4856897852124",
+    friend_receive: "20/13",
+    referal_friend: "48cs5a8as2s1as5astjhi478521ew24",
+    dao: "Berezka FLEX DAO",
+    deposit_date: "August 14, 2020 15:47:43",
+    amount: "46203.9",
+    usd: "1.5886555465",
+    reward_date: "November 24, 2021 15:47:43",
+    oru: "351.58865554652565",
+    rru: 0,
+  },
+];
 
 function Referral(props) {
-  const { earned = 100, friendEarned = 50 } = props;
+  const { earned = 100, friendEarned = 50, claim = 50 } = props;
   return (
     <>
       <div className="referral">
@@ -57,6 +75,23 @@ function Referral(props) {
                 https/Berezka...4856897852124 <i className="icon icon-copy" />
               </span>
             </p>
+          </div>
+        </div>
+
+        <div className="referral-table">
+          <h3 className="referral-table__title">Referrals</h3>
+          <HeaderTableRefaral />
+          {mockReferal.map((referal) => (
+            <RowTableRefaral key={referal.link} referal={referal} />
+          ))}
+        </div>
+
+        <div className="footer-referal">
+          <div className="referral-instructions">
+            <p>
+              Available to claim <span>{claim} $</span>
+            </p>
+            <button className="button">Claim rewards</button>
           </div>
         </div>
       </div>

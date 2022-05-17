@@ -15,6 +15,7 @@ import PrivacyPolicy from "./PrivacyPolicy";
 import ReferralHandler from "./ReferralHandler";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "./graphClient";
+import Referral from "./Referral";
 
 function Main(props) {
   const { connectWeb3, address, web3Global, disconnectWeb3 } = props;
@@ -33,6 +34,7 @@ function Main(props) {
             disconnectWeb3={disconnectWeb3}
           />
           <Switch>
+            <Route path="/referral" render={null} />
             <Route path="/account">
               <HeaderAccountBalance globalTotal={globalTotal} />
             </Route>
@@ -70,6 +72,9 @@ function Main(props) {
             </Route>
             <Route path="/privacy">
               <PrivacyPolicy />
+            </Route>
+            <Route exact path="/referral">
+              <Referral />
             </Route>
           </Switch>
           <Footer />

@@ -11,8 +11,8 @@ import { fireNotification } from "./widgets/notification";
 
 const WITHDRAW_CONTRACT_TESTNET = "0xe282295a28482e937b0d1cf45af91fb484a2f490";
 const WITHDRAW_CONTRACT = "0xCe90D38B084Aad57bc26C5C66F377d6DF7882846";
-const DEPOSIT_CONTRACT_TESTNET = "0xdC3bde4E1b587Ba0c4B0E6dF8ad800c273fB08DB";
-const DEPOSIT_CONTRACT = "0xdC3bde4E1b587Ba0c4B0E6dF8ad800c273fB08DB";
+const DEPOSIT_CONTRACT_TESTNET = "0x161B06AB1777D1223d92442D5E598FC8c1f65451";
+const DEPOSIT_CONTRACT = "0x161B06AB1777D1223d92442D5E598FC8c1f65451";
 const TOKEN_REQUST_MIN_AMOUNT = 2900;
 
 const ROPSTEN_TESTNET_DAO_TOKEN = "0xa579b0ee7f64ea4da01bf43ab173a597d9bb7bd4";
@@ -230,6 +230,9 @@ function TokenRequestController(props) {
       );
       let requestedTokenAddress = tokenInfo[requestedToken].address;
       let offeredTokenAddress = currencyInfo[offeredToken].address;
+      const requestedTokenSymbol = tokenInfo[requestedToken].symbol;
+      const offeredTokenSymbol = currencyInfo[offeredToken].symbol;
+      let agentAddress = tokenInfo[requestedToken].withdrawAgent;
 
       const net = await web3.eth.net.getId();
       let depositContractAddress = DEPOSIT_CONTRACT;
@@ -245,6 +248,7 @@ function TokenRequestController(props) {
           return;
         }
         depositContractAddress = DEPOSIT_CONTRACT_TESTNET;
+        agentAddress = tokenInfo[requestedToken].testWithdrawAgent;
       }
 
       // Check eth balance and offered token balance
@@ -260,6 +264,10 @@ function TokenRequestController(props) {
         er20abi,
         offeredTokenAddress
       );
+
+      const agentBalance = await offeredTokenContract.methods
+        .balanceOf(agentAddress)
+        .call();
 
       const balance = await offeredTokenContract.methods
         .balanceOf(address)
@@ -326,14 +334,57 @@ function TokenRequestController(props) {
           offeredTokenAddress,
           optimisticPrice.price,
           optimisticPrice.ts,
-          optimisticPrice.signature
+          optimisticPrice.signature,
+          ""
         )
         .send({
           from: address,
           gas: 500000,
           nonce: nonce,
+        })
+        .on("transactionHash", (hash) => {
+          let network = "Ethereum [Mainnet]";
+          if (net === 4) {
+            network = "Ropsten [Testnet]";
+          }
+
+          const params = {
+            address: address,
+            amount:
+              Number.parseInt(
+                requestedAmountDecimals
+                  .div(new BN(10).pow(new BN(16)))
+                  .toString(10)
+              ) / 100,
+            token: requestedTokenSymbol.toUpperCase(),
+            stable_token: offeredTokenSymbol.toUpperCase(),
+            stable_amount:
+              Number.parseInt(
+                offeredAmountDecimals
+                  .div(
+                    new BN(10).pow(
+                      new BN(currencyInfo[offeredToken].decimals - 2)
+                    )
+                  )
+                  .toString(10)
+              ) / 100,
+            current_stable_amount:
+              Number.parseInt(
+                web3.utils
+                  .toBN(agentBalance)
+                  .div(
+                    new BN(10).pow(
+                      new BN(currencyInfo[offeredToken].decimals - 2)
+                    )
+                  )
+                  .toString(10)
+              ) / 100,
+            network: network,
+            tx_id: hash,
+          };
+
+          fireNotification("AGENT_FUNDS_DEPOSIT", params);
         });
-      nonce++;
     }
   };
 

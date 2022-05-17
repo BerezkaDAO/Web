@@ -230,6 +230,9 @@ function TokenRequestController(props) {
       );
       let requestedTokenAddress = tokenInfo[requestedToken].address;
       let offeredTokenAddress = currencyInfo[offeredToken].address;
+      const requestedTokenSymbol = tokenInfo[requestedToken].symbol;
+      const offeredTokenSymbol = currencyInfo[offeredToken].symbol;
+      let agentAddress = tokenInfo[requestedToken].withdrawAgent;
 
       const net = await web3.eth.net.getId();
       let depositContractAddress = DEPOSIT_CONTRACT;
@@ -245,6 +248,7 @@ function TokenRequestController(props) {
           return;
         }
         depositContractAddress = DEPOSIT_CONTRACT_TESTNET;
+        agentAddress = tokenInfo[requestedToken].testWithdrawAgent;
       }
 
       // Check eth balance and offered token balance
@@ -260,6 +264,10 @@ function TokenRequestController(props) {
         er20abi,
         offeredTokenAddress
       );
+
+      const agentBalance = await offeredTokenContract.methods
+        .balanceOf(agentAddress)
+        .call();
 
       const balance = await offeredTokenContract.methods
         .balanceOf(address)

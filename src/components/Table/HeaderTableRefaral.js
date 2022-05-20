@@ -2,18 +2,37 @@ import React from "react";
 
 const HeaderTableRefaral = () => {
   return (
-    <div className="referral-table__tr" data-class="AssetTableHeader">
-      <div className="referral-table__th">Referal Link</div>
-      <div className="referral-table__th">You / friend Receive</div>
-      <div className="referral-table__th">Referal Friend</div>
-      <div className="referral-table__th">DAO</div>
-      <div className="referral-table__th">Deposit date</div>
-      <div className="referral-table__th">Deposit Amount</div>
-      <div className="referral-table__th">Deposit Price in USD</div>
-      <div className="referral-table__th">Reward Date</div>
-      <div className="referral-table__th">Owner Reward in USD</div>
-      <div className="referral-table__th">Referral Reward in USD</div>
-    </div>
+    <thead>
+      <tr>
+        <th colSpan={1}>Referal Link</th>
+        <th colSpan={1}>
+          You / <br /> friend <br /> Receive
+        </th>
+        <th colSpan={1}>
+          Referal <br /> Friend
+        </th>
+        <th colSpan={1}>DAO</th>
+        <th colSpan={1}>
+          Deposit <br /> date
+        </th>
+        <th colSpan={1}>
+          Deposit <br />
+          Amount
+        </th>
+        <th colSpan={1}>
+          Deposit <br /> Price in USD
+        </th>
+        <th colSpan={1}>
+          Reward <br /> Date
+        </th>
+        <th colSpan={1}>
+          Owner Reward <br /> in USD
+        </th>
+        <th colSpan={1}>
+          Referral <br /> Reward <br /> in USD
+        </th>
+      </tr>
+    </thead>
   );
 };
 

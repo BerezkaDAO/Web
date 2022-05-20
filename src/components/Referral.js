@@ -78,12 +78,16 @@ function Referral(props) {
           </div>
         </div>
 
-        <div className="referral-table">
+        <div>
           <h3 className="referral-table__title">Referrals</h3>
-          <HeaderTableRefaral />
-          {mockReferal.map((referal) => (
-            <RowTableRefaral key={referal.link} referal={referal} />
-          ))}
+          <div className="table-wrapper">
+            <table className="table table-account">
+              <HeaderTableRefaral />
+              {mockReferal.map((referal) => (
+                <RowTableRefaral key={referal.link} referal={referal} />
+              ))}
+            </table>
+          </div>
         </div>
 
         <div className="footer-referal">

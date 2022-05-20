@@ -15,7 +15,7 @@ const DEPOSIT_CONTRACT_TESTNET = "0x161B06AB1777D1223d92442D5E598FC8c1f65451";
 const DEPOSIT_CONTRACT = "0x161B06AB1777D1223d92442D5E598FC8c1f65451";
 const TOKEN_REQUST_MIN_AMOUNT = 2900;
 
-const ROPSTEN_TESTNET_DAO_TOKEN = "0xa579b0ee7f64ea4da01bf43ab173a597d9bb7bd4";
+//const ROPSTEN_TESTNET_DAO_TOKEN = "0xa579b0ee7f64ea4da01bf43ab173a597d9bb7bd4";
 const ROPSTEN_TETSTNET_DAI_TOKEN = "0xc7ad46e0b8a400bb3c915120d284aafba8fc4735";
 const ROPSTEN_TETSTNET_USDT_TOKEN =
   "0xd92e713d051c37ebb2561803a3b5fbabc4962431";
@@ -238,7 +238,7 @@ function TokenRequestController(props) {
       let depositContractAddress = DEPOSIT_CONTRACT;
       if (net === 4) {
         // Ropsten testnet
-        requestedTokenAddress = ROPSTEN_TESTNET_DAO_TOKEN;
+        //requestedTokenAddress = ROPSTEN_TESTNET_DAO_TOKEN;
         if (offeredToken === "dai") {
           offeredTokenAddress = ROPSTEN_TETSTNET_DAI_TOKEN;
         } else if (offeredToken === "usdt") {
@@ -410,7 +410,7 @@ function TokenRequestController(props) {
       let withdrawContractAddress = WITHDRAW_CONTRACT;
       if (net === 4) {
         // Ropsten testnet
-        requestedTokenAddress = ROPSTEN_TESTNET_DAO_TOKEN;
+        //requestedTokenAddress = ROPSTEN_TESTNET_DAO_TOKEN;
         if (offeredToken === "dai") {
           offeredTokenAddress = ROPSTEN_TETSTNET_DAI_TOKEN;
         } else if (offeredToken === "usdt") {

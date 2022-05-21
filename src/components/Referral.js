@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Slider from "./Slider";
 import HeaderTableRefaral from "./Table/HeaderTableRefaral";
 import RowTableRefaral from "./Table/RowTableRefaral";
-import { Link } from "react-router-dom";
+import { fetchReferralLinks } from "./widgets/referals";
 
 const mockReferal = [
   {
@@ -21,6 +21,15 @@ const mockReferal = [
 
 function Referral(props) {
   const { earned = 100, friendEarned = 50, claim = 50 } = props;
+  const [referals, setReferals] = useState([]);
+  useEffect(() => {
+    const fn = async () => {
+      const result = await fetchReferralLinks();
+      setReferals(result);
+    };
+    fn();
+  }, []);
+  console.log(referals);
   return (
     <>
       <div className="referral">

@@ -243,7 +243,6 @@ function TokenRequestController(props) {
           return;
         }
         depositContractAddress = DEPOSIT_CONTRACT_TESTNET;
-        // agentAddress = tokenInfo[requestedToken].testWithdrawAgent;
       }
 
       // Check eth balance and offered token balance

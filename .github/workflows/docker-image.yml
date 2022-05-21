@@ -10,6 +10,7 @@ on:
     branches:
       - 'release/*'
       - 'prerelease/*'
+      - 'dev-release/*'
 
 env:
   REGISTRY: ghcr.io

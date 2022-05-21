@@ -11,13 +11,13 @@ import { fireNotification } from "./widgets/notification";
 
 const WITHDRAW_CONTRACT_TESTNET = "0xe282295a28482e937b0d1cf45af91fb484a2f490";
 const WITHDRAW_CONTRACT = "0xCe90D38B084Aad57bc26C5C66F377d6DF7882846";
-const DEPOSIT_CONTRACT_TESTNET = "0x161B06AB1777D1223d92442D5E598FC8c1f65451";
-const DEPOSIT_CONTRACT = "0x161B06AB1777D1223d92442D5E598FC8c1f65451";
+const DEPOSIT_CONTRACT_TESTNET = "0x6a061d637c636135CFefb92316C4804Ea04F63Be";
+const DEPOSIT_CONTRACT = "0x6a061d637c636135CFefb92316C4804Ea04F63Be";
 const TOKEN_REQUST_MIN_AMOUNT = 2900;
 
 //const ROPSTEN_TESTNET_DAO_TOKEN = "0xa579b0ee7f64ea4da01bf43ab173a597d9bb7bd4";
-const ROPSTEN_TETSTNET_DAI_TOKEN = "0xc7ad46e0b8a400bb3c915120d284aafba8fc4735";
-const ROPSTEN_TETSTNET_USDT_TOKEN =
+const RINKEBY_TETSTNET_DAI_TOKEN = "0xc7ad46e0b8a400bb3c915120d284aafba8fc4735";
+const RINKEBY_TETSTNET_USDT_TOKEN =
   "0xd92e713d051c37ebb2561803a3b5fbabc4962431";
 
 function toBigNumberString(num) {
@@ -32,13 +32,8 @@ function toBigNumberString(num) {
 }
 
 function TokenRequestController(props) {
-  const {
-    initialToken,
-    initialCurrency,
-    connectWeb3,
-    web3Global,
-    Component,
-  } = props;
+  const { initialToken, initialCurrency, connectWeb3, web3Global, Component } =
+    props;
 
   const [requestedToken, setRequestedToken] = useState(initialToken);
   const [offeredToken, setOfferedToken] = useState(initialCurrency);
@@ -239,9 +234,9 @@ function TokenRequestController(props) {
       if (net === 4) {
         // Ropsten testnet
         if (offeredToken === "dai") {
-          offeredTokenAddress = ROPSTEN_TETSTNET_DAI_TOKEN;
+          offeredTokenAddress = RINKEBY_TETSTNET_DAI_TOKEN;
         } else if (offeredToken === "usdt") {
-          offeredTokenAddress = ROPSTEN_TETSTNET_USDT_TOKEN;
+          offeredTokenAddress = RINKEBY_TETSTNET_USDT_TOKEN;
         } else {
           setErrorMessage("In testnet, only DAI & USDT withdrawal is allowed");
           return;
@@ -410,9 +405,9 @@ function TokenRequestController(props) {
         // Ropsten testnet
         //requestedTokenAddress = ROPSTEN_TESTNET_DAO_TOKEN;
         if (offeredToken === "dai") {
-          offeredTokenAddress = ROPSTEN_TETSTNET_DAI_TOKEN;
+          offeredTokenAddress = RINKEBY_TETSTNET_DAI_TOKEN;
         } else if (offeredToken === "usdt") {
-          offeredTokenAddress = ROPSTEN_TETSTNET_USDT_TOKEN;
+          offeredTokenAddress = RINKEBY_TETSTNET_USDT_TOKEN;
         } else {
           setErrorMessage("In testnet, only DAI & USDT withdrawal is allowed");
           return;

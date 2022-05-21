@@ -238,7 +238,6 @@ function TokenRequestController(props) {
       let depositContractAddress = DEPOSIT_CONTRACT;
       if (net === 4) {
         // Ropsten testnet
-        //requestedTokenAddress = ROPSTEN_TESTNET_DAO_TOKEN;
         if (offeredToken === "dai") {
           offeredTokenAddress = ROPSTEN_TETSTNET_DAI_TOKEN;
         } else if (offeredToken === "usdt") {
@@ -248,7 +247,6 @@ function TokenRequestController(props) {
           return;
         }
         depositContractAddress = DEPOSIT_CONTRACT_TESTNET;
-        agentAddress = tokenInfo[requestedToken].testWithdrawAgent;
       }
 
       // Check eth balance and offered token balance
@@ -419,7 +417,6 @@ function TokenRequestController(props) {
           setErrorMessage("In testnet, only DAI & USDT withdrawal is allowed");
           return;
         }
-        agentAddress = tokenInfo[requestedToken].testWithdrawAgent;
         withdrawContractAddress = WITHDRAW_CONTRACT_TESTNET;
       }
 

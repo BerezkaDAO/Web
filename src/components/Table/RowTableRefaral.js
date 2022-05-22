@@ -6,8 +6,8 @@ const RowTableRefaral = (props) => {
     <tbody className="referal-table">
       <tr>
         <td>
-          <div>
-            <span>{referal.link}</span>
+          <div className="referal-table__first_block">
+            <span>{referal.agent}</span>
             <i
               className="icon icon-copy"
               onClick={() => navigator.clipboard.writeText(referal.link)}
@@ -16,15 +16,17 @@ const RowTableRefaral = (props) => {
         </td>
         <td>{referal.friend_receive}</td>
         <td>
-          <span>{referal.referal_friend}</span>
+          <div className="referal-table__first_block">
+            <span>{referal.referral}</span>
+          </div>
         </td>
-        <td>{referal.dao}</td>
-        <td>{referal.deposit_date}</td>
-        <td>{referal.amount}</td>
-        <td>{referal.usd}</td>
-        <td>{referal.reward_date}</td>
-        <td>{referal.oru}</td>
-        <td>{referal.rru}</td>
+        <td>{referal.dao_name}</td>
+        <td>{new Date(referal.deposit_dt).toLocaleString()}</td>
+        <td>{referal.deposit_amount}</td>
+        <td>{referal.deposit_price_in_usd}</td>
+        <td>{new Date(referal.reward_dt).toLocaleString()}</td>
+        <td>{referal.owner_reward_in_usd}</td>
+        <td>{referal.referral_reward_in_usd}</td>
       </tr>
     </tbody>
   );

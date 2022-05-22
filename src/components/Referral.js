@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import Slider from "./Slider";
 import HeaderTableRefaral from "./Table/HeaderTableRefaral";
 import RowTableRefaral from "./Table/RowTableRefaral";
-import { fetchReferralLinks } from "./widgets/referals";
+import {
+  fetchReferralRewards,
+  fetchReferralLinksById,
+} from "./widgets/referals";
 
 const mockReferal = [
   {
@@ -20,25 +23,35 @@ const mockReferal = [
 ];
 
 function Referral(props) {
-  const { earned = 100, friendEarned = 50, claim = 50 } = props;
-  const [referals, setReferals] = useState([]);
+  const {
+    claim = 50,
+    match: {
+      params: { id },
+    },
+  } = props;
+  console.log(id);
+  const [referalsList, setReferalsList] = useState([]);
+  const [referral, setReferral] = useState({});
+  const [sliderReferral, setSliderReferral] = useState("0% / 0%");
   useEffect(() => {
     const fn = async () => {
-      const result = await fetchReferralLinks();
-      setReferals(result);
+      const lists = await fetchReferralRewards(id);
+      const referrals = await fetchReferralLinksById(id);
+      setReferalsList(lists);
+      setReferral(referrals);
     };
     fn();
   }, []);
-  console.log(referals);
+  console.log(referalsList, referral);
   return (
     <>
       <div className="referral">
         <div className="referral-instructions">
           <p>
-            You earned <span>{earned} $</span>
+            You earned <span>{100} $</span>
           </p>
           <p>
-            Your friends earned <span>{friendEarned} $</span>
+            Your friends earned <span>{50} $</span>
           </p>
           <hr />
           <div className="referral-instructions_subtitle">
@@ -55,12 +68,18 @@ function Referral(props) {
               <span>You Receive</span> | <span>Friends Receive</span>
             </div>
             <div className="referral_slider-percent">
-              <span>33% / 0%</span>
-              <span>0% / 33%</span>
+              <span>
+                {parseInt(referral.owner_percent)}% /{" "}
+                {parseInt(referral.referral_percent)}%
+              </span>
+              <span>
+                {parseInt(referral.referral_percent)}% /{" "}
+                {parseInt(referral.owner_percent)}%
+              </span>
             </div>
-            <Slider />
+            <Slider setSliderReferral={setSliderReferral} />
             <div className="referral__slider--input-value">
-              <p>20% / 13%</p>
+              <p>{sliderReferral}</p>
             </div>
           </div>
           <div className="referral-main__copy">
@@ -68,20 +87,20 @@ function Referral(props) {
               <span>Referal Code</span>
               <span
                 onClick={() =>
-                  navigator.clipboard.writeText("test 4856897852124")
+                  navigator.clipboard.writeText(referral.link_code)
                 }
               >
-                4856897852124 <i className="icon icon-copy" />
+                {referral.link_code} <i className="icon icon-copy" />
               </span>
             </p>
             <p className="referral-main__text">
               <span>Referal Link</span>
               <span
                 onClick={() =>
-                  navigator.clipboard.writeText("https/Berezka...4856897852124")
+                  navigator.clipboard.writeText(referral.link_owner)
                 }
               >
-                https/Berezka...4856897852124 <i className="icon icon-copy" />
+                {referral.link_owner} <i className="icon icon-copy" />
               </span>
             </p>
           </div>
@@ -92,7 +111,7 @@ function Referral(props) {
           <div className="table-wrapper">
             <table className="table table-account">
               <HeaderTableRefaral />
-              {mockReferal.map((referal) => (
+              {referalsList.map((referal) => (
                 <RowTableRefaral key={referal.link} referal={referal} />
               ))}
             </table>

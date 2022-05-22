@@ -17,7 +17,7 @@
     position: relative
     hr
       margin: 25px 0
-    p
+    > p
       +flex(none, space-between, center)
       font-style: normal
       font-weight: 400
@@ -28,10 +28,10 @@
         font-weight: bold
     &_subtitle
       position: absolute
-      p
+      > p
         margin-bottom: 10px
         font-weight: 300
-        font-size: 25px
+        font-size: 20px
         line-height: 34px
         color: #FFFFFF
 
@@ -63,6 +63,11 @@
 .referral-main__text
   +flex(none, space-between, center)
   margin-bottom: 10px
+  flex-wrap: wrap
+  span
+    overflow-wrap: break-word
+    word-wrap: break-word
+    hyphens: auto
   & i:before
     font-size: 24px
 

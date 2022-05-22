@@ -73,9 +73,11 @@ function Main(props) {
             <Route path="/privacy">
               <PrivacyPolicy />
             </Route>
-            <Route exact path="/referral">
-              <Referral />
-            </Route>
+            <Route
+              exact
+              path="/referral/:id"
+              render={(props) => <Referral {...props} />}
+            />
           </Switch>
           <Footer />
         </main>

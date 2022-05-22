@@ -5,31 +5,18 @@ import RowTableRefaral from "./Table/RowTableRefaral";
 import {
   fetchReferralRewards,
   fetchReferralLinksById,
+  sendReferral,
 } from "./widgets/referals";
-
-const mockReferal = [
-  {
-    link: "https/Berezka... 4856897852124",
-    friend_receive: "20/13",
-    referal_friend: "48cs5a8as2s1as5astjhi478521ew24",
-    dao: "Berezka FLEX DAO",
-    deposit_date: "August 14, 2020 15:47:43",
-    amount: "46203.9",
-    usd: "1.5886555465",
-    reward_date: "November 24, 2021 15:47:43",
-    oru: "351.58865554652565",
-    rru: 0,
-  },
-];
+import { round } from "./widgets/round";
+import { truncate } from "./widgets/truncate";
 
 function Referral(props) {
   const {
-    claim = 50,
+    claim = 0,
     match: {
       params: { id },
     },
   } = props;
-  console.log(id);
   const [referalsList, setReferalsList] = useState([]);
   const [referral, setReferral] = useState({});
   const [sliderReferral, setSliderReferral] = useState("0% / 0%");
@@ -39,10 +26,27 @@ function Referral(props) {
       const referrals = await fetchReferralLinksById(id);
       setReferalsList(lists);
       setReferral(referrals);
+      setSliderReferral(
+        `${round(referrals.owner_percent, 1)}% / ${round(
+          referrals.referral_percent,
+          1
+        )}%`
+      );
     };
     fn();
-  }, []);
-  console.log(referalsList, referral);
+  }, [id]);
+  const changeReferral = async (value) => {
+    await setSliderReferral(
+      `${round(value.owner_percent, 1)}% / ${round(value.referral_percent, 1)}%`
+    );
+    await sendReferral({
+      owner_percent: value.owner_percent,
+      referral_percent: value.referral_percent,
+    }).then((res) => {
+      props.history.push(`/referral/${res.id}`);
+      setReferral(res);
+    });
+  };
   return (
     <>
       <div className="referral">
@@ -69,15 +73,15 @@ function Referral(props) {
             </div>
             <div className="referral_slider-percent">
               <span>
-                {parseInt(referral.owner_percent)}% /{" "}
-                {parseInt(referral.referral_percent)}%
+                {round(referral.owner_percent, 1)}% /{" "}
+                {round(referral.referral_percent, 1)}%
               </span>
               <span>
-                {parseInt(referral.referral_percent)}% /{" "}
-                {parseInt(referral.owner_percent)}%
+                {round(referral.referral_percent, 1)}% /{" "}
+                {round(referral.owner_percent, 1)}%
               </span>
             </div>
-            <Slider setSliderReferral={setSliderReferral} />
+            <Slider changeReferral={(e) => changeReferral(e)} />
             <div className="referral__slider--input-value">
               <p>{sliderReferral}</p>
             </div>
@@ -90,7 +94,8 @@ function Referral(props) {
                   navigator.clipboard.writeText(referral.link_code)
                 }
               >
-                {referral.link_code} <i className="icon icon-copy" />
+                {truncate(referral.link_code, 16)}{" "}
+                <i className="icon icon-copy" />
               </span>
             </p>
             <p className="referral-main__text">
@@ -100,7 +105,8 @@ function Referral(props) {
                   navigator.clipboard.writeText(referral.link_owner)
                 }
               >
-                {referral.link_owner} <i className="icon icon-copy" />
+                {truncate(referral.link_owner, 24)}{" "}
+                <i className="icon icon-copy" />
               </span>
             </p>
           </div>
@@ -111,8 +117,14 @@ function Referral(props) {
           <div className="table-wrapper">
             <table className="table table-account">
               <HeaderTableRefaral />
-              {referalsList.map((referal) => (
-                <RowTableRefaral key={referal.link} referal={referal} />
+              {referalsList.map((ref) => (
+                <RowTableRefaral
+                  key={ref.link}
+                  referal={ref}
+                  procent={`${round(referral.owner_percent)} / ${round(
+                    referral.referral_percent
+                  )}`}
+                />
               ))}
             </table>
           </div>

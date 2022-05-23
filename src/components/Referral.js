@@ -8,7 +8,7 @@ import {
   sendReferral,
 } from "./widgets/referals";
 import { round } from "./widgets/round";
-import { truncate } from "./widgets/truncate";
+import { truncate, truncateCenter } from "./widgets/truncate";
 
 function Referral(props) {
   const {
@@ -17,14 +17,19 @@ function Referral(props) {
       params: { id },
     },
   } = props;
+  const [amountUsd, setAmountUsd] = useState(0);
+  const [friendAmountUsd, setFriendAmountUsd] = useState(0);
   const [referalsList, setReferalsList] = useState([]);
   const [referral, setReferral] = useState({});
   const [sliderReferral, setSliderReferral] = useState("0% / 0%");
   useEffect(() => {
     const fn = async () => {
-      const lists = await fetchReferralRewards(id);
+      await fetchReferralRewards(id).then(async (result) => {
+        setReferalsList(result);
+      });
+
       const referrals = await fetchReferralLinksById(id);
-      setReferalsList(lists);
+
       setReferral(referrals);
       setSliderReferral(
         `${round(referrals.owner_percent, 1)}% / ${round(
@@ -35,6 +40,18 @@ function Referral(props) {
     };
     fn();
   }, [id]);
+
+  useEffect(async () => {
+    const yourAmount = await referalsList.reduce((acc, val) => {
+      return parseInt(val.owner_reward_in_usd) + acc;
+    }, 0);
+    const friendAmount = await referalsList.reduce((acc, val) => {
+      return parseInt(val.referral_reward_in_usd) + acc;
+    }, 0);
+    setAmountUsd(parseInt(yourAmount));
+    setFriendAmountUsd(parseInt(friendAmount));
+  }, [referalsList]);
+
   const changeReferral = async (value) => {
     await setSliderReferral(
       `${round(value.owner_percent, 1)}% / ${round(value.referral_percent, 1)}%`
@@ -52,10 +69,10 @@ function Referral(props) {
       <div className="referral">
         <div className="referral-instructions">
           <p>
-            You earned <span>{100} $</span>
+            You earned <span>{amountUsd} $</span>
           </p>
           <p>
-            Your friends earned <span>{50} $</span>
+            Your friends earned <span>{friendAmountUsd} $</span>
           </p>
           <hr />
           <div className="referral-instructions_subtitle">
@@ -94,8 +111,7 @@ function Referral(props) {
                   navigator.clipboard.writeText(referral.link_code)
                 }
               >
-                {truncate(referral.link_code, 16)}{" "}
-                <i className="icon icon-copy" />
+                {truncate(referral.link_code, 16)} <i className="icon-copy" />
               </span>
             </p>
             <p className="referral-main__text">
@@ -105,8 +121,8 @@ function Referral(props) {
                   navigator.clipboard.writeText(referral.link_owner)
                 }
               >
-                {truncate(referral.link_owner, 24)}{" "}
-                <i className="icon icon-copy" />
+                {truncateCenter(referral.link_owner, 16, 10)}{" "}
+                <i className="icon-copy" />
               </span>
             </p>
           </div>
@@ -117,15 +133,17 @@ function Referral(props) {
           <div className="table-wrapper">
             <table className="table table-account">
               <HeaderTableRefaral />
-              {referalsList.map((ref) => (
-                <RowTableRefaral
-                  key={ref.link}
-                  referal={ref}
-                  procent={`${round(referral.owner_percent)} / ${round(
-                    referral.referral_percent
-                  )}`}
-                />
-              ))}
+              {referalsList.map((ref) => {
+                return (
+                  <RowTableRefaral
+                    key={ref.link}
+                    referal={ref}
+                    procent={`${round(referral.owner_percent)} / ${round(
+                      referral.referral_percent
+                    )}`}
+                  />
+                );
+              })}
             </table>
           </div>
         </div>

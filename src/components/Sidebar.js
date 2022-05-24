@@ -30,13 +30,17 @@ function Sidebar(props) {
           >
             Dashboard
           </NavLink>
-          <NavLink
-            activeClassName="none"
-            className="sidebar-menu__item"
-            to="/referral"
-          >
-            Referral
-          </NavLink>
+          {false ? (
+            <NavLink
+              activeClassName="none"
+              className="sidebar-menu__item"
+              to="/referral"
+            >
+              Referral
+            </NavLink>
+          ) : (
+            ""
+          )}
         </nav>
       ) : (
         ""

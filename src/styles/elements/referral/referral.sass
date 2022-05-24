@@ -69,21 +69,41 @@
     overflow-wrap: break-word
     word-wrap: break-word
     hyphens: auto
+    margin-right: 25px
   & i:before
     font-size: 24px
+  .icon-copy
+    position: relative
+    width: 20px
+    height: 20px
+    &:before
+      content: ''
+      position: absolute
+      top: -3px
+      right: -22px
+      width: 17px
+      height: 17px
+      background: url("../../../img/copy_icon.svg") no-repeat 0 0
+      background-size: 16px
+      border: 2px solid transparent
+      border-radius: 6px
+      display: flex
+      cursor: pointer
+
 
 .footer-referal
   +flex(row nowrap, flex-end, flex-end)
   height: 20rem
   &__instructions
-    width: 46rem
+    width: 30rem
     text-align: end
     p
       +flex(none, space-between, center)
       font-style: normal
       font-weight: 400
-      font-size: 30px
+      font-size: 20px
       line-height: 41px
       color: #FFFFFF
       span
         font-weight: bold
+        font-size: 30px

@@ -33,7 +33,7 @@ function Sidebar(props) {
           <NavLink
             activeClassName="none"
             className="sidebar-menu__item"
-            to="/referral/2"
+            to="/referral"
           >
             Referral
           </NavLink>

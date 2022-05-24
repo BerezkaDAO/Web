@@ -14,7 +14,7 @@ function Slider({ changeReferral }) {
   return (
     <input
       className="input__range"
-      onChange={changeHandler}
+      onMouseUp={changeHandler}
       type="range"
       defaultValue="0"
       min="1"

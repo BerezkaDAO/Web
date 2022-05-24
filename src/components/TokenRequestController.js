@@ -124,7 +124,7 @@ function TokenRequestController(props) {
       const offeredAmountDecimals = new BN(offeredAmount).mul(
         new BN(10).pow(new BN(currencyInfo[offeredToken].decimals))
       );
-      const offeredTokenAddress = currencyInfo[offeredToken].address;
+      let offeredTokenAddress = currencyInfo[offeredToken].address;
       const daoAddress = tokenInfo[requestedToken].dao;
 
       const net = await web3.eth.net.getId();

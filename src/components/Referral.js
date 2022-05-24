@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Slider from "./Slider";
 import HeaderTableRefaral from "./Table/HeaderTableRefaral";
 import RowTableRefaral from "./Table/RowTableRefaral";
+import { useParams, useHistory } from "react-router-dom";
 import {
   fetchReferralRewards,
   fetchReferralLinksById,
@@ -10,13 +11,9 @@ import {
 import { round } from "./widgets/round";
 import { truncate, truncateCenter } from "./widgets/truncate";
 
-function Referral(props) {
-  const {
-    claim = 0,
-    match: {
-      params: { id },
-    },
-  } = props;
+function Referral() {
+  const { id } = useParams();
+  const history = useHistory();
   const [amountUsd, setAmountUsd] = useState(0);
   const [friendAmountUsd, setFriendAmountUsd] = useState(0);
   const [referalsList, setReferalsList] = useState([]);
@@ -24,19 +21,23 @@ function Referral(props) {
   const [sliderReferral, setSliderReferral] = useState("0% / 0%");
   useEffect(() => {
     const fn = async () => {
-      await fetchReferralRewards(id).then(async (result) => {
-        setReferalsList(result);
-      });
+      if (!id) {
+        changeReferral(0);
+      } else {
+        await fetchReferralRewards(id).then(async (result) => {
+          await setReferalsList(result);
+        });
 
-      const referrals = await fetchReferralLinksById(id);
+        const referrals = await fetchReferralLinksById(id);
 
-      setReferral(referrals);
-      setSliderReferral(
-        `${round(referrals.owner_percent, 1)}% / ${round(
-          referrals.referral_percent,
-          1
-        )}%`
-      );
+        setReferral(referrals);
+        setSliderReferral(
+          `${round(referrals.owner_percent, 1)}% / ${round(
+            referrals.referral_percent,
+            1
+          )}%`
+        );
+      }
     };
     fn();
   }, [id]);
@@ -60,7 +61,7 @@ function Referral(props) {
       owner_percent: value.owner_percent,
       referral_percent: value.referral_percent,
     }).then((res) => {
-      props.history.push(`/referral/${res.id}`);
+      history.push(`/referral/${res.id}`);
       setReferral(res);
     });
   };
@@ -133,17 +134,19 @@ function Referral(props) {
           <div className="table-wrapper">
             <table className="table table-account">
               <HeaderTableRefaral />
-              {referalsList.map((ref) => {
-                return (
-                  <RowTableRefaral
-                    key={ref.link}
-                    referal={ref}
-                    procent={`${round(referral.owner_percent)} / ${round(
-                      referral.referral_percent
-                    )}`}
-                  />
-                );
-              })}
+              {referral &&
+                referalsList &&
+                referalsList.map((ref) => {
+                  return (
+                    <RowTableRefaral
+                      key={ref.link}
+                      referal={ref}
+                      procent={`${round(referral.owner_percent)} / ${round(
+                        referral.referral_percent
+                      )}`}
+                    />
+                  );
+                })}
             </table>
           </div>
         </div>
@@ -151,7 +154,7 @@ function Referral(props) {
         <div className="footer-referal">
           <div className="footer-referal__instructions">
             <p>
-              Available to claim <span>{claim} $</span>
+              Available to claim <span>{friendAmountUsd} $</span>
             </p>
             <button className="button">Claim rewards</button>
           </div>

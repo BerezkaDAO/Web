@@ -78,6 +78,9 @@ function Main(props) {
               path="/referral/:id"
               render={(props) => <Referral {...props} />}
             />
+            <Route exact path="/referral">
+              <Referral />
+            </Route>
           </Switch>
           <Footer />
         </main>

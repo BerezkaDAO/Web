@@ -127,6 +127,19 @@ function TokenRequestController(props) {
       const offeredTokenAddress = currencyInfo[offeredToken].address;
       const daoAddress = tokenInfo[requestedToken].dao;
 
+      const net = await web3.eth.net.getId();
+      if (net === 4) {
+        // Ropsten testnet
+        if (offeredToken === "dai") {
+          offeredTokenAddress = RINKEBY_TETSTNET_DAI_TOKEN;
+        } else if (offeredToken === "usdt") {
+          offeredTokenAddress = RINKEBY_TETSTNET_USDT_TOKEN;
+        } else {
+          setErrorMessage("In testnet, only DAI & USDT withdrawal is allowed");
+          return;
+        }
+      }
+
       // Check eth balance and offered token balance
       //
       const ethBalance = await web3.eth.getBalance(address);

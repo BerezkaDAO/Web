@@ -32,8 +32,7 @@ function toBigNumberString(num) {
 }
 
 function TokenRequestController(props) {
-  const { initialToken, initialCurrency, connectWeb3, web3Global, Component } =
-    props;
+  const { initialToken, initialCurrency, connectWeb3, Component } = props;
 
   const [requestedToken, setRequestedToken] = useState(initialToken);
   const [offeredToken, setOfferedToken] = useState(initialCurrency);
@@ -148,16 +147,25 @@ function TokenRequestController(props) {
         return;
       }
 
+      const net = await web3.eth.net.getId();
+      if (net === 4) {
+        // Ropsten testnet
+        if (offeredToken === "dai") {
+          offeredTokenAddress = RINKEBY_TETSTNET_DAI_TOKEN;
+        } else if (offeredToken === "usdt") {
+          offeredTokenAddress = RINKEBY_TETSTNET_USDT_TOKEN;
+        } else {
+          setErrorMessage("In testnet, only DAI & USDT withdrawal is allowed");
+          return;
+        }
+      }
+
       const offeredTokenContract = new web3.eth.Contract(
         ERC20_ABI,
         offeredTokenAddress
       );
-      const offeredTokenContractRO = new web3Global.eth.Contract(
-        ERC20_ABI,
-        offeredTokenAddress
-      );
 
-      const balance = await offeredTokenContractRO.methods
+      const balance = await offeredTokenContract.methods
         .balanceOf(address)
         .call();
       const balanceFloat = Number.parseFloat(balance);
@@ -168,7 +176,7 @@ function TokenRequestController(props) {
       let nonce = await web3.eth.getTransactionCount(address);
       // Check allowance
       //
-      const allowance = await offeredTokenContractRO.methods
+      const allowance = await offeredTokenContract.methods
         .allowance(address, daoAddress)
         .call();
       const allowanceFloat = Number.parseFloat(allowance);

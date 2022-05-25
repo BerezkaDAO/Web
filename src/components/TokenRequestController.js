@@ -126,9 +126,9 @@ function TokenRequestController(props) {
       let offeredTokenAddress = currencyInfo[offeredToken].address;
       const daoAddress = tokenInfo[requestedToken].dao;
 
-      const net = await web3.eth.net.getId();
-      if (net === 4) {
-        // Ropsten testnet
+      const network_id = await web3.eth.net.getId();
+      if (network_id === 4) {
+        // Rinkeby testnet
         if (offeredToken === "dai") {
           offeredTokenAddress = RINKEBY_TETSTNET_DAI_TOKEN;
         } else if (offeredToken === "usdt") {
@@ -145,19 +145,6 @@ function TokenRequestController(props) {
       if (ethBalance <= 0) {
         setErrorMessage("Not enough ETH to pay transaction fees");
         return;
-      }
-
-      const net = await web3.eth.net.getId();
-      if (net === 4) {
-        // Ropsten testnet
-        if (offeredToken === "dai") {
-          offeredTokenAddress = RINKEBY_TETSTNET_DAI_TOKEN;
-        } else if (offeredToken === "usdt") {
-          offeredTokenAddress = RINKEBY_TETSTNET_USDT_TOKEN;
-        } else {
-          setErrorMessage("In testnet, only DAI & USDT withdrawal is allowed");
-          return;
-        }
       }
 
       const offeredTokenContract = new web3.eth.Contract(

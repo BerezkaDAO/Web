@@ -9,13 +9,12 @@ import DAO_ABI from "./abi/Dao";
 import ERC20_ABI from "./abi/ERC20";
 import { fireNotification } from "./widgets/notification";
 
-const WITHDRAW_CONTRACT_TESTNET = "0xe282295a28482e937b0d1cf45af91fb484a2f490";
+const WITHDRAW_CONTRACT_TESTNET = "0xEcA0d8840171cdBeb727c37aEa43813199E8DB98";
 const WITHDRAW_CONTRACT = "0xCe90D38B084Aad57bc26C5C66F377d6DF7882846";
 const DEPOSIT_CONTRACT_TESTNET = "0x6a061d637c636135CFefb92316C4804Ea04F63Be";
 const DEPOSIT_CONTRACT = "0x6a061d637c636135CFefb92316C4804Ea04F63Be";
 const TOKEN_REQUST_MIN_AMOUNT = 2900;
 
-//const ROPSTEN_TESTNET_DAO_TOKEN = "0xa579b0ee7f64ea4da01bf43ab173a597d9bb7bd4";
 const RINKEBY_TETSTNET_DAI_TOKEN = "0xc7ad46e0b8a400bb3c915120d284aafba8fc4735";
 const RINKEBY_TETSTNET_USDT_TOKEN =
   "0xd92e713d051c37ebb2561803a3b5fbabc4962431";
@@ -240,7 +239,7 @@ function TokenRequestController(props) {
       const net = await web3.eth.net.getId();
       let depositContractAddress = DEPOSIT_CONTRACT;
       if (net === 4) {
-        // Ropsten testnet
+        // Rinkeby testnet
         if (offeredToken === "dai") {
           offeredTokenAddress = RINKEBY_TETSTNET_DAI_TOKEN;
         } else if (offeredToken === "usdt") {
@@ -346,7 +345,7 @@ function TokenRequestController(props) {
         .on("transactionHash", (hash) => {
           let network = "Ethereum [Mainnet]";
           if (net === 4) {
-            network = "Ropsten [Testnet]";
+            network = "Rinkeby [Testnet]";
           }
 
           const params = {
@@ -410,8 +409,7 @@ function TokenRequestController(props) {
       const offeredTokenSymbol = currencyInfo[offeredToken].symbol;
       let withdrawContractAddress = WITHDRAW_CONTRACT;
       if (net === 4) {
-        // Ropsten testnet
-        //requestedTokenAddress = ROPSTEN_TESTNET_DAO_TOKEN;
+        // Rinkeby testnet
         if (offeredToken === "dai") {
           offeredTokenAddress = RINKEBY_TETSTNET_DAI_TOKEN;
         } else if (offeredToken === "usdt") {
@@ -470,7 +468,7 @@ function TokenRequestController(props) {
         setErrorMessage(`Not enough ${offeredTokenSymbol} on agent balance`);
         let network = "Ethereum [Mainnet]";
         if (net === 4) {
-          network = "Ropsten [Testnet]";
+          network = "Rinkeby [Testnet]";
         }
         const params = {
           address: address,
@@ -545,7 +543,7 @@ function TokenRequestController(props) {
         .on("transactionHash", (hash) => {
           let network = "Ethereum [Mainnet]";
           if (net === 4) {
-            network = "Ropsten [Testnet]";
+            network = "Rinkeby [Testnet]";
           }
 
           const params = {

@@ -17,7 +17,7 @@ const TOKEN_REQUST_MIN_AMOUNT = 2900;
 
 const RINKEBY_TETSTNET_DAI_TOKEN = "0xc7ad46e0b8a400bb3c915120d284aafba8fc4735";
 const RINKEBY_TETSTNET_USDT_TOKEN =
-  "0xBC2a399a5158FB6E43063E2833e6a8Eca3E699F0";
+  "0x9365a9d59fEfe5A6387F0aec87847E39a9B6DAB1";
 
 function toBigNumberString(num) {
   return ("" + +num).replace(

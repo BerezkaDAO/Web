@@ -9,16 +9,15 @@ import DAO_ABI from "./abi/Dao";
 import ERC20_ABI from "./abi/ERC20";
 import { fireNotification } from "./widgets/notification";
 
-const WITHDRAW_CONTRACT_TESTNET = "0xe282295a28482e937b0d1cf45af91fb484a2f490";
+const WITHDRAW_CONTRACT_TESTNET = " ";
 const WITHDRAW_CONTRACT = "0xCe90D38B084Aad57bc26C5C66F377d6DF7882846";
 const DEPOSIT_CONTRACT_TESTNET = "0x03F9CE6AA1b940a096c7E08c99061024CAccA1d5";
-const DEPOSIT_CONTRACT = "0x6a061d637c636135CFefb92316C4804Ea04F63Be";
+const DEPOSIT_CONTRACT = "0xFb60632ec2508f7576843aca031ff6b4ecBC1Ab4";
 const TOKEN_REQUST_MIN_AMOUNT = 2900;
 
-//const ROPSTEN_TESTNET_DAO_TOKEN = "0xa579b0ee7f64ea4da01bf43ab173a597d9bb7bd4";
 const RINKEBY_TETSTNET_DAI_TOKEN = "0xc7ad46e0b8a400bb3c915120d284aafba8fc4735";
 const RINKEBY_TETSTNET_USDT_TOKEN =
-  "0xBC2a399a5158FB6E43063E2833e6a8Eca3E699F0";
+  "0x9365a9d59fEfe5A6387F0aec87847E39a9B6DAB1";
 
 function toBigNumberString(num) {
   return ("" + +num).replace(
@@ -126,17 +125,9 @@ function TokenRequestController(props) {
       let offeredTokenAddress = currencyInfo[offeredToken].address;
       const daoAddress = tokenInfo[requestedToken].dao;
 
-      // Check eth balance and offered token balance
-      //
-      const ethBalance = await web3.eth.getBalance(address);
-      if (ethBalance <= 0) {
-        setErrorMessage("Not enough ETH to pay transaction fees");
-        return;
-      }
-
-      const net = await web3.eth.net.getId();
-      if (net === 4) {
-        // Ropsten testnet
+      const network_id = await web3.eth.net.getId();
+      if (network_id === 4) {
+        // Rinkeby testnet
         if (offeredToken === "dai") {
           offeredTokenAddress = RINKEBY_TETSTNET_DAI_TOKEN;
         } else if (offeredToken === "usdt") {
@@ -145,6 +136,14 @@ function TokenRequestController(props) {
           setErrorMessage("In testnet, only DAI & USDT withdrawal is allowed");
           return;
         }
+      }
+
+      // Check eth balance and offered token balance
+      //
+      const ethBalance = await web3.eth.getBalance(address);
+      if (ethBalance <= 0) {
+        setErrorMessage("Not enough ETH to pay transaction fees");
+        return;
       }
 
       const offeredTokenContract = new web3.eth.Contract(
@@ -240,7 +239,7 @@ function TokenRequestController(props) {
       const net = await web3.eth.net.getId();
       let depositContractAddress = DEPOSIT_CONTRACT;
       if (net === 4) {
-        // Ropsten testnet
+        // Rinkeby testnet
         if (offeredToken === "dai") {
           offeredTokenAddress = RINKEBY_TETSTNET_DAI_TOKEN;
         } else if (offeredToken === "usdt") {
@@ -346,7 +345,7 @@ function TokenRequestController(props) {
         .on("transactionHash", (hash) => {
           let network = "Ethereum [Mainnet]";
           if (net === 4) {
-            network = "Ropsten [Testnet]";
+            network = "Rinkeby [Testnet]";
           }
 
           const params = {
@@ -410,8 +409,7 @@ function TokenRequestController(props) {
       const offeredTokenSymbol = currencyInfo[offeredToken].symbol;
       let withdrawContractAddress = WITHDRAW_CONTRACT;
       if (net === 4) {
-        // Ropsten testnet
-        //requestedTokenAddress = ROPSTEN_TESTNET_DAO_TOKEN;
+        // Rinkeby testnet
         if (offeredToken === "dai") {
           offeredTokenAddress = RINKEBY_TETSTNET_DAI_TOKEN;
         } else if (offeredToken === "usdt") {
@@ -470,7 +468,7 @@ function TokenRequestController(props) {
         setErrorMessage(`Not enough ${offeredTokenSymbol} on agent balance`);
         let network = "Ethereum [Mainnet]";
         if (net === 4) {
-          network = "Ropsten [Testnet]";
+          network = "Rinkeby [Testnet]";
         }
         const params = {
           address: address,
@@ -545,7 +543,7 @@ function TokenRequestController(props) {
         .on("transactionHash", (hash) => {
           let network = "Ethereum [Mainnet]";
           if (net === 4) {
-            network = "Ropsten [Testnet]";
+            network = "Rinkeby [Testnet]";
           }
 
           const params = {

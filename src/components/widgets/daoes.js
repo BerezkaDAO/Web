@@ -9,7 +9,7 @@ import {
 
 const API_BASE = "/api/v1/public/daos";
 const DEFAULT_PAGINATION = {
-  per_page: 1000,
+  per_page: 10000,
   page: 1,
 };
 

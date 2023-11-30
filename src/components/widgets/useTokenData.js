@@ -37,7 +37,6 @@ export const useTokenData = (
 
   useEffect(() => {
     const fn = async () => {
-      console.log(`Getting price from daoes`);
       const data = await fetchCommon(tokenAddress, options.precision);
       setData(data);
     };

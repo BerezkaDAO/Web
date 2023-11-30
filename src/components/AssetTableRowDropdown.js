@@ -10,7 +10,7 @@ import { TokenRequestEmbeddedBlastDao } from "./TokenRequestEmbeddedBlastDao";
 function AssetTableRowDropdown(props) {
   const { tokenName, connectWeb3, legacy, web3Global } = props;
   const [dao, setDao] = useState();
-  const isBlastDao = checkIsBlastDao(dao);
+  const isBlastDao = checkIsBlastDao(dao?.id);
   useEffect(() => {
     const fn = async () => {
       const result = await fetchDaoByName(tokenName);
@@ -22,8 +22,6 @@ function AssetTableRowDropdown(props) {
   if (!dao) {
     return <></>;
   }
-
-  // console.log(dao, tokenName, legacy);
 
   return (
     <div className="main-table__dropdown">

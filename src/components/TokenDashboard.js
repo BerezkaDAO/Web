@@ -10,6 +10,7 @@ import TokenAmountGraph from "./widgets/TokenAmountGraph";
 import PortfolioPartsGraph from "./widgets/PortfolioPartsGraph";
 import PortfolioParts from "./widgets/PortfolioParts";
 import TokenCarry from "./widgets/TokenCarry";
+import { checkIsBlastDao } from "./widgets/checkIsBlastDao";
 
 function TokenDashboard(props) {
   const token = props.match.params.id;
@@ -17,7 +18,8 @@ function TokenDashboard(props) {
   const tokenAddress = tokenInfo[token].address;
   const isLegacy = tokenInfo[token].isLegacy;
   const isAdmin = address && admins.includes(address.toLowerCase());
-
+  const isBlastDao = checkIsBlastDao(token);
+  console.log("address", address);
   return (
     <>
       <div class="info-carry">
@@ -71,49 +73,54 @@ function TokenDashboard(props) {
             <APY tokenAddress={tokenAddress} decimals={2} isLegacy={isLegacy} />
           </div>
         </div>
-        <div className="info-general grid-col-4 grid-lg-6 grid-md-12">
-          <div className="info-general__header">
-            <div className="info-general__title">Portfolio</div>
-            <div className="info-general__menu">
-              <div className="dropdown">
-                <a className="dropdown__button" href>
-                  <i className="icon icon-menu2" />
-                </a>
-                <div className="dropdown__menu">
-                  <a className="dropdown__menu-item" href />
+        {!isBlastDao && (
+          <>
+            <div className="info-general grid-col-4 grid-lg-6 grid-md-12">
+              <div className="info-general__header">
+                <div className="info-general__title">Portfolio</div>
+                <div className="info-general__menu">
+                  <div className="dropdown">
+                    <a className="dropdown__button" href>
+                      <i className="icon icon-menu2" />
+                    </a>
+                    <div className="dropdown__menu">
+                      <a className="dropdown__menu-item" href />
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div className="info-general__content">
-            <PortfolioPartsGraph
-              tokenAddress={tokenAddress}
-              web3={web3Global}
-            />
-          </div>
-        </div>
-        <div className="info-general _wide grid-col-8 grid-lg-6 grid-md-12">
-          <div className="info-general__header">
-            <div className="info-general__title">Token Price, USD</div>
-            <div className="info-general__menu">
-              <div className="dropdown">
-                <a className="dropdown__button" href>
-                  <i className="icon icon-menu2" />
-                </a>
-                <div className="dropdown__menu">
-                  <a className="dropdown__menu-item" href />
-                </div>
+              <div className="info-general__content">
+                <PortfolioPartsGraph
+                  tokenAddress={tokenAddress}
+                  web3={web3Global}
+                />
               </div>
             </div>
-          </div>
-          <div className="info-general__content">
-            <TokenPriceGraph
-              tokenAddress={tokenAddress}
-              isAdmin={isAdmin}
-              isLegacy={isLegacy}
-            />
-          </div>
-        </div>
+
+            <div className="info-general _wide grid-col-8 grid-lg-6 grid-md-12">
+              <div className="info-general__header">
+                <div className="info-general__title">Token Price, USD</div>
+                <div className="info-general__menu">
+                  <div className="dropdown">
+                    <a className="dropdown__button" href>
+                      <i className="icon icon-menu2" />
+                    </a>
+                    <div className="dropdown__menu">
+                      <a className="dropdown__menu-item" href />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="info-general__content">
+                <TokenPriceGraph
+                  tokenAddress={tokenAddress}
+                  isAdmin={isAdmin}
+                  isLegacy={isLegacy}
+                />
+              </div>
+            </div>
+          </>
+        )}
         <div className="info-general grid-col-4 grid-lg-6 grid-md-12">
           <div className="info-general__header">
             <div className="info-general__title">Liquidity pools</div>

@@ -3,6 +3,8 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import TokenDashboard from "./TokenDashboard";
 import TokenDashboardNavigation from "./TokenDashboardNavigation";
 import { defaultToken } from "./data/tokens";
+import { checkIsBlastDao } from "./widgets/checkIsBlastDao";
+import { TokenDashboardBlastDao } from "./TokenDashboardBlastDao";
 
 function Dashboard(props) {
   const { web3Global, address } = props;
@@ -19,13 +21,23 @@ function Dashboard(props) {
         <Switch>
           <Route
             path="/dashboard/:id"
-            render={(routeProps) => (
-              <TokenDashboard
-                web3Global={web3Global}
-                address={address}
-                {...routeProps}
-              />
-            )}
+            render={(routeProps) => {
+              const isBlastDao = checkIsBlastDao(routeProps.match.params.id);
+
+              return isBlastDao ? (
+                <TokenDashboardBlastDao
+                  web3Global={web3Global}
+                  address={address}
+                  {...routeProps}
+                />
+              ) : (
+                <TokenDashboard
+                  web3Global={web3Global}
+                  address={address}
+                  {...routeProps}
+                />
+              );
+            }}
           />
           <Redirect from="/dashboard" to={`/dashboard/${defaultToken[0]}`} />
         </Switch>

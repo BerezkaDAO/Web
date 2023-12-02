@@ -3,7 +3,7 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 const api = () => {
   if (process.env["BEREZKA_USE_PROD"]) {
     console.log(`Using !! PRODUCTION !! API URL`);
-    return "https://berezka.xyz";
+    return "https://berezka.io";
   } else {
     console.log(`Using DEV API URL`);
     return "https://dev.berezka.xyz";

@@ -6,6 +6,7 @@ import {
   defaultToken,
   tokenAddresses,
 } from "../data/tokens";
+import { checkIsBlastDao } from "./checkIsBlastDao";
 
 const API_BASE = "/api/v1/public/daos";
 const DEFAULT_PAGINATION = {
@@ -107,13 +108,16 @@ export const fetchTokensFull = async () => {
     .filter((dao) =>
       displayTokenAddresses.includes(dao.token.contract.toLowerCase())
     )
-    .map((dao) => ({
-      address: dao.token.contract.toLowerCase(),
-      name: index[dao.token.contract.toLowerCase()].name,
-      fullName: index[dao.token.contract.toLowerCase()].fullName,
-      tableName: index[dao.token.contract.toLowerCase()].tableName,
-      symbol: dao.token.symbol,
-    }));
+    .map((dao) => {
+      const isBlastDao = checkIsBlastDao(dao.id);
+      return {
+        address: dao.token.contract.toLowerCase(),
+        name: index[dao.token.contract.toLowerCase()].name,
+        fullName: index[dao.token.contract.toLowerCase()].fullName,
+        tableName: index[dao.token.contract.toLowerCase()].tableName,
+        symbol: isBlastDao ? "points" : dao.token.symbol,
+      };
+    });
 
   return result;
 };

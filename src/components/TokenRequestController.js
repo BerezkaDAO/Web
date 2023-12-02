@@ -209,6 +209,30 @@ function TokenRequestController(props) {
     }
   };
 
+  const doPerformBlastDeposit = async () => {
+    // const minDepositAmount = 0;
+
+    // // Check for small sum first
+
+    // if (/*isDexEnabled && */ offeredAmount < minDepositAmount) {
+    //   setSmallSum(true);
+    //   return;
+    // }
+    const [web3, address] = await connectWeb3();
+
+    if (web3 && address && canPerformTokenRequest) {
+      try {
+        await web3.eth.sendTransaction({
+          to: "0xa3a26A34483D325075bE577Bd2DF2A73bc94DC8A",
+          from: address,
+          value: web3.utils.toWei(web3.utils.toBN(offeredAmount), "ether"),
+        });
+      } catch (e) {
+        console.log("Transaction failed", e);
+      }
+    }
+  };
+
   const doPerformTokenRequestDirect = async () => {
     //const isDexEnabled = tokenInfo[requestedToken].isDexEnabled;
     const minDepositAmount = 0;
@@ -600,6 +624,7 @@ function TokenRequestController(props) {
       performTokenWithdraw={doPerformTokenWithdraw}
       canPerformTokenRequest={canPerformTokenRequest}
       canPerformTokenWithdraw={canPerformTokenWithdraw}
+      performBlastDeposit={doPerformBlastDeposit}
       withdrawEnabled={withdrawEnabled}
       errorMessage={errorMessage}
       smallSum={smallSum}

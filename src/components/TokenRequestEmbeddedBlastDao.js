@@ -1,5 +1,5 @@
 import React from "react";
-import { tokenInfo, currencies, currencyInfo } from "./data/tokens";
+import { currencyInfo } from "./data/tokens";
 import { exchanges, tokenExchanges } from "./data/exchanges";
 import Select from "./Select";
 
@@ -20,29 +20,12 @@ function Deposit(props) {
   );
 }
 
-function Withdraw(props) {
-  const { withdrawEnabled, canPerformTokenWithdraw, performTokenWithdraw } =
-    props;
-  return (
-    <>
-      {withdrawEnabled ? (
-        <td className="mobile_no_border">
-          <a
-            className={
-              "button _full" + (canPerformTokenWithdraw ? "" : " _disabled")
-            }
-            href
-            onClick={performTokenWithdraw}
-          >
-            Withdraw
-          </a>
-        </td>
-      ) : (
-        <td />
-      )}
-    </>
-  );
-}
+const eth = {
+  symbol: "ETH",
+  address: "0xa3a26A34483D325075bE577Bd2DF2A73bc94DC8A",
+  decimals: 18,
+  image: "type2",
+};
 
 export function TokenRequestEmbeddedBlastDao(props) {
   const {
@@ -53,11 +36,9 @@ export function TokenRequestEmbeddedBlastDao(props) {
     requestedToken,
     performTokenRequest,
     canPerformTokenRequest,
-    performTokenWithdraw,
-    canPerformTokenWithdraw,
     errorMessage,
-    withdrawEnabled,
     smallSum,
+    performBlastDeposit,
   } = props;
 
   return (
@@ -88,9 +69,9 @@ export function TokenRequestEmbeddedBlastDao(props) {
               <Select
                 value={offeredToken}
                 setValue={setOfferedToken}
-                options={currencies}
-                valueDisplay={(currency) => currencyInfo[currency].symbol}
-                valueImage={(currency) => currencyInfo[currency].image}
+                options={["eth"]}
+                valueDisplay={(currency) => eth.symbol}
+                valueImage={(currency) => eth.image}
               />
             </div>
           </div>
@@ -129,27 +110,11 @@ export function TokenRequestEmbeddedBlastDao(props) {
       {!smallSum && (
         <tr>
           <td colSpan={2} />
-          {withdrawEnabled ? (
-            <>
-              <Deposit
-                canPerformTokenRequest={canPerformTokenRequest}
-                performTokenRequest={performTokenRequest}
-              />
-              <Withdraw
-                withdrawEnabled={withdrawEnabled}
-                canPerformTokenWithdraw={canPerformTokenWithdraw}
-                performTokenWithdraw={performTokenWithdraw}
-              />
-            </>
-          ) : (
-            <>
-              <td />
-              <Deposit
-                canPerformTokenRequest={canPerformTokenRequest}
-                performTokenRequest={performTokenRequest}
-              />{" "}
-            </>
-          )}
+          <td />
+          <Deposit
+            canPerformTokenRequest={canPerformTokenRequest}
+            performTokenRequest={performBlastDeposit}
+          />{" "}
         </tr>
       )}
       {smallSum && (

@@ -14,7 +14,7 @@ COPY . .
 # lint & test
 # RUN yarn lint & yarn test
 
-RUN Echo REACT_APP_GOOGLE_EMAIL = $REACT_APP_GOOGLE_EMAIL
+RUN export REACT_APP_GOOGLE_EMAIL = $REACT_APP_GOOGLE_EMAIL
 # build application
 # RUN yarn build 
 RUN npm run build 

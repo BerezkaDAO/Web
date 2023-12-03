@@ -51,10 +51,10 @@ jobs:
             REACT_APP_GOOGLE_KEY=${{ secrets.REACT_APP_GOOGLE_KEY }}
             REACT_APP_GOOGLE_EMAIL=${{ secrets.REACT_APP_GOOGLE_EMAIL }}
             REACT_APP_GOOGLE_SHEETS_ID=${{ secrets.REACT_APP_GOOGLE_SHEETS_ID }}
-          env:
-            REACT_APP_GOOGLE_KEY: ${{ secrets.REACT_APP_GOOGLE_KEY }}
-            REACT_APP_GOOGLE_EMAIL: ${{ secrets.REACT_APP_GOOGLE_EMAIL }}
-            REACT_APP_GOOGLE_SHEETS_ID: ${{ secrets.REACT_APP_GOOGLE_SHEETS_ID }}
+          env: |
+            REACT_APP_GOOGLE_KEY=${{ secrets.REACT_APP_GOOGLE_KEY }}
+            REACT_APP_GOOGLE_EMAIL=${{ secrets.REACT_APP_GOOGLE_EMAIL }}
+            REACT_APP_GOOGLE_SHEETS_ID=${{ secrets.REACT_APP_GOOGLE_SHEETS_ID }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

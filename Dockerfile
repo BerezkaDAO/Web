@@ -2,10 +2,12 @@ FROM node:12 AS BUILD_IMAGE
 
 WORKDIR /usr/src/app
 
-COPY package.json yarn.lock ./
+# COPY package.json yarn.lock ./
+COPY package.json package-lock.json ./
 
 # install dependencies
-RUN yarn --frozen-lockfile
+# RUN yarn --frozen-lockfile
+RUN npm install
 
 COPY . .
 
@@ -13,7 +15,8 @@ COPY . .
 # RUN yarn lint & yarn test
 
 # build application
-RUN yarn build 
+# RUN yarn build 
+RUN npm run build 
 
 
 FROM --platform=linux/amd64 nginx

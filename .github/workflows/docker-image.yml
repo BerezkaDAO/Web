@@ -44,7 +44,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          build-args: |
+          secrets: |
             REACT_APP_GOOGLE_KEY=${{ secrets.REACT_APP_GOOGLE_KEY }}
             REACT_APP_GOOGLE_EMAIL=${{ secrets.REACT_APP_GOOGLE_EMAIL }}
             REACT_APP_GOOGLE_SHEETS_ID=${{ secrets.REACT_APP_GOOGLE_SHEETS_ID }}

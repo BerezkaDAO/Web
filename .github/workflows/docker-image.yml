@@ -15,9 +15,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  REACT_APP_GOOGLE_KEY: ${{ secrets.REACT_APP_GOOGLE_KEY }}
-  REACT_APP_GOOGLE_EMAIL: ${{ secrets.REACT_APP_GOOGLE_EMAIL }}
-  REACT_APP_GOOGLE_SHEETS_ID: ${{ secrets.REACT_APP_GOOGLE_SHEETS_ID }}
+  
 
 jobs:
   build-and-push-image:
@@ -43,18 +41,22 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
+      - name : Setup REACT ENV Files
+        env:
+          REACT_APP_GOOGLE_KEY: ${{ secrets.REACT_APP_GOOGLE_KEY }}
+          REACT_APP_GOOGLE_EMAIL: ${{ secrets.REACT_APP_GOOGLE_EMAIL }}
+          REACT_APP_GOOGLE_SHEETS_ID: ${{ secrets.REACT_APP_GOOGLE_SHEETS_ID }}
+        shell: bash
+        run: |- 
+           echo "${{ secrets.REACT_APP_GOOGLE_KEY }}" > .env
+           echo "${{ secrets.REACT_APP_GOOGLE_EMAIL }}" >> .env
+           echo "${{ secrets.REACT_APP_GOOGLE_SHEETS_ID }}" >> .env
+           cat .env
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
-          secrets: |
-            REACT_APP_GOOGLE_KEY=${{ secrets.REACT_APP_GOOGLE_KEY }}
-            REACT_APP_GOOGLE_EMAIL=${{ secrets.REACT_APP_GOOGLE_EMAIL }}
-            REACT_APP_GOOGLE_SHEETS_ID=${{ secrets.REACT_APP_GOOGLE_SHEETS_ID }}
-          env: |
-            REACT_APP_GOOGLE_KEY=${{ secrets.REACT_APP_GOOGLE_KEY }}
-            REACT_APP_GOOGLE_EMAIL=${{ secrets.REACT_APP_GOOGLE_EMAIL }}
-            REACT_APP_GOOGLE_SHEETS_ID=${{ secrets.REACT_APP_GOOGLE_SHEETS_ID }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

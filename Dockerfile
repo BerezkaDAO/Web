@@ -3,7 +3,8 @@ FROM node:12 AS BUILD_IMAGE
 WORKDIR /usr/src/app
 
 # COPY package.json yarn.lock ./
-COPY package.json package-lock.json ./
+COPY package.json ./
+COPY .env ./
 
 # install dependencies
 # RUN yarn --frozen-lockfile
@@ -14,10 +15,9 @@ COPY . .
 # lint & test
 # RUN yarn lint & yarn test
 
-RUN export
 # build application
 # RUN yarn build 
-RUN npm run build 
+RUN npm run build && cat ./.env
 
 
 FROM --platform=linux/amd64 nginx

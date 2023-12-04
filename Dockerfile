@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 # COPY package.json yarn.lock ./
 COPY package.json ./
-COPY .env ./
+# COPY .env ./
 
 # install dependencies
 # RUN yarn --frozen-lockfile
@@ -17,9 +17,9 @@ COPY . .
 
 # build application
 # RUN yarn build 
-RUN npm run build && cat ./.env
-RUN --mount=type=secret,id=REACT_APP_GOOGLE_EMAIL \
-  cat /run/secrets/REACT_APP_GOOGLE_EMAIL
+RUN npm run build 
+# && cat ./.env
+
 
 
 FROM --platform=linux/amd64 nginx

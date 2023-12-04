@@ -48,9 +48,9 @@ jobs:
           REACT_APP_GOOGLE_SHEETS_ID: ${{ secrets.REACT_APP_GOOGLE_SHEETS_ID }}
         shell: bash
         run: |- 
-           echo "${{ secrets.REACT_APP_GOOGLE_KEY }}" > .env
-           echo "${{ secrets.REACT_APP_GOOGLE_EMAIL }}" >> .env
-           echo "${{ secrets.REACT_APP_GOOGLE_SHEETS_ID }}" >> .env
+           echo REACT_APP_GOOGLE_KEY="${{ secrets.REACT_APP_GOOGLE_KEY }}" > .env
+           echo REACT_APP_GOOGLE_EMAIL="${{ secrets.REACT_APP_GOOGLE_EMAIL }}" >> .env
+           echo REACT_APP_GOOGLE_SHEETS_ID="${{ secrets.REACT_APP_GOOGLE_SHEETS_ID }}" >> .env
            cat .env
 
       - name: Build and push Docker image

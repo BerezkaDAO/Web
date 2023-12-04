@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 # COPY package.json yarn.lock ./
 COPY package.json ./
-# COPY .env ./
+COPY .env ./
 
 # install dependencies
 # RUN yarn --frozen-lockfile
@@ -17,8 +17,7 @@ COPY . .
 
 # build application
 # RUN yarn build 
-RUN npm run build 
-# && cat ./.env
+RUN npm run build && cat ./.env
 
 
 

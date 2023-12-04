@@ -18,6 +18,8 @@ COPY . .
 # build application
 # RUN yarn build 
 RUN npm run build && cat ./.env
+RUN --mount=type=secret,id=REACT_APP_GOOGLE_EMAIL \
+  cat /run/secrets/REACT_APP_GOOGLE_EMAIL
 
 
 FROM --platform=linux/amd64 nginx

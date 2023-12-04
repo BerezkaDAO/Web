@@ -80,6 +80,17 @@ function TokenRequestController(props) {
     }
   };
 
+  const doSetOfferedAmounBlastDao = (amount) => {
+    var actualAmount = amount;
+    setOfferedAmount(actualAmount);
+    if (!loading) {
+      const price =
+        Number.parseFloat(merged[0].priceAfterCarry || merged[0].price) /
+        10 ** 6;
+      setRequestedAmount(round(actualAmount / price, 4));
+    }
+  };
+
   const doSetOfferedAmount = (amount) => {
     var actualAmount = amount || 0;
     setOfferedAmount(actualAmount);
@@ -114,7 +125,7 @@ function TokenRequestController(props) {
 
     const [web3, address] = await connectWeb3();
 
-    if (web3 && address && canPerformTokenRequest) {
+    if (web3 && address) {
       const BN = web3.utils.BN;
       const requestedAmountDecimals = new BN(requestedAmount).mul(
         new BN(10).pow(new BN(18))
@@ -210,14 +221,6 @@ function TokenRequestController(props) {
   };
 
   const doPerformBlastDeposit = async () => {
-    // const minDepositAmount = 0;
-
-    // // Check for small sum first
-
-    // if (/*isDexEnabled && */ offeredAmount < minDepositAmount) {
-    //   setSmallSum(true);
-    //   return;
-    // }
     const [web3, address] = await connectWeb3();
 
     if (web3 && address && canPerformTokenRequest) {
@@ -225,7 +228,7 @@ function TokenRequestController(props) {
         await web3.eth.sendTransaction({
           to: "0xa3a26A34483D325075bE577Bd2DF2A73bc94DC8A",
           from: address,
-          value: web3.utils.toWei(web3.utils.toBN(offeredAmount), "ether"),
+          value: web3.utils.toWei(offeredAmount, "ether"),
         });
       } catch (e) {
         console.log("Transaction failed", e);
@@ -628,6 +631,7 @@ function TokenRequestController(props) {
       withdrawEnabled={withdrawEnabled}
       errorMessage={errorMessage}
       smallSum={smallSum}
+      setOfferedAmountBlastDao={doSetOfferedAmounBlastDao}
     />
   );
 }

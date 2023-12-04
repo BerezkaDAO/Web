@@ -72,7 +72,11 @@ export function TokenDashboardBlastDao(props) {
             </div>
           </div>
           <div className="info-main__value">
-            {isLoading ? "..." : blastTotal.points?.toFixed(2)}
+            {isLoading
+              ? "..."
+              : blastTotal.points
+                  ?.toFixed(0)
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, " " || ".")}
           </div>
         </div>
 

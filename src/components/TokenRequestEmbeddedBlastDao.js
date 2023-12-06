@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { currencyInfo } from "./data/tokens";
 import { exchanges, tokenExchanges } from "./data/exchanges";
 import Select from "./Select";
 
 function Deposit(props) {
   const { canPerformTokenRequest, performTokenRequest } = props;
+
+  const handleClick = () => {
+    if (canPerformTokenRequest) {
+      performTokenRequest();
+    }
+  };
+
   return (
     <td className="mobile_no_border">
       <a
@@ -12,7 +19,7 @@ function Deposit(props) {
           "button _full" + (canPerformTokenRequest ? "" : " _disabled")
         }
         href
-        onClick={performTokenRequest}
+        onClick={handleClick}
       >
         Deposit
       </a>
@@ -30,7 +37,6 @@ const eth = {
 export function TokenRequestEmbeddedBlastDao(props) {
   const {
     setOfferedToken,
-    setOfferedAmount,
     offeredToken,
     offeredAmount,
     requestedToken,
@@ -39,7 +45,20 @@ export function TokenRequestEmbeddedBlastDao(props) {
     errorMessage,
     smallSum,
     performBlastDeposit,
+    setOfferedAmountBlastDao,
   } = props;
+
+  const parseInputValue = (value) => {
+    const parsed = value
+      .replace(",", ".")
+      .replace(/[^\d.]/g, "") // rm non didgit and non . symbols
+      .replace(/^0+/, "0"); // rm repatative 0 in the beginning
+
+    if (Number(parsed).toFixed(5) === parsed) {
+    } else {
+      setOfferedAmountBlastDao(parsed);
+    }
+  };
 
   return (
     <>
@@ -62,9 +81,7 @@ export function TokenRequestEmbeddedBlastDao(props) {
                 type="text"
                 required
                 value={offeredAmount}
-                onChange={(e) =>
-                  setOfferedAmount(Number.parseFloat(e.target.value))
-                }
+                onChange={(e) => parseInputValue(e.target.value)}
               />
               <Select
                 value={offeredToken}

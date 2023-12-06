@@ -1,31 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import { checkIsBlastDao } from "./checkIsBlastDao";
+import { sumBlastData } from "./ExternalBlastDao";
 
 const googleFileId = process.env.REACT_APP_GOOGLE_SHEETS_ID;
 
 const googleDoc = new GoogleSpreadsheet(googleFileId);
-
-const parseStringNumber = (string) => {
-  return parseFloat(string.replace(/,/g, ".").replace(/\s/g, ""));
-};
-
-const sumBlastData = (googleSheet) => {
-  try {
-    return googleSheet.reduce(
-      (acc, account) => {
-        acc.eth = acc.eth + parseStringNumber(account.value_eth);
-        acc.usd = acc.usd + parseStringNumber(account["value _usd"]);
-        acc.points = acc.points + parseStringNumber(account["points-user"]);
-
-        return acc;
-      },
-      { eth: 0, usd: 0, points: 0 }
-    );
-  } catch (e) {
-    console.log("Convert google sheet data", e);
-  }
-};
 
 export const useBlastData = (address, token) => {
   const [data, setData] = useState([]);

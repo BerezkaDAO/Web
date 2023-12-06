@@ -42,8 +42,6 @@ const PortfolioParts = (props) => {
     return <p>Loading...</p>;
   }
 
-  console.log("part list", partList, tokenAddress);
-
   return (
     <ul className="status-list">
       {partList.map((item, index) => (

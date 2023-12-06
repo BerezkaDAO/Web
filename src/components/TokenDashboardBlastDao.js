@@ -1,14 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { tokenInfo } from "./data/tokens";
 import { admins } from "./data/admin";
 
-import TokenAmount from "./widgets/TokenAmount";
-import TokenPrice from "./widgets/TokenPrice";
-import APY from "./widgets/APY";
-import TokenAmountGraph from "./widgets/TokenAmountGraph";
 import PortfolioParts from "./widgets/PortfolioParts";
 import TokenCarry from "./widgets/TokenCarry";
 import { useBlastData } from "./widgets/useBlastData";
+import { fetchBlastSourcegraph } from "./widgets/ExternalBlastDao";
+import { TokenAmountGraphBlastDao } from "./widgets/TokenAmountGraphBlastDao";
 
 export function TokenDashboardBlastDao(props) {
   const token = props.match.params.id;
@@ -18,6 +16,10 @@ export function TokenDashboardBlastDao(props) {
   const isAdmin = address && admins.includes(address.toLowerCase());
 
   const { blastTotal, isLoading } = useBlastData(address, token);
+
+  useEffect(() => {
+    fetchBlastSourcegraph();
+  }, []);
 
   return (
     <>
@@ -103,7 +105,7 @@ export function TokenDashboardBlastDao(props) {
             </div>
           </div>
           <div className="info-general__content">
-            <TokenAmountGraph tokenAddress={tokenAddress} isLegacy={isLegacy} />
+            <TokenAmountGraphBlastDao />
           </div>
         </div>
       </div>

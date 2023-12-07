@@ -36,7 +36,11 @@ export const useBlastData = (address, token) => {
   };
 
   const currentAccountData =
-    data.filter((account) => account.from === address) || data[0] || [];
+    data.filter(
+      (account) => account.from?.toLowerCase() === address?.toLowerCase()
+    ) ||
+    data[0] ||
+    [];
 
   const blastCurrent = sumBlastData(currentAccountData);
 

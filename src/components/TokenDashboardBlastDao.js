@@ -2,20 +2,23 @@ import React, { useEffect } from "react";
 import { tokenInfo } from "./data/tokens";
 import { admins } from "./data/admin";
 
-import PortfolioParts from "./widgets/PortfolioParts";
 import TokenCarry from "./widgets/TokenCarry";
 import { useBlastData } from "./widgets/useBlastData";
 import { fetchBlastSourcegraph } from "./widgets/ExternalBlastDao";
 import { TokenAmountGraphBlastDao } from "./widgets/TokenAmountGraphBlastDao";
+import { PortfolioPartsBlastDao } from "./widgets/PortfolioPartsBlastDao";
 
 export function TokenDashboardBlastDao(props) {
   const token = props.match.params.id;
-  const { web3Global, address } = props;
+  const { address } = props;
   const tokenAddress = tokenInfo[token].address;
   const isLegacy = tokenInfo[token].isLegacy;
   const isAdmin = address && admins.includes(address.toLowerCase());
 
-  const { blastTotal, isLoading } = useBlastData(address, token);
+  const { blastTotal, isLoading, blastLiquidity } = useBlastData(
+    address,
+    token
+  );
 
   useEffect(() => {
     fetchBlastSourcegraph();
@@ -87,7 +90,10 @@ export function TokenDashboardBlastDao(props) {
             <div className="info-general__title">Liquidity pools</div>
           </div>
           <div className="info-general__content">
-            <PortfolioParts tokenAddress={tokenAddress} web3={web3Global} />
+            <PortfolioPartsBlastDao
+              blastLiquidity={blastLiquidity}
+              isLoading={isLoading}
+            />
           </div>
         </div>
         <div className="info-general _wide grid-col-8 grid-lg-6 grid-md-12">

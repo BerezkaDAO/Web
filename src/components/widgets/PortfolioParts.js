@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { colorByIndex } from "./colors";
 import { fetchWeb3Data } from "./daoes";
-import { checkIsBlastDao } from "./checkIsBlastDao";
 
 const PortfolioParts = (props) => {
   const { tokenAddress } = props;
 
   const [loading, setLoading] = useState(true);
   const [partList, setPartList] = useState();
-
-  const isBlastDao = checkIsBlastDao(tokenAddress);
 
   useEffect(() => {
     let isCancelled = false;
@@ -21,14 +18,7 @@ const PortfolioParts = (props) => {
 
       if (!isCancelled) {
         setLoading(false);
-        console.log("isBlast", isBlastDao);
-        if (isBlastDao) {
-          setPartList([
-            { name: "ETH", pricePercentValue: 100.0, token: "ETH" },
-          ]);
-        } else {
-          setPartList(pricePercent);
-        }
+        setPartList(pricePercent);
       }
     };
     fn();

@@ -6,6 +6,28 @@ const parseStringNumber = (string) => {
   return parseFloat(string.replace(/,/g, ".").replace(/\s/g, ""));
 };
 
+export const calculateLiquidity = (googleSheet) => {
+  const balances = googleSheet.reduce(
+    (acc, account) => {
+      const balance = parseStringNumber(account["value _usd_on_day_of_txn"]);
+      if (account.Value === "USDT") {
+        acc.usdt += balance;
+      } else if (account.Value === "ETH") {
+        acc.eth += balance;
+      }
+
+      acc.total += balance;
+      return acc;
+    },
+    { eth: 0, usdt: 0, total: 0 }
+  );
+  console.log({ balances });
+
+  const ethLiquidity = (balances.eth / balances.total) * 100;
+  const usdLiquidity = (balances.usdt / balances.total) * 100;
+  return { eth: ethLiquidity, usdt: usdLiquidity };
+};
+
 export const sumBlastData = (googleSheet) => {
   try {
     return googleSheet.reduce(
@@ -39,19 +61,15 @@ const connectGoogleDoc = (function () {
   };
 })();
 
-const fetchBlastAccounts = async () => {
+export const fetchBlastAccounts = async () => {
   try {
-    const doc = connectGoogleDoc();
+    const doc = await connectGoogleDoc();
     const sheet = doc.sheetsByIndex[0];
     const data = await sheet.getRows();
-    // const currentAccountData =
-    //   data.filter((account) => account.from === address) || data[0] || [];
-
-    // const blastCurrent = sumBlastData(currentAccountData);
-    const blastTotal = sumBlastData(data);
-    return { blastTotal };
+    return data;
   } catch (e) {
-    console.log("google-spreadsheet fetch error", e);
+    console.log("google-spreadsheet fetchBlastAccounts error", e);
+    return [];
   }
 };
 

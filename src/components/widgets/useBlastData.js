@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import { checkIsBlastDao } from "./checkIsBlastDao";
-import { sumBlastData } from "./ExternalBlastDao";
+import {
+  sumBlastData,
+  calculateLiquidity,
+  fetchBlastAccounts,
+} from "./ExternalBlastDao";
 
 const googleFileId = process.env.REACT_APP_GOOGLE_SHEETS_ID;
 
@@ -20,18 +24,11 @@ export const useBlastData = (address, token) => {
   const fetchSpreadSheet = async () => {
     try {
       setIsLoading(true);
-      await googleDoc.useServiceAccountAuth({
-        client_email: process.env.REACT_APP_GOOGLE_EMAIL,
-        private_key: process.env.REACT_APP_GOOGLE_KEY.replace(/\\n/g, "\n"),
-      });
-      await googleDoc.loadInfo();
-
-      const sheet = googleDoc.sheetsByIndex[0];
-      const rows = await sheet.getRows();
+      const rows = await fetchBlastAccounts();
       setData(rows);
       setIsLoading(false);
     } catch (e) {
-      console.log("google-spreadsheet fetch error", e);
+      console.log("useBlastData error", e);
     }
   };
 
@@ -42,9 +39,15 @@ export const useBlastData = (address, token) => {
     data[0] ||
     [];
 
-  const blastCurrent = sumBlastData(currentAccountData);
+  const { blastTotal, blastCurrent, blastLiquidity } = useMemo(() => {
+    const blastCurrent = sumBlastData(currentAccountData);
 
-  const blastTotal = sumBlastData(data);
+    const blastTotal = sumBlastData(data);
 
-  return { blastTotal, blastCurrent, isLoading };
+    const blastLiquidity = calculateLiquidity(data);
+
+    return { blastTotal, blastCurrent, blastLiquidity };
+  }, [data]);
+
+  return { blastTotal, blastCurrent, isLoading, blastLiquidity };
 };

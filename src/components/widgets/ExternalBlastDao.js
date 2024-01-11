@@ -21,8 +21,6 @@ export const calculateLiquidity = (googleSheet) => {
     },
     { eth: 0, usdt: 0, total: 0 }
   );
-  console.log({ balances });
-
   const ethLiquidity = (balances.eth / balances.total) * 100;
   const usdLiquidity = (balances.usdt / balances.total) * 100;
   return { eth: ethLiquidity, usdt: usdLiquidity };

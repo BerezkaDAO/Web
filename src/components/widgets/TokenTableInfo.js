@@ -4,13 +4,8 @@ import TokenTableInfoRow from "./TokenTableInfoRow";
 import TokenTableValueOutput from "./TokenTableValueOutput";
 
 const TokenTableInfo = (props) => {
-  const {
-    tokens,
-    walletAddress,
-    web3,
-    setGlobalTotal,
-    profitAccumulator,
-  } = props;
+  const { tokens, walletAddress, web3, setGlobalTotal, profitAccumulator } =
+    props;
 
   const [total, setTotal] = useState(0);
   const [totalProfit, setTotalProfit] = useState(0);
@@ -81,7 +76,7 @@ const TokenTableInfo = (props) => {
           <th rowSpan={2}>Product</th>
           <th rowSpan={2}>Token</th>
           <th rowSpan={2}>Amount</th>
-          <th rowSpan={2}>Invested amount, USDT</th>
+          <th rowSpan={2}>Invested amount, USD</th>
           <th rowSpan={2}>AVG purchase price</th>
           <th className="_large" colSpan={5}>
             Current value

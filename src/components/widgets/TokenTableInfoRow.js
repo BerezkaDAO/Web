@@ -10,6 +10,7 @@ const RowDataC = (props) => {
     symbol,
     address,
     balance,
+    liquidity,
     avgInvPrice,
     lastPrice,
     apy,
@@ -29,7 +30,9 @@ const RowDataC = (props) => {
         apy ${apy} 
     `);
 
-  const iAmount = balance * avgInvPrice;
+  // const iAmount = balance * avgInvPrice;
+  const iAmount = liquidity;
+
   const priceUSD = lastPrice;
   const portfolioPrice = balance * priceUSD;
   const profit = portfolioPrice - iAmount;
@@ -143,6 +146,7 @@ const TokenTableInfoRow = (props) => {
           symbol={info.symbol}
           address={info.address}
           balance={info.balance}
+          liquidity={info.usd}
           avgInvPrice={info.avgInvPrice}
           lastPrice={info.lastPrice}
           apy={info.apy}

@@ -7,6 +7,9 @@ const AccountPortfolioProvider = (props) => {
   const { token, wallet, childrenLoading, children } = props;
   const [data, setData] = useState();
   const { blastCurrent, isLoading } = useBlastData(wallet, token);
+
+  console.log("--------", blastCurrent);
+
   const isBlastDao = checkIsBlastDao(token);
 
   useEffect(() => {
@@ -20,7 +23,12 @@ const AccountPortfolioProvider = (props) => {
 
   const patcheddata =
     data && isBlastDao
-      ? { ...data, symbol: "points", balance: blastCurrent.points }
+      ? {
+          ...data,
+          symbol: "points",
+          balance: blastCurrent.points,
+          usd: blastCurrent.usd,
+        }
       : data;
 
   if (!patcheddata || isLoading) {

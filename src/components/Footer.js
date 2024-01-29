@@ -17,8 +17,8 @@ function Footer(props) {
         </div>
         <div className="footer__contacts-item">
           Telegram{" "}
-          <a className="footer__contacts-link" href="https://t.me/Asc100500">
-            @Asc100500
+          <a className="footer__contacts-link" href="https://t.me/ask100500">
+            @ask100500
           </a>
         </div>
       </div>

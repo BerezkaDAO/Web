@@ -6,19 +6,22 @@ function Footer(props) {
   const { isBlocked } = props;
   return (
     <footer className="footer">
-      <form className="footer__form">
-        <input
-          className="input _light"
-          type="email"
-          placeholder="Email for updates"
-        />
-        <div className="buttons">
-          <a className="button _light _middle" href>
-            Get updates
+      <div className="footer__contacts">
+        <h3 className="footer__contacts-header">Contacts</h3>
+
+        <div className="footer__contacts-item">
+          Email:{" "}
+          <a className="footer__contacts-link" href="mailto:hello@berezka.io">
+            hello@berezka.io
           </a>
-          <span>Let’s build DeFi community together</span>
         </div>
-      </form>
+        <div className="footer__contacts-item">
+          Telegram{" "}
+          <a className="footer__contacts-link" href="https://t.me/Asc100500">
+            @Asc100500
+          </a>
+        </div>
+      </div>
 
       {!isBlocked ? (
         <div className="footer__bottom">

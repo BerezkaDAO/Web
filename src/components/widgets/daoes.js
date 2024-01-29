@@ -8,7 +8,8 @@ import {
 } from "../data/tokens";
 import { checkIsBlastDao } from "./checkIsBlastDao";
 
-const API_BASE = "/api/v1/public/daos";
+const API_HOST = process.env.REACT_APP_API_HOST || "";
+const API_BASE = API_HOST + "/api/v1/public/daos";
 const DEFAULT_PAGINATION = {
   per_page: 10000,
   page: 1,

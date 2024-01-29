@@ -35,7 +35,19 @@ function AssetTableRowDropdown(props) {
           </tr>
           <tr>
             <td>{parse("" + dao.display_name)}</td>
-            <td>{parse("" + dao.display_short_description)}</td>
+            <td>
+              {parse("" + dao.display_short_description)}
+              <div className="main-table__hint">
+                For additional information about the strategy{" "}
+                <a
+                  className="main-table__hint-link"
+                  href="https://t.me/ask100500"
+                  target={"_blank"}
+                >
+                  Contact us
+                </a>
+              </div>
+            </td>
             <td>{parse("" + dao.display_full_description)}</td>
             <td>{parse("" + dao.display_benefits)}</td>
           </tr>

@@ -30,12 +30,12 @@ const RowDataC = (props) => {
         apy ${apy} 
     `);
 
-  // const iAmount = balance * avgInvPrice;
   const iAmount = liquidity;
 
   const priceUSD = lastPrice;
+
   const portfolioPrice = balance * priceUSD;
-  const profit = portfolioPrice - iAmount;
+  const profit = portfolioPrice;
   const profitPercent = iAmount == 0 ? 0 : (profit / iAmount) * 100;
 
   useEffect(() => {

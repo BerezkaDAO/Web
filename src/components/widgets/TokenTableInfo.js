@@ -53,7 +53,7 @@ const TokenTableInfo = (props) => {
     }
   }, []);
 
-  const totalInvestedAccumulator = useCallback((token, tokenTotal) => {
+  const totalInvestedAccumulator = useCallback((token, tokenTotal = 0) => {
     const current = totalInvestedAcc.current;
     if (!current.tokens.includes(token)) {
       const newTotal = current.total + tokenTotal;
@@ -84,8 +84,8 @@ const TokenTableInfo = (props) => {
         </tr>
         <tr>
           <th>Token price</th>
-          <th>Portfolio value, USDT</th>
-          <th>Profit/Loss, USDT</th>
+          <th>Portfolio value, USD</th>
+          <th>Profit/Loss, USD</th>
           <th>Profit/Loss, %</th>
           <th>APY %</th>
         </tr>

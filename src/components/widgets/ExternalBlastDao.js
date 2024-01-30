@@ -40,7 +40,17 @@ export const sumBlastData = (googleSheet) => {
       { eth: 0, usd: 0, points: 0 }
     );
   } catch (e) {
-    console.log("Convert google sheet data", e);
+    console.log("GoogleSheet Data, calculate blast sum", e);
+  }
+};
+
+export const getBlastPointPrice = (googleSheet) => {
+  try {
+    return googleSheet[0]
+      ? parseStringNumber(googleSheet[0]["Token_Price"])
+      : 0;
+  } catch (e) {
+    console.log("GoogleSheet Data, getting blast price", e);
   }
 };
 

@@ -6,10 +6,7 @@ import { useBlastData } from "./useBlastData";
 const AccountPortfolioProvider = (props) => {
   const { token, wallet, childrenLoading, children } = props;
   const [data, setData] = useState();
-  const { blastCurrent, isLoading } = useBlastData(wallet, token);
-
-  console.log("--------", blastCurrent);
-
+  const { blastCurrent, isLoading, blastPrice } = useBlastData(wallet, token);
   const isBlastDao = checkIsBlastDao(token);
 
   useEffect(() => {
@@ -28,6 +25,7 @@ const AccountPortfolioProvider = (props) => {
           symbol: "points",
           balance: blastCurrent.points,
           usd: blastCurrent.usd,
+          lastPrice: blastPrice,
         }
       : data;
 

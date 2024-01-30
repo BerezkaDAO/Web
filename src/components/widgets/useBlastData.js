@@ -5,6 +5,7 @@ import {
   sumBlastData,
   calculateLiquidity,
   fetchBlastAccounts,
+  getBlastPointPrice,
 } from "./ExternalBlastDao";
 
 const googleFileId = process.env.REACT_APP_GOOGLE_SHEETS_ID;
@@ -39,15 +40,18 @@ export const useBlastData = (address, token) => {
     data[0] ||
     [];
 
-  const { blastTotal, blastCurrent, blastLiquidity } = useMemo(() => {
-    const blastCurrent = sumBlastData(currentAccountData);
+  const { blastTotal, blastCurrent, blastLiquidity, blastPrice } =
+    useMemo(() => {
+      const blastCurrent = sumBlastData(currentAccountData);
 
-    const blastTotal = sumBlastData(data);
+      const blastTotal = sumBlastData(data);
 
-    const blastLiquidity = calculateLiquidity(data);
+      const blastLiquidity = calculateLiquidity(data);
 
-    return { blastTotal, blastCurrent, blastLiquidity };
-  }, [data]);
+      const blastPrice = getBlastPointPrice(data);
 
-  return { blastTotal, blastCurrent, isLoading, blastLiquidity };
+      return { blastTotal, blastCurrent, blastLiquidity, blastPrice };
+    }, [data]);
+
+  return { blastTotal, blastCurrent, isLoading, blastLiquidity, blastPrice };
 };

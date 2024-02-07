@@ -46,7 +46,7 @@ function AssetTable(props) {
             }
           }}
           key={token}
-          tokenName={token}
+          daoId={token}
           connectWeb3={connectWeb3}
           web3Global={web3Global}
         />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchCommon } from "./daoes";
+import { getDaoSummary } from "./daoes";
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
 export const useTokenDatas = (tokenAddresses) => {
@@ -37,7 +37,7 @@ export const useTokenData = (
 
   useEffect(() => {
     const fn = async () => {
-      const data = await fetchCommon(tokenAddress, options.precision);
+      const data = await getDaoSummary(tokenAddress, options.precision);
       setData(data);
     };
     setData(null);

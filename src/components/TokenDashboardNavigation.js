@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import { fetchTokens } from "./widgets/daoes";
+import { getAvailableDaos } from "./widgets/daoes";
 import { tokenInfo } from "./data/tokens";
 
 function TokenDashboardNavigation() {
-  const [tokens, setTokens] = useState([]);
+  const [daoIds, setDaoIds] = useState([]);
 
   useEffect(() => {
     let isCancelled = false;
     const fn = async () => {
-      const daoTokens = await fetchTokens();
+      const daoIds = await getAvailableDaos();
       if (!isCancelled) {
-        setTokens(daoTokens);
+        setDaoIds(daoIds);
       }
     };
     fn();
@@ -23,7 +23,7 @@ function TokenDashboardNavigation() {
 
   return (
     <div className="breadcrumbs">
-      {tokens.map((token) => (
+      {daoIds.map((token) => (
         <NavLink
           key={token}
           className="breadcrumbs__item"

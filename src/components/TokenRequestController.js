@@ -31,18 +31,19 @@ function toBigNumberString(num) {
 }
 
 function TokenRequestController(props) {
-  const { initialToken, initialCurrency, connectWeb3, Component } = props;
+  const { dao, connectWeb3, Component } = props;
+  const { id: daoId, withdraw_enabled: withdrawEnabled } = dao;
+  const acceptableTokens = dao.dao_acceptable_tokens.map(
+    (token) => token.token.symbol
+  );
 
-  const [requestedToken, setRequestedToken] = useState(initialToken);
-  const [offeredToken, setOfferedToken] = useState(initialCurrency);
+  const [requestedToken, setRequestedToken] = useState(daoId);
   const [requestedAmount, setRequestedAmount] = useState(0);
   const [offeredAmount, setOfferedAmount] = useState(0);
+  const [offeredToken, setOfferedToken] = useState(acceptableTokens[0]);
   const [errorMessage, setErrorMessage] = useState();
   const [smallSum, setSmallSum] = useState(false);
-  const { loading, merged } = useTokenData(
-    tokenInfo[requestedToken].address,
-    false
-  );
+  const { loading, merged } = useTokenData(dao.token.contract, false);
 
   useEffect(() => {
     if (!loading) {
@@ -67,7 +68,6 @@ function TokenRequestController(props) {
     !loading;
 
   const canPerformTokenWithdraw = canPerformTokenRequest;
-  const withdrawEnabled = tokenInfo[requestedToken].withdrawEnabled;
 
   const doSetRequestedAmount = (amount) => {
     const actualAmount = amount || 0;
@@ -632,6 +632,7 @@ function TokenRequestController(props) {
       errorMessage={errorMessage}
       smallSum={smallSum}
       setOfferedAmountBlastDao={doSetOfferedAmounBlastDao}
+      acceptableTokens={acceptableTokens}
     />
   );
 }

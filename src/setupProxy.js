@@ -6,7 +6,7 @@ const api = () => {
     return "https://berezka.io";
   } else {
     console.log(`Using DEV API URL`);
-    return "https://dev.berezka.xyz";
+    return "https://dev-app-berezka.weezi.io/";
   }
 };
 

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import parse from "html-react-parser";
-import { fetchDaoByName } from "./widgets/daoes";
 import OnChainValidation from "./OnChainValidation";
 import TokenRequestController from "./TokenRequestController";
 import TokenRequestEmbedded from "./TokenRequestEmbedded";
@@ -8,16 +7,8 @@ import { checkIsBlastDao } from "./widgets/checkIsBlastDao";
 import { TokenRequestEmbeddedBlastDao } from "./TokenRequestEmbeddedBlastDao";
 
 function AssetTableRowDropdown(props) {
-  const { daoId, connectWeb3, legacy, web3Global } = props;
-  const [dao, setDao] = useState();
+  const { dao, connectWeb3, legacy, web3Global } = props;
   const isBlastDao = checkIsBlastDao(dao?.id);
-  useEffect(() => {
-    const fn = async () => {
-      const result = await fetchDaoByName(daoId);
-      setDao(result);
-    };
-    fn();
-  }, [daoId]);
 
   if (!dao) {
     return <></>;
@@ -53,7 +44,7 @@ function AssetTableRowDropdown(props) {
           </tr>
           {!legacy ? (
             <TokenRequestController
-              initialToken={daoId}
+              dao={dao}
               initialCurrency={"usdt"}
               connectWeb3={connectWeb3}
               web3Global={web3Global}
@@ -62,7 +53,7 @@ function AssetTableRowDropdown(props) {
               }
             />
           ) : (
-            <OnChainValidation requestedToken={daoId} />
+            <OnChainValidation requestedToken={dao.id} />
           )}
         </tbody>
       </table>

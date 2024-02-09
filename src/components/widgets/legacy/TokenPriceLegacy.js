@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchCommon } from "../daoes";
+import { getDaoSummary } from "../daoes";
 import { round } from "../round";
 
 const TokenPriceLegacy = (props) => {
@@ -8,7 +8,7 @@ const TokenPriceLegacy = (props) => {
   const [historicalData, setHistoricalData] = useState();
   useEffect(() => {
     const fn = async () => {
-      const historicalData = await fetchCommon(tokenAddress);
+      const historicalData = await getDaoSummary(tokenAddress);
       setHistoricalData(historicalData);
     };
     fn();

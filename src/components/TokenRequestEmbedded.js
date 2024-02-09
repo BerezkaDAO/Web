@@ -1,5 +1,5 @@
 import React from "react";
-import { tokenInfo, currencies, currencyInfo } from "./data/tokens";
+import { tokenInfo } from "./data/tokens";
 import { exchanges, tokenExchanges } from "./data/exchanges";
 import Select from "./Select";
 
@@ -21,11 +21,8 @@ function Deposit(props) {
 }
 
 function Withdraw(props) {
-  const {
-    withdrawEnabled,
-    canPerformTokenWithdraw,
-    performTokenWithdraw,
-  } = props;
+  const { withdrawEnabled, canPerformTokenWithdraw, performTokenWithdraw } =
+    props;
   return (
     <>
       {withdrawEnabled ? (
@@ -64,6 +61,7 @@ function TokenRequestEmbedded(props) {
     errorMessage,
     withdrawEnabled,
     smallSum,
+    acceptableTokens,
   } = props;
 
   return (
@@ -94,7 +92,6 @@ function TokenRequestEmbedded(props) {
               setValue={setRequestedToken}
               options={[requestedToken]}
               valueDisplay={(token) => tokenInfo[token].symbol}
-              valueImage={(_) => "logo"}
             />
           </div>
         </td>
@@ -114,9 +111,8 @@ function TokenRequestEmbedded(props) {
               <Select
                 value={offeredToken}
                 setValue={setOfferedToken}
-                options={currencies}
-                valueDisplay={(currency) => currencyInfo[currency].symbol}
-                valueImage={(currency) => currencyInfo[currency].image}
+                options={acceptableTokens}
+                valueDisplay={(currency) => currency}
               />
             </div>
           </div>

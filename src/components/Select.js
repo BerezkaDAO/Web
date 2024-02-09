@@ -1,7 +1,17 @@
 import React, { useState } from "react";
+import { tokenIcons } from "./data/tokens";
+
+export const getCurrencyIconPath = (symbol) => {
+  const token = tokenIcons[symbol];
+
+  if (!token) {
+    return "";
+  }
+  return `/img/${token.image}.png`;
+};
 
 function Select(props) {
-  const { value, options, setValue, valueDisplay, valueImage } = props;
+  const { value, options, setValue, valueDisplay } = props;
 
   const [selectOpen, setSelectOpen] = useState(false);
 
@@ -24,7 +34,7 @@ function Select(props) {
           readOnly
         />
         <div className="select__value">
-          <img src={`/img/${valueImage(value)}.png`} title alt />
+          <img src={getCurrencyIconPath(value)} title alt="" />
           <span>{valueDisplay(value)}</span>
         </div>
       </div>
@@ -39,7 +49,7 @@ function Select(props) {
             }}
             href
           >
-            <img src={`/img/${valueImage(option)}.png`} title alt />
+            <img src={getCurrencyIconPath(option)} title alt="" />
             <span>{valueDisplay(option)}</span>
           </a>
         ))}

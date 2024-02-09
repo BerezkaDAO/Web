@@ -18,7 +18,7 @@ const DEFAULT_PAGINATION = {
 export const fetchCommonAll = async (tokens) => {
   let result = [];
   for (let token of tokens) {
-    const tokenResult = await fetchCommon(token);
+    const tokenResult = await getDaoSummary(token);
     result = [...result, ...tokenResult];
   }
   return result;
@@ -77,14 +77,16 @@ export const fetchDaoByName = async (name) => {
   return fetchDao(tokenInfo[name].address);
 };
 
-export const fetchTokens = async () => {
+export const getAvailableDaos = async () => {
   const daoes = await fetchDaos();
-  const tokenAddresses = daoes.map((dao) => dao.token.contract.toLowerCase());
-  const tokenNames = Object.keys(tokenInfo);
-  const remoteTokenNames = tokenNames.filter((token) =>
-    tokenAddresses.includes(tokenInfo[token].address.toLowerCase())
+  const contractAddresses = daoes.map((dao) =>
+    dao.token.contract.toLowerCase()
   );
-  return tokens.filter((t) => remoteTokenNames.includes(t));
+  const tokenNames = Object.keys(tokenInfo);
+  const availableContracts = tokenNames.filter((token) =>
+    contractAddresses.includes(tokenInfo[token].address.toLowerCase())
+  );
+  return tokens.filter((t) => availableContracts.includes(t));
 };
 
 export const fetchTokensFull = async () => {
@@ -123,7 +125,7 @@ export const fetchTokensFull = async () => {
   return result;
 };
 
-export const fetchCommon = async (tokenAddress, precision = 3) => {
+export const getDaoSummary = async (tokenAddress, precision = 3) => {
   const dao = await fetchDao(tokenAddress);
   if (!dao) {
     return [

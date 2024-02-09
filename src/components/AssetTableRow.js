@@ -7,9 +7,9 @@ import TokenPriceLegacy from "./widgets/legacy/TokenPriceLegacy";
 import TokenPrice from "./widgets/TokenPrice";
 
 function AssetTableRow(props) {
-  const { daoId, connectWeb3, open, onClick, legacy, web3Global } = props;
+  const { dao, connectWeb3, open, onClick, legacy, web3Global } = props;
 
-  const { address, tableName } = tokenInfo[daoId];
+  const { address, tableName } = tokenInfo[dao.id];
 
   const myRef = useRef(null);
   const location = useLocation();
@@ -18,7 +18,7 @@ function AssetTableRow(props) {
       myRef &&
       location.hash &&
       location.hash.endsWith(`#${defaultToken[0]}`) &&
-      daoId === defaultToken[0]
+      dao.id === defaultToken[0]
     ) {
       setTimeout(() => {
         if (myRef.current) {
@@ -61,7 +61,7 @@ function AssetTableRow(props) {
       <AssetTableRowDropdown
         legacy={legacy}
         connectWeb3={connectWeb3}
-        daoId={daoId}
+        dao={dao}
         web3Global={web3Global}
       />
     </>

@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { currencyInfo } from "./data/tokens";
+import React from "react";
 import { exchanges, tokenExchanges } from "./data/exchanges";
 import Select from "./Select";
 

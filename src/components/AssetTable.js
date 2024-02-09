@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { fetchTokens } from "./widgets/daoes";
+import { fetchDaos, getAvailableDaos } from "./widgets/daoes";
 import { defaultToken } from "./data/tokens";
 import AssetTableRow from "./AssetTableRow";
 import AssetTableHeader from "./AssetTableHeader";
@@ -9,7 +9,7 @@ function AssetTable(props) {
   const { connectWeb3, web3Global } = props;
 
   const [open, setOpen] = useState();
-  const [tokens, setTokens] = useState([]);
+  const [daos, setDaos] = useState([]);
   const location = useLocation();
   useEffect(() => {
     if (location.hash && location.hash.endsWith(`#${defaultToken[0]}`)) {
@@ -18,39 +18,35 @@ function AssetTable(props) {
   }, [location]);
 
   useEffect(() => {
-    let isCancelled = false;
     const fn = async () => {
-      const daoTokens = await fetchTokens();
-      if (!isCancelled) {
-        setTokens(daoTokens);
-      }
+      const daoTokens = await fetchDaos();
+      setDaos(daoTokens);
     };
     fn();
-
-    return () => {
-      isCancelled = true;
-    };
   }, []);
 
   return (
     <div className="section _full main-table _mb">
       <AssetTableHeader />
-      {tokens.map((token) => (
-        <AssetTableRow
-          open={open === token}
-          onClick={() => {
-            if (open === token) {
-              setOpen(null);
-            } else {
-              setOpen(token);
-            }
-          }}
-          key={token}
-          daoId={token}
-          connectWeb3={connectWeb3}
-          web3Global={web3Global}
-        />
-      ))}
+      {daos.map((dao) => {
+        const { id } = dao;
+        return (
+          <AssetTableRow
+            open={open === id}
+            onClick={() => {
+              if (open === id) {
+                setOpen(null);
+              } else {
+                setOpen(id);
+              }
+            }}
+            key={id}
+            dao={dao}
+            connectWeb3={connectWeb3}
+            web3Global={web3Global}
+          />
+        );
+      })}
     </div>
   );
 }

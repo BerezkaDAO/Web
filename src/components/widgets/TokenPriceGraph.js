@@ -29,17 +29,13 @@ const renderIncrease = (options) => {
 };
 
 const TokenPriceGraph = (props) => {
-  const { tokenAddress, isAdmin, isLegacy } = props;
+  const { tokenAddress, isAdmin, currencySymbol } = props;
   const precision = isAdmin ? 6 : 3;
 
-  const { loading, merged, graphOnly, excelOnly } = useTokenData(
-    tokenAddress,
-    isLegacy,
-    {
-      precision: 6,
-      computeSeparate: true,
-    }
-  );
+  const { loading, merged, graphOnly, excelOnly } = useTokenData(tokenAddress, {
+    precision: 6,
+    computeSeparate: true,
+  });
 
   const chartRef = useRef(null);
 
@@ -51,10 +47,7 @@ const TokenPriceGraph = (props) => {
     .map((it) => {
       return [
         Number.parseInt(it.dayId) * 1000 * 86400,
-        round(
-          Number.parseFloat((it.priceAfterCarry || it.price) / 10 ** 6),
-          precision
-        ),
+        round(Number.parseFloat(it.priceInBaseToken / 10 ** 6), precision),
       ];
     })
     .reverse();
@@ -72,7 +65,7 @@ const TokenPriceGraph = (props) => {
       .map((it) => {
         return [
           Number.parseInt(it.dayId) * 1000 * 86400,
-          round(Number.parseFloat(it.price / 10 ** 6), precision),
+          round(Number.parseFloat(it.priceInBaseToken / 10 ** 6), precision),
         ];
       })
       .reverse();
@@ -81,10 +74,7 @@ const TokenPriceGraph = (props) => {
       .map((it) => {
         return [
           Number.parseInt(it.dayId) * 1000 * 86400,
-          round(
-            Number.parseFloat((it.priceAfterCarry || it.price) / 10 ** 6),
-            precision
-          ),
+          round(Number.parseFloat(it.priceInBaseToken / 10 ** 6), precision),
         ];
       })
       .reverse();
@@ -164,7 +154,7 @@ const TokenPriceGraph = (props) => {
     },
     yAxis: {
       title: {
-        text: "Price, USD",
+        text: `Price, ${currencySymbol}`,
       },
       opposite: false,
     },

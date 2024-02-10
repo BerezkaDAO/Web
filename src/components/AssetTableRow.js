@@ -4,7 +4,7 @@ import AssetTableRowDropdown from "./AssetTableRowDropdown";
 import { tokenInfo, defaultToken } from "./data/tokens";
 import APY from "./widgets/APY";
 import TokenPriceLegacy from "./widgets/legacy/TokenPriceLegacy";
-import TokenPrice from "./widgets/TokenPrice";
+import { DaoLiquidity } from "./widgets/DaoLiquidity";
 
 function AssetTableRow(props) {
   const { dao, connectWeb3, open, onClick, legacy, web3Global } = props;
@@ -48,7 +48,7 @@ function AssetTableRow(props) {
           {legacy ? (
             <TokenPriceLegacy tokenAddress={address} />
           ) : (
-            <TokenPrice tokenAddress={address} />
+            <DaoLiquidity tokenAddress={address} />
           )}
         </div>
         <div className="main-table__td">

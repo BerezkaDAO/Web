@@ -27,7 +27,6 @@ export const useTokenDatas = (tokenAddresses) => {
 
 export const useTokenData = (
   tokenAddress,
-  isLegacy,
   options = {
     precision: 3,
     computeSeparate: false,

@@ -39,6 +39,7 @@ export const fillTokens = async () => {
   defaultToken[0] = daoes[0].id;
   for (let dao of daoes) {
     tokenInfo[dao.id] = {
+      baseTokenSymbol: dao.base_currency,
       name: dao.display_name,
       fullName: dao.display_name,
       address: dao.token.contract,
@@ -133,10 +134,13 @@ export const getDaoSummary = async (tokenAddress, precision = 3) => {
         date: round(new Date().getTime() / 1000, 0),
         dayId: round(new Date().getTime() / 1000 / 86400, 0),
         price: "0",
+        priceInBaseToken: "0",
         token: tokenAddress.toLowerCase(),
         supply: "0",
         totalPrice: "0",
+        totalPriceInBaseToken: "0",
         totalCarry: "0",
+        totalCarryInBaseToken: "0",
       },
     ];
   }
@@ -155,6 +159,10 @@ export const getDaoSummary = async (tokenAddress, precision = 3) => {
           Number.parseFloat(data.dao_token_price_in_usd) * 10 ** 6,
           precision
         ),
+      priceInBaseToken: round(
+        Number.parseFloat(data.dao_token_price_in_base_token) * 10 ** 6,
+        precision
+      ),
       token: tokenAddress.toLowerCase(),
       supply: round(Number.parseFloat(data.dao_token_amount) * 10 ** 18, 0),
       totalPrice: round(
@@ -163,9 +171,18 @@ export const getDaoSummary = async (tokenAddress, precision = 3) => {
           10 ** 6,
         0
       ),
+      totalPriceInBaseToken: round(
+        Number.parseFloat(data.gross_liquidity_value_in_base_token) *
+          10 ** 18 *
+          10 ** 6,
+        0
+      ),
       totalCarry:
         Number.parseFloat(data.carry_accumulated_value_in_usd) -
         Number.parseFloat(data.carry_out_value_in_usd),
+      totalCarryInBaseToken:
+        Number.parseFloat(data.carry_accumulated_value_in_base_token) -
+        Number.parseFloat(data.carry_out_value_in_base_token),
     };
   });
   return adjusted;

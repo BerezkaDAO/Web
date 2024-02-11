@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { fetchClientToken } from "./clients";
+import { getDaoUserAccount } from "./clients";
 import { checkIsBlastDao } from "./checkIsBlastDao";
 import { useBlastData } from "./useBlastData";
 
 const AccountPortfolioProvider = (props) => {
-  const { token, wallet, childrenLoading, children } = props;
+  const { dao, wallet, childrenLoading, children } = props;
   const [data, setData] = useState();
-  const { blastCurrent, isLoading, blastPrice } = useBlastData(wallet, token);
-  const isBlastDao = checkIsBlastDao(token);
+  const { blastCurrent, isLoading, blastPrice } = useBlastData(
+    wallet,
+    dao.address
+  );
+  const isBlastDao = checkIsBlastDao(dao.address);
 
   useEffect(() => {
     const fn = async () => {
-      const result = await fetchClientToken(wallet, token);
+      const result = await getDaoUserAccount(wallet, dao.id);
 
       setData(result);
     };
     fn();
-  }, [wallet, token]);
+  }, [wallet, dao.address]);
 
   const patcheddata =
     data && isBlastDao
@@ -24,11 +27,10 @@ const AccountPortfolioProvider = (props) => {
           ...data,
           symbol: "points",
           balance: blastCurrent.points,
-          usd: blastCurrent.usd,
+          investedPortfolioValue: blastCurrent.usd,
           lastPrice: blastPrice,
         }
       : data;
-
   if (!patcheddata || isLoading) {
     return <>{childrenLoading()}</>;
   }

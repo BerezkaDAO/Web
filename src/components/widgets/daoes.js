@@ -115,6 +115,7 @@ export const fetchTokensFull = async () => {
     .map((dao) => {
       const isBlastDao = checkIsBlastDao(dao.id);
       return {
+        ...dao,
         address: dao.token.contract.toLowerCase(),
         name: index[dao.token.contract.toLowerCase()].name,
         fullName: index[dao.token.contract.toLowerCase()].fullName,

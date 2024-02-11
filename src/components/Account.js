@@ -4,14 +4,14 @@ import { fetchTokensFull } from "./widgets/daoes";
 
 function Account(props) {
   const { web3Global, address, connectWeb3, setGlobalTotal } = props;
-  const [tokens, setTokens] = useState([]);
+  const [daos, setDaos] = useState([]);
 
   useEffect(() => {
     let isCancelled = false;
     const fn = async () => {
-      const daoTokens = await fetchTokensFull();
+      const daos = await fetchTokensFull();
       if (!isCancelled) {
-        setTokens(daoTokens);
+        setDaos(daos);
       }
     };
     fn();
@@ -36,7 +36,7 @@ function Account(props) {
         ) : (
           <div className="table-wrapper">
             <TokenTableInfo
-              tokens={tokens}
+              daos={daos}
               walletAddress={address}
               web3={web3Global}
               setGlobalTotal={setGlobalTotal}

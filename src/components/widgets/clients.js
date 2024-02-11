@@ -2,40 +2,45 @@ import { fetchCached } from "./cache";
 import { tokenInfo, nameByAddress } from "../data/tokens";
 
 export const fetchClient = async (address) => {
-  const result = await fetchCached(
+  const daosUserAccounts = await fetchCached(
     `/api/v1/public/clients/${address}/info`
   ).then((res) => res.data);
+  console.log("------------ ", daosUserAccounts);
 
-  return result
-    .filter((row) => tokenInfo[row.dao_id])
-    .map((row) => ({
-      daoId: row.dao_id,
-      tableName: tokenInfo[row.dao_id].tableName,
-      symbol: tokenInfo[row.dao_id].symbol,
-      address: tokenInfo[row.dao_id].address,
-      clientAddress: row.client_address,
-      balance: row.client_token_amount,
-      purchasedTokensAmount: row.purchased_tokens_amount,
-      investedPortfolioCalue: row.invested_portfolio_value,
-      avgInvPrice: row.avg_purchase_token_price,
-      lastPrice: row.current_token_price,
-      profitValue: row.profit_value,
-      profitRatio: row.profit_ratio,
-      apy: row.apy_percent,
+  return daosUserAccounts
+    .filter((daoUserAccount) => tokenInfo[daoUserAccount.dao_id])
+    .map((daoUserAccount) => ({
+      daoId: daoUserAccount.dao_id,
+      lastPrice: daoUserAccount.current_token_price,
+      tableName: daoUserAccount.dao_display_name,
+      investedPortfolioValue: daoUserAccount.invested_portfolio_value,
+
+      symbol: tokenInfo[daoUserAccount.dao_id].symbol,
+      address: tokenInfo[daoUserAccount.dao_id].address,
+
+      clientAddress: daoUserAccount.client_address,
+      balance: daoUserAccount.client_token_amount,
+      purchasedTokensAmount: daoUserAccount.purchased_tokens_amount,
+      avgInvPrice: daoUserAccount.avg_purchase_token_price,
+      profitValue: daoUserAccount.profit_value,
+      profitRatio: daoUserAccount.profit_ratio,
+      apy: daoUserAccount.apy_percent,
     }));
 };
 
-export const fetchClientToken = async (address, token) => {
-  const all = await fetchClient(address);
-  const result = all.find(
-    (x) => x.address.toLowerCase() === token.toLowerCase()
+export const getDaoUserAccount = async (address, daoId) => {
+  const daosUserAccounts = await fetchClient(address);
+  const currentDaoAccount = daosUserAccounts.find(
+    (dao) => dao.daoId.toLowerCase() === daoId.toLowerCase()
   );
-  if (result) {
-    return result;
+
+  console.log("daosUserAccounts", daosUserAccounts);
+
+  if (currentDaoAccount) {
+    return currentDaoAccount;
   } else {
-    const daoId = nameByAddress(token);
     const info = tokenInfo[daoId];
-    return {
+    const nullableDaoAccount = {
       daoId,
       tableName: info.tableName,
       symbol: info.symbol,
@@ -43,12 +48,14 @@ export const fetchClientToken = async (address, token) => {
       clientAddress: address,
       balance: 0,
       purchasedTokensAmount: 0,
-      investedPortfolioCalue: 0,
+      investedPortfolioValue: 0,
       avgInvPrice: 0,
       lastPrice: 0,
       profitValue: 0,
       profitRatio: 0,
       apy: 0,
     };
+
+    return nullableDaoAccount;
   }
 };

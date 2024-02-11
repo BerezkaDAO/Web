@@ -6,11 +6,12 @@ import TokenTableValueOutput from "./TokenTableValueOutput";
 
 const RowDataC = (props) => {
   const {
+    baseCurrency,
     tableName,
     symbol,
     address,
     balance,
-    liquidity,
+    investedAmount,
     avgInvPrice,
     lastPrice,
     apy,
@@ -20,32 +21,20 @@ const RowDataC = (props) => {
     totalInvestedAccumulator,
   } = props;
 
-  console.log(`Rendering RowData for 
-        tableName ${tableName} 
-        symbol ${symbol} 
-        address ${address} 
-        balance ${balance} 
-        avgInvPrice ${avgInvPrice} 
-        lastPrice ${lastPrice} 
-        apy ${apy} 
-    `);
-
-  const iAmount = liquidity;
-
   const priceUSD = lastPrice;
 
   const portfolioPrice = balance * priceUSD;
-  const profit = portfolioPrice;
-  const profitPercent = iAmount == 0 ? 0 : (profit / iAmount) * 100;
+  const profit = portfolioPrice - investedAmount;
+  const profitPercent = (profit / investedAmount) * 100;
 
   useEffect(() => {
     setTimeout(() => {
       profitAccumulator(address, profit);
       totalAccumulator(address, portfolioPrice);
       totalProfitAccumulator(address, profit);
-      totalInvestedAccumulator(address, iAmount);
+      totalInvestedAccumulator(address, investedAmount);
     }, 1);
-  }, [profit, portfolioPrice, iAmount]);
+  }, [profit, portfolioPrice, investedAmount]);
 
   return (
     <tr>
@@ -54,9 +43,9 @@ const RowDataC = (props) => {
       <td>
         <TokenTableValueOutput value={balance} render={ftmAmount} />
       </td>
+      <td>{baseCurrency}</td>
       <td>
-        {" "}
-        <TokenTableValueOutput value={iAmount} render={fmtDollatAmount} />
+        <TokenTableValueOutput value={investedAmount} render={ftmAmount} />
       </td>
       <td>
         {" "}
@@ -111,11 +100,12 @@ const RowLoading = (props) => {
       <td>{tableName}</td>
       <td>{symbol}</td>
       <td>...</td>
-      <td>$ ...</td>
-      <td>$ ...</td>
-      <td>$ ...</td>
-      <td>$ ...</td>
-      <td>$ ...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
       <td>... %</td>
       <td>... %</td>
     </tr>
@@ -125,28 +115,26 @@ const RowLoading = (props) => {
 const TokenTableInfoRow = (props) => {
   const {
     walletAddress,
-    token,
+    dao,
     profitAccumulator,
     totalAccumulator,
     totalProfitAccumulator,
     totalInvestedAccumulator,
   } = props;
 
-  console.log(`Rendering TokenTableInfoRow for 
-        token ${token.tableName}
-    `);
   return (
     <AccountPortfolioProvider
-      token={token.address}
+      dao={dao}
       wallet={walletAddress}
-      childrenLoading={() => <RowLoading token={token} />}
+      childrenLoading={() => <RowLoading token={dao} />}
       children={(info) => (
         <RowData
+          baseCurrency={dao.base_currency}
           tableName={info.tableName}
           symbol={info.symbol}
           address={info.address}
           balance={info.balance}
-          liquidity={info.usd}
+          investedAmount={info.investedPortfolioValue}
           avgInvPrice={info.avgInvPrice}
           lastPrice={info.lastPrice}
           apy={info.apy}

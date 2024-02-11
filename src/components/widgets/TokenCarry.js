@@ -3,23 +3,27 @@ import { round } from "./round";
 import { useTokenData } from "./useTokenData";
 
 const TokenCarry = (props) => {
-  const { tokenAddress, separator, dollarSeparator, isLegacy, isAdmin } = props;
-  const { loading, merged } = useTokenData(tokenAddress, isLegacy);
+  const { tokenAddress, separator, inBaseToken, isAdmin } = props;
+  const { loading, merged } = useTokenData(tokenAddress);
 
   if (loading) {
     return <>...</>;
   }
 
-  const amount = loading
-    ? 0
-    : Math.max(
-        isAdmin ? Number.MIN_SAFE_INTEGER : 0,
-        Number.parseInt(round(Number.parseFloat(merged[0].totalCarry), 0))
-      );
+  const currentCarry = inBaseToken
+    ? merged[0].totalCarryInBaseToken
+    : merged[0].totalCarry;
+
+  const prefix = inBaseToken ? "" : `$ `;
+
+  const amount = Math.max(
+    isAdmin ? Number.MIN_SAFE_INTEGER : 0,
+    Number.parseInt(round(Number.parseFloat(currentCarry), 0))
+  );
 
   return (
     <>
-      {`$${dollarSeparator || ""}`}
+      {prefix}
       {amount
         .toFixed(0)
         .toString()

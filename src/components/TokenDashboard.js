@@ -21,14 +21,14 @@ function TokenDashboard(props) {
   return (
     <>
       <div class="info-carry">
-        Accumulated Carry:{" "}
+        {`Accumulated Carry: `}
         <TokenCarry
           tokenAddress={tokenAddress}
-          dollarSeparator=" "
           separator=" "
-          isLegacy={isLegacy}
+          inBaseToken
           isAdmin={isAdmin}
         />
+        {` ${baseCurrency}`}
       </div>
       <div className="info-list grid">
         <div className="info-main grid-col-4 grid-md-12">

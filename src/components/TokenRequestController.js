@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { tokenInfo, currencyInfo } from "./data/tokens";
 import { useTokenData } from "./widgets/useTokenData";
 import { round } from "./widgets/round";
@@ -8,6 +8,9 @@ import DEPOSIT_ABI from "./abi/Deposit";
 import DAO_ABI from "./abi/Dao";
 import ERC20_ABI from "./abi/ERC20";
 import { fireNotification } from "./widgets/notification";
+import { observer } from "mobx-react-lite";
+import { userStore } from "./domen/userStore";
+import { fetchExchangeRate } from "./services/daos";
 
 const WITHDRAW_CONTRACT_TESTNET = " ";
 const WITHDRAW_CONTRACT = "0xCe90D38B084Aad57bc26C5C66F377d6DF7882846";
@@ -32,24 +35,19 @@ function toBigNumberString(num) {
 
 function TokenRequestController(props) {
   const { dao, connectWeb3, Component } = props;
+  const { walletAddress } = userStore;
   const { id: daoId, withdraw_enabled: withdrawEnabled } = dao;
-  const acceptableTokens = dao.dao_acceptable_tokens.map(
+  const acceptableTokensSymbols = dao.dao_acceptable_tokens.map(
     (token) => token.token.symbol
   );
 
   const [requestedToken, setRequestedToken] = useState(daoId);
   const [requestedAmount, setRequestedAmount] = useState(0);
   const [offeredAmount, setOfferedAmount] = useState(0);
-  const [offeredToken, setOfferedToken] = useState(acceptableTokens[0]);
+  const [offeredToken, setOfferedToken] = useState(acceptableTokensSymbols[0]);
   const [errorMessage, setErrorMessage] = useState();
   const [smallSum, setSmallSum] = useState(false);
   const { loading, merged } = useTokenData(dao.token.contract, false);
-
-  useEffect(() => {
-    if (!loading) {
-      doSetRequestedAmount(requestedAmount);
-    }
-  }, [loading, requestedToken]);
 
   useEffect(() => {
     if (
@@ -60,6 +58,15 @@ function TokenRequestController(props) {
     }
   }, [offeredAmount]);
 
+  const tokenContracts = useMemo(() => {
+    const requestContract = tokenInfo[requestedToken].address;
+    const offerContract = dao.dao_acceptable_tokens.find(
+      (token) => token.token.symbol === offeredToken
+    ).token.contract;
+
+    return { requestContract, offerContract };
+  }, [requestedToken, offeredToken, dao]);
+
   const canPerformTokenRequest =
     requestedToken &&
     requestedAmount > 0 &&
@@ -69,36 +76,53 @@ function TokenRequestController(props) {
 
   const canPerformTokenWithdraw = canPerformTokenRequest;
 
-  const doSetRequestedAmount = (amount) => {
-    const actualAmount = amount || 0;
-    setRequestedAmount(actualAmount);
-    if (!loading) {
-      const price =
-        Number.parseFloat(merged[0].priceAfterCarry || merged[0].price) /
-        10 ** 6;
-      setOfferedAmount(round(actualAmount * price, 2));
+  const handleRequestedAmountChange = async (currentAmount) => {
+    setRequestedAmount(currentAmount);
+
+    if (currentAmount > 0) {
+      const { requestContract, offerContract } = tokenContracts;
+
+      const exchange = await fetchExchangeRate({
+        offeredToken: offerContract,
+        requestedToken: requestContract,
+        requestedAmount: currentAmount,
+        callerAddress: walletAddress,
+        daoId,
+      });
+
+      if (exchange.deposit_amount) {
+        setOfferedAmount(round(exchange.deposit_amount, 2));
+      }
     }
   };
 
   const doSetOfferedAmounBlastDao = (amount) => {
     var actualAmount = amount;
     setOfferedAmount(actualAmount);
+
     if (!loading) {
-      const price =
-        Number.parseFloat(merged[0].priceAfterCarry || merged[0].price) /
-        10 ** 6;
+      const price = Number.parseFloat(merged[0].price) / 10 ** 6;
       setRequestedAmount(round(actualAmount / price, 4));
     }
   };
 
-  const doSetOfferedAmount = (amount) => {
-    var actualAmount = amount || 0;
-    setOfferedAmount(actualAmount);
-    if (!loading) {
-      const price =
-        Number.parseFloat(merged[0].priceAfterCarry || merged[0].price) /
-        10 ** 6;
-      setRequestedAmount(round(actualAmount / price, 2));
+  const handleOfferedAmountChange = async (currentAmount) => {
+    setOfferedAmount(currentAmount);
+
+    if (currentAmount > 0) {
+      const { requestContract, offerContract } = tokenContracts;
+
+      const exchange = await fetchExchangeRate({
+        offeredToken: offerContract,
+        requestedToken: requestContract,
+        offeredAmount: currentAmount,
+        callerAddress: walletAddress,
+        daoId,
+      });
+
+      if (exchange.request_amount) {
+        setRequestedAmount(round(exchange.request_amount, 4));
+      }
     }
   };
 
@@ -237,16 +261,6 @@ function TokenRequestController(props) {
   };
 
   const doPerformTokenRequestDirect = async () => {
-    //const isDexEnabled = tokenInfo[requestedToken].isDexEnabled;
-    const minDepositAmount = 0;
-
-    // Check for small sum first
-    //
-    if (/*isDexEnabled && */ offeredAmount < minDepositAmount) {
-      setSmallSum(true);
-      return;
-    }
-
     const [web3, address] = await connectWeb3();
 
     if (web3 && address && canPerformTokenRequest) {
@@ -617,8 +631,8 @@ function TokenRequestController(props) {
     <Component
       setRequestedToken={setRequestedToken}
       setOfferedToken={setOfferedToken}
-      setRequestedAmount={doSetRequestedAmount}
-      setOfferedAmount={doSetOfferedAmount}
+      setRequestedAmount={handleRequestedAmountChange}
+      setOfferedAmount={handleOfferedAmountChange}
       offeredToken={offeredToken}
       requestedAmount={requestedAmount}
       offeredAmount={offeredAmount}
@@ -632,9 +646,9 @@ function TokenRequestController(props) {
       errorMessage={errorMessage}
       smallSum={smallSum}
       setOfferedAmountBlastDao={doSetOfferedAmounBlastDao}
-      acceptableTokens={acceptableTokens}
+      acceptableTokens={acceptableTokensSymbols}
     />
   );
 }
 
-export default TokenRequestController;
+export default observer(TokenRequestController);

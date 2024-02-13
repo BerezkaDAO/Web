@@ -3,7 +3,6 @@ import { tokenIcons } from "./data/tokens";
 
 export const getCurrencyIconPath = (symbol) => {
   const token = tokenIcons[symbol];
-
   if (!token) {
     return "";
   }

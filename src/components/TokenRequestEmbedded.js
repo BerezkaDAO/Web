@@ -84,7 +84,7 @@ function TokenRequestEmbedded(props) {
               required
               value={requestedAmount}
               onChange={(e) =>
-                setRequestedAmount(Number.parseFloat(e.target.value))
+                setRequestedAmount(Number.parseFloat(e.target.value) || 0)
               }
             />
             <Select
@@ -105,7 +105,7 @@ function TokenRequestEmbedded(props) {
                 required
                 value={offeredAmount}
                 onChange={(e) =>
-                  setOfferedAmount(Number.parseFloat(e.target.value))
+                  setOfferedAmount(Number.parseFloat(e.target.value) || 0)
                 }
               />
               <Select

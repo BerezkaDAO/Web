@@ -32,7 +32,7 @@ const RowDataC = (props) => {
       profitAccumulator(address, profit);
       totalAccumulator(address, portfolioPrice);
       totalProfitAccumulator(address, profit);
-      totalInvestedAccumulator(address, investedAmount);
+      totalInvestedAccumulator(address, Number(investedAmount));
     }, 1);
   }, [profit, portfolioPrice, investedAmount]);
 
@@ -49,25 +49,19 @@ const RowDataC = (props) => {
       </td>
       <td>
         {" "}
-        <TokenTableValueOutput
-          value={avgInvPrice}
-          render={fmtDollatAmountSmall}
-        />
+        <TokenTableValueOutput value={avgInvPrice} render={ftmAmount} />
       </td>
       <td className="nowrap">
         {" "}
-        <TokenTableValueOutput value={priceUSD} render={fmtDollatAmountSmall} />
+        <TokenTableValueOutput value={priceUSD} render={ftmAmount} />
       </td>
       <td className="nowrap">
         {" "}
-        <TokenTableValueOutput
-          value={portfolioPrice}
-          render={fmtDollatAmount}
-        />
+        <TokenTableValueOutput value={portfolioPrice} render={ftmAmount} />
       </td>
       <td>
         {" "}
-        <TokenTableValueOutput value={profit} render={fmtDollatAmount} />
+        <TokenTableValueOutput value={profit} render={ftmAmount} />
       </td>
       <td>
         {" "}

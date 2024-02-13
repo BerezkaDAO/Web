@@ -5,7 +5,6 @@ export const fetchClient = async (address) => {
   const daosUserAccounts = await fetchCached(
     `/api/v1/public/clients/${address}/info`
   ).then((res) => res.data);
-  console.log("------------ ", daosUserAccounts);
 
   return daosUserAccounts
     .filter((daoUserAccount) => tokenInfo[daoUserAccount.dao_id])
@@ -33,8 +32,6 @@ export const getDaoUserAccount = async (address, daoId) => {
   const currentDaoAccount = daosUserAccounts.find(
     (dao) => dao.daoId.toLowerCase() === daoId.toLowerCase()
   );
-
-  console.log("daosUserAccounts", daosUserAccounts);
 
   if (currentDaoAccount) {
     return currentDaoAccount;

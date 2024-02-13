@@ -70,7 +70,7 @@ const TokenTableInfo = (props) => {
     totalInvested == 0 ? 0 : (totalProfit / totalInvested) * 100;
 
   return (
-    <table class="table table-account">
+    <table className="table table-account">
       <thead>
         <tr>
           <th rowSpan={2}>Product</th>
@@ -94,7 +94,7 @@ const TokenTableInfo = (props) => {
       <tbody>
         {daos.map((dao) => (
           <TokenTableInfoRow
-            key={dao.address}
+            key={dao.id}
             dao={dao}
             walletAddress={walletAddress}
             web3={web3}

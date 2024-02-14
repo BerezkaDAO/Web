@@ -4,7 +4,7 @@ import { tokenIcons } from "./data/tokens";
 export const getCurrencyIconPath = (symbol) => {
   const token = tokenIcons[symbol];
   if (!token) {
-    return "";
+    return `/img/logo.png`;
   }
   return `/img/${token.image}.png`;
 };

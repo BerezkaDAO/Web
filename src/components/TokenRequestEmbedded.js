@@ -105,12 +105,18 @@ function TokenRequestEmbedded(props) {
                 required
                 value={offeredAmount}
                 onChange={(e) =>
-                  setOfferedAmount(Number.parseFloat(e.target.value) || 0)
+                  setOfferedAmount(
+                    Number.parseFloat(e.target.value) || 0,
+                    offeredToken
+                  )
                 }
               />
               <Select
                 value={offeredToken}
-                setValue={setOfferedToken}
+                setValue={(tokenSymbol) => {
+                  setOfferedToken(tokenSymbol);
+                  setOfferedAmount(offeredAmount, tokenSymbol);
+                }}
                 options={acceptableTokens}
                 valueDisplay={(currency) => currency}
               />

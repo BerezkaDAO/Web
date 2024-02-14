@@ -4,12 +4,12 @@ import AssetTableRowDropdown from "./AssetTableRowDropdown";
 import { tokenInfo, defaultToken } from "./data/tokens";
 import APY from "./widgets/APY";
 import TokenPriceLegacy from "./widgets/legacy/TokenPriceLegacy";
-import TokenPrice from "./widgets/TokenPrice";
+import { DaoLiquidity } from "./widgets/DaoLiquidity";
 
 function AssetTableRow(props) {
-  const { tokenName, connectWeb3, open, onClick, legacy, web3Global } = props;
+  const { dao, connectWeb3, open, onClick, legacy, web3Global } = props;
 
-  const { address, tableName } = tokenInfo[tokenName];
+  const { address, tableName } = tokenInfo[dao.id];
 
   const myRef = useRef(null);
   const location = useLocation();
@@ -18,7 +18,7 @@ function AssetTableRow(props) {
       myRef &&
       location.hash &&
       location.hash.endsWith(`#${defaultToken[0]}`) &&
-      tokenName === defaultToken[0]
+      dao.id === defaultToken[0]
     ) {
       setTimeout(() => {
         if (myRef.current) {
@@ -48,15 +48,11 @@ function AssetTableRow(props) {
           {legacy ? (
             <TokenPriceLegacy tokenAddress={address} />
           ) : (
-            <TokenPrice tokenAddress={address} />
+            <DaoLiquidity tokenAddress={address} />
           )}
         </div>
         <div className="main-table__td">
-          {legacy ? (
-            <APY tokenAddress={address} decimals={0} />
-          ) : (
-            <APY tokenAddress={address} decimals={0} />
-          )}
+          <APY tokenAddress={address} decimals={0} />
         </div>
         <div className="main-table__td">
           <div className="main-table__dropdown-btn" ref={myRef} />
@@ -65,7 +61,7 @@ function AssetTableRow(props) {
       <AssetTableRowDropdown
         legacy={legacy}
         connectWeb3={connectWeb3}
-        tokenName={tokenName}
+        dao={dao}
         web3Global={web3Global}
       />
     </>

@@ -1,5 +1,5 @@
 import React from "react";
-import { tokenInfo, currencies, currencyInfo } from "./data/tokens";
+import { tokenInfo } from "./data/tokens";
 import { exchanges, tokenExchanges } from "./data/exchanges";
 import Select from "./Select";
 
@@ -21,11 +21,8 @@ function Deposit(props) {
 }
 
 function Withdraw(props) {
-  const {
-    withdrawEnabled,
-    canPerformTokenWithdraw,
-    performTokenWithdraw,
-  } = props;
+  const { withdrawEnabled, canPerformTokenWithdraw, performTokenWithdraw } =
+    props;
   return (
     <>
       {withdrawEnabled ? (
@@ -64,6 +61,7 @@ function TokenRequestEmbedded(props) {
     errorMessage,
     withdrawEnabled,
     smallSum,
+    acceptableTokens,
   } = props;
 
   return (
@@ -86,7 +84,7 @@ function TokenRequestEmbedded(props) {
               required
               value={requestedAmount}
               onChange={(e) =>
-                setRequestedAmount(Number.parseFloat(e.target.value))
+                setRequestedAmount(Number.parseFloat(e.target.value) || 0)
               }
             />
             <Select
@@ -94,7 +92,6 @@ function TokenRequestEmbedded(props) {
               setValue={setRequestedToken}
               options={[requestedToken]}
               valueDisplay={(token) => tokenInfo[token].symbol}
-              valueImage={(_) => "logo"}
             />
           </div>
         </td>
@@ -108,15 +105,20 @@ function TokenRequestEmbedded(props) {
                 required
                 value={offeredAmount}
                 onChange={(e) =>
-                  setOfferedAmount(Number.parseFloat(e.target.value))
+                  setOfferedAmount(
+                    Number.parseFloat(e.target.value) || 0,
+                    offeredToken
+                  )
                 }
               />
               <Select
                 value={offeredToken}
-                setValue={setOfferedToken}
-                options={currencies}
-                valueDisplay={(currency) => currencyInfo[currency].symbol}
-                valueImage={(currency) => currencyInfo[currency].image}
+                setValue={(tokenSymbol) => {
+                  setOfferedToken(tokenSymbol);
+                  setOfferedAmount(offeredAmount, tokenSymbol);
+                }}
+                options={acceptableTokens}
+                valueDisplay={(currency) => currency}
               />
             </div>
           </div>

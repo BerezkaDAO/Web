@@ -4,7 +4,7 @@ import TokenTableInfoRow from "./TokenTableInfoRow";
 import TokenTableValueOutput from "./TokenTableValueOutput";
 
 const TokenTableInfo = (props) => {
-  const { tokens, walletAddress, web3, setGlobalTotal, profitAccumulator } =
+  const { daos, walletAddress, web3, setGlobalTotal, profitAccumulator } =
     props;
 
   const [total, setTotal] = useState(0);
@@ -70,13 +70,14 @@ const TokenTableInfo = (props) => {
     totalInvested == 0 ? 0 : (totalProfit / totalInvested) * 100;
 
   return (
-    <table class="table table-account">
+    <table className="table table-account">
       <thead>
         <tr>
           <th rowSpan={2}>Product</th>
           <th rowSpan={2}>Token</th>
           <th rowSpan={2}>Amount</th>
-          <th rowSpan={2}>Invested amount, USD</th>
+          <th rowSpan={2}>Nominated&nbsp;in</th>
+          <th rowSpan={2}>Invested amount</th>
           <th rowSpan={2}>AVG purchase price</th>
           <th className="_large" colSpan={5}>
             Current value
@@ -91,10 +92,10 @@ const TokenTableInfo = (props) => {
         </tr>
       </thead>
       <tbody>
-        {tokens.map((token) => (
+        {daos.map((dao) => (
           <TokenTableInfoRow
-            key={token.address}
-            token={token}
+            key={dao.id}
+            dao={dao}
             walletAddress={walletAddress}
             web3={web3}
             profitAccumulator={profitAccumulator}
@@ -107,6 +108,7 @@ const TokenTableInfo = (props) => {
       <tfoot>
         <tr>
           <td>TOTAL</td>
+          <td />
           <td />
           <td />
           <td>

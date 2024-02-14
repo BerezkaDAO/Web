@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { tokenInfo, currencyInfo } from "./data/tokens";
 import { useTokenData } from "./widgets/useTokenData";
 import { round } from "./widgets/round";
@@ -8,16 +8,20 @@ import DEPOSIT_ABI from "./abi/Deposit";
 import DAO_ABI from "./abi/Dao";
 import ERC20_ABI from "./abi/ERC20";
 import { fireNotification } from "./widgets/notification";
+import { observer } from "mobx-react-lite";
+import { userStore } from "./domen/userStore";
+import { fetchExchangeRate } from "./services/daos";
+import Web3 from "web3";
 
-const WITHDRAW_CONTRACT_TESTNET = " ";
+// const WITHDRAW_CONTRACT_TESTNET = " ";
 const WITHDRAW_CONTRACT = "0xCe90D38B084Aad57bc26C5C66F377d6DF7882846";
-const DEPOSIT_CONTRACT_TESTNET = "0x5E1d4cA33609681e46D7b1b81DF9e0C58fc8aBB4";
+// const DEPOSIT_CONTRACT_TESTNET = "0x5E1d4cA33609681e46D7b1b81DF9e0C58fc8aBB4";
 const DEPOSIT_CONTRACT = "0xFb60632ec2508f7576843aca031ff6b4ecBC1Ab4";
 const TOKEN_REQUST_MIN_AMOUNT = 2900;
 
-const RINKEBY_TETSTNET_DAI_TOKEN = "0xc7ad46e0b8a400bb3c915120d284aafba8fc4735";
-const RINKEBY_TETSTNET_USDT_TOKEN =
-  "0x9365a9d59fEfe5A6387F0aec87847E39a9B6DAB1";
+// const RINKEBY_TETSTNET_DAI_TOKEN = "0xc7ad46e0b8a400bb3c915120d284aafba8fc4735";
+// const RINKEBY_TETSTNET_USDT_TOKEN =
+//   "0x9365a9d59fEfe5A6387F0aec87847E39a9B6DAB1";
 
 function toBigNumberString(num) {
   return ("" + +num).replace(
@@ -31,24 +35,20 @@ function toBigNumberString(num) {
 }
 
 function TokenRequestController(props) {
-  const { initialToken, initialCurrency, connectWeb3, Component } = props;
-
-  const [requestedToken, setRequestedToken] = useState(initialToken);
-  const [offeredToken, setOfferedToken] = useState(initialCurrency);
-  const [requestedAmount, setRequestedAmount] = useState(0);
-  const [offeredAmount, setOfferedAmount] = useState(0);
-  const [errorMessage, setErrorMessage] = useState();
-  const [smallSum, setSmallSum] = useState(false);
-  const { loading, merged } = useTokenData(
-    tokenInfo[requestedToken].address,
-    false
+  const { dao, connectWeb3, Component } = props;
+  const { walletAddress } = userStore;
+  const { id: daoId, withdraw_enabled: withdrawEnabled } = dao;
+  const acceptableTokensSymbols = dao.dao_acceptable_tokens.map(
+    (token) => token.token.symbol
   );
 
-  useEffect(() => {
-    if (!loading) {
-      doSetRequestedAmount(requestedAmount);
-    }
-  }, [loading, requestedToken]);
+  const [requestedToken, setRequestedToken] = useState(daoId);
+  const [requestedAmount, setRequestedAmount] = useState(0);
+  const [offeredAmount, setOfferedAmount] = useState(0);
+  const [offeredToken, setOfferedToken] = useState(acceptableTokensSymbols[0]);
+  const [errorMessage, setErrorMessage] = useState();
+  const [smallSum, setSmallSum] = useState(false);
+  const { loading, merged } = useTokenData(dao.token.contract, false);
 
   useEffect(() => {
     if (
@@ -59,6 +59,37 @@ function TokenRequestController(props) {
     }
   }, [offeredAmount]);
 
+  const getTokenContracts = (requestToken, offerToken) => {
+    const requestContract = tokenInfo[requestToken].address;
+    const offerContract = dao.dao_acceptable_tokens.find(
+      (token) => token.token.symbol === offerToken
+    ).token.contract;
+
+    return { requestContract, offerContract };
+  };
+
+  const tokenDecimals = useMemo(() => {
+    const BN = new Web3().utils.BN;
+
+    const requestedAmountDecimals = new BN(requestedAmount * 100).mul(
+      new BN(10).pow(new BN(16))
+    );
+    const offeredTokenDecimals = dao.dao_acceptable_tokens.find(
+      (token) => token.token.symbol === offeredToken
+    ).token.decimals;
+
+    const offeredAmountDecimals = new BN(offeredAmount * 100).mul(
+      new BN(10).pow(new BN(offeredTokenDecimals - 2))
+    );
+
+    return {
+      requestedAmountDecimals,
+      offeredAmountDecimals,
+      requestedTokenDecimals: 18,
+      offeredTokenDecimals,
+    };
+  }, [offeredToken, offeredAmount, requestedAmount, dao]);
+
   const canPerformTokenRequest =
     requestedToken &&
     requestedAmount > 0 &&
@@ -67,38 +98,60 @@ function TokenRequestController(props) {
     !loading;
 
   const canPerformTokenWithdraw = canPerformTokenRequest;
-  const withdrawEnabled = tokenInfo[requestedToken].withdrawEnabled;
 
-  const doSetRequestedAmount = (amount) => {
-    const actualAmount = amount || 0;
-    setRequestedAmount(actualAmount);
-    if (!loading) {
-      const price =
-        Number.parseFloat(merged[0].priceAfterCarry || merged[0].price) /
-        10 ** 6;
-      setOfferedAmount(round(actualAmount * price, 2));
+  const handleRequestedAmountChange = async (currentAmount) => {
+    setRequestedAmount(currentAmount);
+
+    if (currentAmount > 0) {
+      const { requestContract, offerContract } = getTokenContracts(
+        requestedToken,
+        offeredToken
+      );
+
+      const exchange = await fetchExchangeRate({
+        offeredToken: offerContract,
+        requestedToken: requestContract,
+        requestedAmount: currentAmount,
+        callerAddress: walletAddress,
+        daoId,
+      });
+
+      if (exchange.deposit_amount) {
+        setOfferedAmount(round(exchange.deposit_amount, 2));
+      }
     }
   };
 
   const doSetOfferedAmounBlastDao = (amount) => {
     var actualAmount = amount;
     setOfferedAmount(actualAmount);
+
     if (!loading) {
-      const price =
-        Number.parseFloat(merged[0].priceAfterCarry || merged[0].price) /
-        10 ** 6;
+      const price = Number.parseFloat(merged[0].price) / 10 ** 6;
       setRequestedAmount(round(actualAmount / price, 4));
     }
   };
 
-  const doSetOfferedAmount = (amount) => {
-    var actualAmount = amount || 0;
-    setOfferedAmount(actualAmount);
-    if (!loading) {
-      const price =
-        Number.parseFloat(merged[0].priceAfterCarry || merged[0].price) /
-        10 ** 6;
-      setRequestedAmount(round(actualAmount / price, 2));
+  const handleOfferedAmountChange = async (currentAmount, currentToken) => {
+    setOfferedAmount(currentAmount);
+
+    if (currentAmount > 0) {
+      const { requestContract, offerContract } = getTokenContracts(
+        requestedToken,
+        currentToken
+      );
+
+      const exchange = await fetchExchangeRate({
+        offeredToken: offerContract,
+        requestedToken: requestContract,
+        offeredAmount: currentAmount,
+        callerAddress: walletAddress,
+        daoId,
+      });
+
+      if (exchange.request_amount) {
+        setRequestedAmount(round(exchange.request_amount, 4));
+      }
     }
   };
 
@@ -127,27 +180,35 @@ function TokenRequestController(props) {
 
     if (web3 && address) {
       const BN = web3.utils.BN;
-      const requestedAmountDecimals = new BN(requestedAmount).mul(
-        new BN(10).pow(new BN(18))
+
+      const { offeredAmountDecimals, requestedAmountDecimals } = tokenDecimals;
+
+      const { offerContract: offeredTokenAddress } = getTokenContracts(
+        requestedToken,
+        offeredToken
       );
-      const offeredAmountDecimals = new BN(offeredAmount).mul(
-        new BN(10).pow(new BN(currencyInfo[offeredToken].decimals))
-      );
-      let offeredTokenAddress = currencyInfo[offeredToken].address;
+
+      // const requestedAmountDecimals = new BN(requestedAmount).mul(
+      //   new BN(10).pow(new BN(18))
+      // );
+      // const offeredAmountDecimals = new BN(offeredAmount).mul(
+      //   new BN(10).pow(new BN(currencyInfo[offeredToken].decimals))
+      // );
+      // let offeredTokenAddress = currencyInfo[offeredToken].address;
       const daoAddress = tokenInfo[requestedToken].dao;
 
-      const network_id = await web3.eth.net.getId();
-      if (network_id === 4) {
-        // Rinkeby testnet
-        if (offeredToken === "dai") {
-          offeredTokenAddress = RINKEBY_TETSTNET_DAI_TOKEN;
-        } else if (offeredToken === "usdt") {
-          offeredTokenAddress = RINKEBY_TETSTNET_USDT_TOKEN;
-        } else {
-          setErrorMessage("In testnet, only DAI & USDT withdrawal is allowed");
-          return;
-        }
-      }
+      // const network_id = await web3.eth.net.getId();
+      // if (network_id === 4) {
+      //   // Rinkeby testnet
+      //   if (offeredToken === "dai") {
+      //     offeredTokenAddress = RINKEBY_TETSTNET_DAI_TOKEN;
+      //   } else if (offeredToken === "usdt") {
+      //     offeredTokenAddress = RINKEBY_TETSTNET_USDT_TOKEN;
+      //   } else {
+      //     setErrorMessage("In testnet, only DAI & USDT withdrawal is allowed");
+      //     return;
+      //   }
+      // }
 
       // Check eth balance and offered token balance
       //
@@ -237,46 +298,47 @@ function TokenRequestController(props) {
   };
 
   const doPerformTokenRequestDirect = async () => {
-    //const isDexEnabled = tokenInfo[requestedToken].isDexEnabled;
-    const minDepositAmount = 0;
-
-    // Check for small sum first
-    //
-    if (/*isDexEnabled && */ offeredAmount < minDepositAmount) {
-      setSmallSum(true);
-      return;
-    }
-
     const [web3, address] = await connectWeb3();
 
     if (web3 && address && canPerformTokenRequest) {
+      const {
+        offeredAmountDecimals,
+        requestedAmountDecimals,
+        offeredTokenDecimals,
+        requestedTokenDecimals,
+      } = tokenDecimals;
+
+      const {
+        requestContract: requestedTokenAddress,
+        offerContract: offeredTokenAddress,
+      } = getTokenContracts(requestedToken, offeredToken);
+
       const BN = web3.utils.BN;
-      const offeredAmountDecimals = new BN(offeredAmount).mul(
-        new BN(10).pow(new BN(currencyInfo[offeredToken].decimals))
-      );
-      const requestedAmountDecimals = new BN(requestedAmount * 100).mul(
-        new BN(10).pow(new BN(16))
-      );
-      let requestedTokenAddress = tokenInfo[requestedToken].address;
-      let offeredTokenAddress = currencyInfo[offeredToken].address;
+      // const offeredAmountDecimals = new BN(offeredAmount).mul(
+      //   new BN(10).pow(new BN(currencyInfo[offeredToken].decimals))
+      // );
+      // const requestedAmountDecimals = new BN(requestedAmount * 100).mul(
+      //   new BN(10).pow(new BN(16))
+      // );
+
       const requestedTokenSymbol = tokenInfo[requestedToken].symbol;
-      const offeredTokenSymbol = currencyInfo[offeredToken].symbol;
+      const offeredTokenSymbol = offeredToken;
       let agentAddress = tokenInfo[requestedToken].withdrawAgent;
 
       const net = await web3.eth.net.getId();
       let depositContractAddress = DEPOSIT_CONTRACT;
-      if (net === 4) {
-        // Rinkeby testnet
-        if (offeredToken === "dai") {
-          offeredTokenAddress = RINKEBY_TETSTNET_DAI_TOKEN;
-        } else if (offeredToken === "usdt") {
-          offeredTokenAddress = RINKEBY_TETSTNET_USDT_TOKEN;
-        } else {
-          setErrorMessage("In testnet, only DAI & USDT withdrawal is allowed");
-          return;
-        }
-        depositContractAddress = DEPOSIT_CONTRACT_TESTNET;
-      }
+      // if (net === 4) {
+      //   // Rinkeby testnet
+      //   if (offeredToken === "dai") {
+      //     offeredTokenAddress = RINKEBY_TETSTNET_DAI_TOKEN;
+      //   } else if (offeredToken === "usdt") {
+      //     offeredTokenAddress = RINKEBY_TETSTNET_USDT_TOKEN;
+      //   } else {
+      //     setErrorMessage("In testnet, only DAI & USDT withdrawal is allowed");
+      //     return;
+      //   }
+      //   depositContractAddress = DEPOSIT_CONTRACT_TESTNET;
+      // }
 
       // Check eth balance and offered token balance
       //
@@ -380,7 +442,7 @@ function TokenRequestController(props) {
             amount:
               Number.parseInt(
                 requestedAmountDecimals
-                  .div(new BN(10).pow(new BN(16)))
+                  .div(new BN(10).pow(new BN(requestedTokenDecimals)))
                   .toString(10)
               ) / 100,
             token: requestedTokenSymbol.toUpperCase(),
@@ -388,22 +450,14 @@ function TokenRequestController(props) {
             stable_amount:
               Number.parseInt(
                 offeredAmountDecimals
-                  .div(
-                    new BN(10).pow(
-                      new BN(currencyInfo[offeredToken].decimals - 2)
-                    )
-                  )
+                  .div(new BN(10).pow(new BN(offeredTokenDecimals - 2)))
                   .toString(10)
               ) / 100,
             current_stable_amount:
               Number.parseInt(
                 web3.utils
                   .toBN(agentBalance)
-                  .div(
-                    new BN(10).pow(
-                      new BN(currencyInfo[offeredToken].decimals - 2)
-                    )
-                  )
+                  .div(new BN(10).pow(new BN(offeredTokenDecimals - 2)))
                   .toString(10)
               ) / 100,
             network: network,
@@ -420,33 +474,50 @@ function TokenRequestController(props) {
 
     if (web3 && address && canPerformTokenWithdraw) {
       const BN = web3.utils.BN;
-      const requestedAmountDecimals = new BN(requestedAmount * 100).mul(
-        new BN(10).pow(new BN(16))
-      );
-      const offeredAmountDecimals = new BN(offeredAmount * 100).mul(
-        new BN(10).pow(new BN(currencyInfo[offeredToken].decimals - 2))
-      );
+      // const requestedAmountDecimals = new BN(requestedAmount * 100).mul(
+      //   new BN(10).pow(new BN(16))
+      // );
+      // const offeredAmountDecimals = new BN(offeredAmount * 100).mul(
+      //   new BN(10).pow(new BN(currencyInfo[offeredToken].decimals - 2))
+      // );
+      const {
+        offeredAmountDecimals,
+        requestedAmountDecimals,
+        offeredTokenDecimals,
+        requestedTokenDecimals,
+      } = tokenDecimals;
+
+      const {
+        requestContract: requestedTokenAddress,
+        offerContract: offeredTokenAddress,
+      } = getTokenContracts(requestedToken, offeredToken);
 
       const net = await web3.eth.net.getId();
 
-      let offeredTokenAddress = currencyInfo[offeredToken].address;
-      let requestedTokenAddress = tokenInfo[requestedToken].address;
+      // let offeredTokenAddress =
+      //   currencyInfo[offeredToken.toLowerCase()].address;
+      // let requestedTokenAddress = tokenInfo[requestedToken].address;
+
       let agentAddress = tokenInfo[requestedToken].withdrawAgent;
+
       const requestedTokenSymbol = tokenInfo[requestedToken].symbol;
-      const offeredTokenSymbol = currencyInfo[offeredToken].symbol;
+      const offeredTokenSymbol =
+        currencyInfo[offeredToken.toLowerCase()].symbol;
+
       let withdrawContractAddress = WITHDRAW_CONTRACT;
-      if (net === 4) {
-        // Rinkeby testnet
-        if (offeredToken === "dai") {
-          offeredTokenAddress = RINKEBY_TETSTNET_DAI_TOKEN;
-        } else if (offeredToken === "usdt") {
-          offeredTokenAddress = RINKEBY_TETSTNET_USDT_TOKEN;
-        } else {
-          setErrorMessage("In testnet, only DAI & USDT withdrawal is allowed");
-          return;
-        }
-        withdrawContractAddress = WITHDRAW_CONTRACT_TESTNET;
-      }
+
+      // if (net === 4) {
+      //   // Rinkeby testnet
+      //   if (offeredToken === "dai") {
+      //     offeredTokenAddress = RINKEBY_TETSTNET_DAI_TOKEN;
+      //   } else if (offeredToken === "usdt") {
+      //     offeredTokenAddress = RINKEBY_TETSTNET_USDT_TOKEN;
+      //   } else {
+      //     setErrorMessage("In testnet, only DAI & USDT withdrawal is allowed");
+      //     return;
+      //   }
+      //   withdrawContractAddress = WITHDRAW_CONTRACT_TESTNET;
+      // }
 
       // Check eth balance and offered token balance
       //
@@ -493,16 +564,16 @@ function TokenRequestController(props) {
         web3.utils.toBN(agentBalance).lt(offeredAmountDecimals)
       ) {
         setErrorMessage(`Not enough ${offeredTokenSymbol} on agent balance`);
-        let network = "Ethereum [Mainnet]";
-        if (net === 4) {
-          network = "Rinkeby [Testnet]";
-        }
+        const network = "Ethereum [Mainnet]";
+        // if (net === 4) {
+        //   network = "Rinkeby [Testnet]";
+        // }
         const params = {
           address: address,
           amount:
             Number.parseInt(
               requestedAmountDecimals
-                .div(new BN(10).pow(new BN(16)))
+                .div(new BN(10).pow(new BN(requestedTokenDecimals - 2)))
                 .toString(10)
             ) / 100,
           token: requestedTokenSymbol.toUpperCase(),
@@ -510,22 +581,14 @@ function TokenRequestController(props) {
           stable_amount:
             Number.parseInt(
               offeredAmountDecimals
-                .div(
-                  new BN(10).pow(
-                    new BN(currencyInfo[offeredToken].decimals - 2)
-                  )
-                )
+                .div(new BN(10).pow(new BN(offeredTokenDecimals - 2)))
                 .toString(10)
             ) / 100,
           current_stable_amount:
             Number.parseInt(
               web3.utils
                 .toBN(agentBalance)
-                .div(
-                  new BN(10).pow(
-                    new BN(currencyInfo[offeredToken].decimals - 2)
-                  )
-                )
+                .div(new BN(10).pow(new BN(offeredTokenDecimals - 2)))
                 .toString(10)
             ) / 100,
           network: network,
@@ -578,7 +641,7 @@ function TokenRequestController(props) {
             amount:
               Number.parseInt(
                 requestedAmountDecimals
-                  .div(new BN(10).pow(new BN(16)))
+                  .div(new BN(10).pow(new BN(requestedTokenDecimals)))
                   .toString(10)
               ) / 100,
             token: requestedTokenSymbol.toUpperCase(),
@@ -586,22 +649,14 @@ function TokenRequestController(props) {
             stable_amount:
               Number.parseInt(
                 offeredAmountDecimals
-                  .div(
-                    new BN(10).pow(
-                      new BN(currencyInfo[offeredToken].decimals - 2)
-                    )
-                  )
+                  .div(new BN(10).pow(new BN(offeredTokenDecimals - 2)))
                   .toString(10)
               ) / 100,
             current_stable_amount:
               Number.parseInt(
                 web3.utils
                   .toBN(agentBalance)
-                  .div(
-                    new BN(10).pow(
-                      new BN(currencyInfo[offeredToken].decimals - 2)
-                    )
-                  )
+                  .div(new BN(10).pow(new BN(offeredTokenDecimals - 2)))
                   .toString(10)
               ) / 100,
             network: network,
@@ -617,8 +672,8 @@ function TokenRequestController(props) {
     <Component
       setRequestedToken={setRequestedToken}
       setOfferedToken={setOfferedToken}
-      setRequestedAmount={doSetRequestedAmount}
-      setOfferedAmount={doSetOfferedAmount}
+      setRequestedAmount={handleRequestedAmountChange}
+      setOfferedAmount={handleOfferedAmountChange}
       offeredToken={offeredToken}
       requestedAmount={requestedAmount}
       offeredAmount={offeredAmount}
@@ -632,8 +687,9 @@ function TokenRequestController(props) {
       errorMessage={errorMessage}
       smallSum={smallSum}
       setOfferedAmountBlastDao={doSetOfferedAmounBlastDao}
+      acceptableTokens={acceptableTokensSymbols}
     />
   );
 }
 
-export default TokenRequestController;
+export default observer(TokenRequestController);

@@ -2,8 +2,8 @@ import React from "react";
 import { tokenInfo } from "./data/tokens";
 import { admins } from "./data/admin";
 
-import TokenAmount from "./widgets/TokenAmount";
-import TokenPrice from "./widgets/TokenPrice";
+import { TokenAmount } from "./widgets/TokenAmount";
+import { DaoLiquidity } from "./widgets/DaoLiquidity";
 import APY from "./widgets/APY";
 import TokenPriceGraph from "./widgets/TokenPriceGraph";
 import TokenAmountGraph from "./widgets/TokenAmountGraph";
@@ -16,24 +16,25 @@ function TokenDashboard(props) {
   const { web3Global, address } = props;
   const tokenAddress = tokenInfo[token].address;
   const isLegacy = tokenInfo[token].isLegacy;
+  const baseCurrency = tokenInfo[token].baseTokenSymbol;
   const isAdmin = address && admins.includes(address.toLowerCase());
   return (
     <>
       <div class="info-carry">
-        Accumulated Carry:{" "}
+        {`Accumulated Carry: `}
         <TokenCarry
           tokenAddress={tokenAddress}
-          dollarSeparator=" "
           separator=" "
-          isLegacy={isLegacy}
+          inBaseToken
           isAdmin={isAdmin}
         />
+        {` ${baseCurrency}`}
       </div>
       <div className="info-list grid">
         <div className="info-main grid-col-4 grid-md-12">
           <div className="info-main__header">
             <div className="info-main__title">
-              {tokenInfo[token].tableName} token price, USD
+              {tokenInfo[token].tableName} token price, {baseCurrency}
             </div>
             <div className="info-main__icon">
               <i className="icon icon-chart" />
@@ -45,16 +46,18 @@ function TokenDashboard(props) {
         </div>
         <div className={`info-main grid-col-4 grid-md-12`}>
           <div className="info-main__header">
-            <div className="info-main__title">Net portfolio, USD</div>
+            <div className="info-main__title">
+              Net portfolio, {baseCurrency}
+            </div>
             <div className="info-main__icon">
               <i className="icon icon-eye" />
             </div>
           </div>
           <div className="info-main__value">
-            <TokenPrice
+            <DaoLiquidity
               tokenAddress={tokenAddress}
-              dollarSeparator=" "
               separator=" "
+              inBaseToken
               isLegacy={isLegacy}
             />
           </div>
@@ -95,7 +98,9 @@ function TokenDashboard(props) {
 
         <div className="info-general _wide grid-col-8 grid-lg-6 grid-md-12">
           <div className="info-general__header">
-            <div className="info-general__title">Token Price, USD</div>
+            <div className="info-general__title">
+              Token Price, {baseCurrency}
+            </div>
             <div className="info-general__menu">
               <div className="dropdown">
                 <a className="dropdown__button" href>
@@ -111,7 +116,7 @@ function TokenDashboard(props) {
             <TokenPriceGraph
               tokenAddress={tokenAddress}
               isAdmin={isAdmin}
-              isLegacy={isLegacy}
+              currencySymbol={baseCurrency}
             />
           </div>
         </div>
@@ -126,7 +131,9 @@ function TokenDashboard(props) {
         </div>
         <div className="info-general _wide grid-col-8 grid-lg-6 grid-md-12">
           <div className="info-general__header">
-            <div className="info-general__title">Portfolio Value, USD</div>
+            <div className="info-general__title">
+              Portfolio Value, {baseCurrency}
+            </div>
             <div className="info-general__menu">
               <div className="dropdown">
                 <a className="dropdown__button" href>
@@ -139,7 +146,10 @@ function TokenDashboard(props) {
             </div>
           </div>
           <div className="info-general__content">
-            <TokenAmountGraph tokenAddress={tokenAddress} isLegacy={isLegacy} />
+            <TokenAmountGraph
+              tokenAddress={tokenAddress}
+              currencySymbol={baseCurrency}
+            />
           </div>
         </div>
       </div>

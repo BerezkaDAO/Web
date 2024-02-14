@@ -5,6 +5,7 @@ import Web3Modal from "web3modal";
 import CountryBlock from "./CountryBlock";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { fillTokens } from "./widgets/daoes";
+import { userStore } from "./domen/userStore";
 
 const providerOptions = {
   walletconnect: {
@@ -33,6 +34,7 @@ const Application = () => {
     const provider = await web3Modal.connect();
     const web3 = new Web3(provider);
     const address = await web3.currentProvider.enable();
+    userStore.setWalletAddress(address[0]);
     setWeb3Local(web3);
     setAddress(address[0]);
     return [web3, address[0]];
@@ -40,17 +42,14 @@ const Application = () => {
 
   const disconnectWeb3 = useCallback(async () => {
     web3Modal.clearCachedProvider();
+    userStore.setWalletAddress(null);
     setWeb3Local(null);
     setAddress(null);
   });
 
-  useEffect(async () => {
+  useEffect(() => {
     if (web3Modal.cachedProvider != null && web3Modal.cachedProvider != "") {
-      const provider = await web3Modal.connect();
-      const web3 = new Web3(provider);
-      const address = await web3.currentProvider.enable();
-      setWeb3Local(web3);
-      setAddress(address[0]);
+      connectWeb3();
     }
   }, []);
 

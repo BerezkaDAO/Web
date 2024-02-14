@@ -5,8 +5,8 @@ import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
 
 const TokenAmountGraph = (props) => {
-  const { tokenAddress, isLegacy } = props;
-  const { loading, merged } = useTokenData(tokenAddress, isLegacy);
+  const { tokenAddress, currencySymbol } = props;
+  const { loading, merged } = useTokenData(tokenAddress);
 
   if (loading) {
     return <>Loading...</>;
@@ -18,8 +18,10 @@ const TokenAmountGraph = (props) => {
         Number.parseInt(it.date) * 1000,
         round(
           Number.parseInt(
-            round(Number.parseFloat(it.totalPrice) / 10 ** 18 / 10 ** 6, 0) -
-              (it.totalCarry > 0 ? it.totalCarry : 0 || 0)
+            round(
+              Number.parseFloat(it.totalPriceInBaseToken) / 10 ** 18 / 10 ** 6,
+              0
+            ) - (it.totalCarryInBaseToken > 0 ? it.totalCarryInBaseToken : 0)
           ),
           3
         ),
@@ -87,7 +89,7 @@ const TokenAmountGraph = (props) => {
     },
     yAxis: {
       title: {
-        text: "Price, USD",
+        text: `Price, ${currencySymbol}`,
       },
       opposite: false,
     },

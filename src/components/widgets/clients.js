@@ -11,9 +11,14 @@ export const fetchClient = async (address) => {
     .map((daoUserAccount) => ({
       daoId: daoUserAccount.dao_id,
       lastPrice: daoUserAccount.current_token_price,
+      currentPortfolioValueUSD: Number(
+        daoUserAccount.current_portfolio_value_in_usd
+      ),
       tableName: daoUserAccount.dao_display_name,
       investedPortfolioValue: daoUserAccount.invested_portfolio_value,
-
+      investedPortfolioValueUSD: Number(
+        daoUserAccount.invested_portfolio_value_in_usd
+      ),
       symbol: tokenInfo[daoUserAccount.dao_id].symbol,
       address: tokenInfo[daoUserAccount.dao_id].address,
 
@@ -46,6 +51,8 @@ export const getDaoUserAccount = async (address, daoId) => {
       balance: 0,
       purchasedTokensAmount: 0,
       investedPortfolioValue: 0,
+      currentPortfolioValueUSD: 0,
+      investedPortfolioValueUSD: 0,
       avgInvPrice: 0,
       lastPrice: 0,
       profitValue: 0,

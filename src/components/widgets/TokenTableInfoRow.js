@@ -19,20 +19,22 @@ const RowDataC = (props) => {
     totalAccumulator,
     totalProfitAccumulator,
     totalInvestedAccumulator,
+    accountInfo,
   } = props;
 
-  const priceUSD = lastPrice;
-
-  const portfolioPrice = balance * priceUSD;
+  const portfolioPrice = balance * lastPrice;
   const profit = portfolioPrice - investedAmount;
+  const profitUSD =
+    accountInfo.currentPortfolioValueUSD -
+    accountInfo.investedPortfolioValueUSD;
   const profitPercent = (profit / investedAmount) * 100;
 
   useEffect(() => {
     setTimeout(() => {
-      profitAccumulator(address, profit);
-      totalAccumulator(address, portfolioPrice);
-      totalProfitAccumulator(address, profit);
-      totalInvestedAccumulator(address, Number(investedAmount));
+      profitAccumulator(address, profitPercent);
+      totalAccumulator(address, accountInfo.currentPortfolioValueUSD);
+      totalProfitAccumulator(address, profitUSD);
+      totalInvestedAccumulator(address, accountInfo.investedPortfolioValueUSD);
     }, 1);
   }, [profit, portfolioPrice, investedAmount]);
 
@@ -53,7 +55,7 @@ const RowDataC = (props) => {
       </td>
       <td className="nowrap">
         {" "}
-        <TokenTableValueOutput value={priceUSD} render={ftmAmount} />
+        <TokenTableValueOutput value={lastPrice} render={ftmAmount} />
       </td>
       <td className="nowrap">
         {" "}
@@ -121,17 +123,18 @@ const TokenTableInfoRow = (props) => {
       dao={dao}
       wallet={walletAddress}
       childrenLoading={() => <RowLoading token={dao} />}
-      children={(info) => (
+      children={(accountInfo) => (
         <RowData
           baseCurrency={dao.base_currency}
-          tableName={info.tableName}
-          symbol={info.symbol}
-          address={info.address}
-          balance={info.balance}
-          investedAmount={info.investedPortfolioValue}
-          avgInvPrice={info.avgInvPrice}
-          lastPrice={info.lastPrice}
-          apy={info.apy}
+          accountInfo={accountInfo}
+          tableName={accountInfo.tableName}
+          symbol={accountInfo.symbol}
+          address={accountInfo.address}
+          balance={accountInfo.balance}
+          investedAmount={accountInfo.investedPortfolioValue}
+          avgInvPrice={accountInfo.avgInvPrice}
+          lastPrice={accountInfo.lastPrice}
+          apy={accountInfo.apy}
           profitAccumulator={profitAccumulator}
           totalAccumulator={totalAccumulator}
           totalProfitAccumulator={totalProfitAccumulator}

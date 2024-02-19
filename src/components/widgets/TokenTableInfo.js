@@ -85,8 +85,8 @@ const TokenTableInfo = (props) => {
         </tr>
         <tr>
           <th>Token price</th>
-          <th>Portfolio value, USD</th>
-          <th>Profit/Loss, USD</th>
+          <th>Portfolio value</th>
+          <th>Profit/Loss</th>
           <th>Profit/Loss, %</th>
           <th>APY %</th>
         </tr>

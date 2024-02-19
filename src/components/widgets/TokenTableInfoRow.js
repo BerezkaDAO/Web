@@ -3,9 +3,11 @@ import { round } from "./round";
 import { ftmAmount, fmtDollatAmount, fmtDollatAmountSmall } from "./format";
 import AccountPortfolioProvider from "./AccountPortfolioProvider";
 import TokenTableValueOutput from "./TokenTableValueOutput";
+import { checkIsBlastDao } from "./checkIsBlastDao";
 
 const RowDataC = (props) => {
   const {
+    isBlastDao,
     baseCurrency,
     tableName,
     symbol,
@@ -23,10 +25,11 @@ const RowDataC = (props) => {
   } = props;
 
   const portfolioPrice = balance * lastPrice;
-  const profit = portfolioPrice - investedAmount;
-  const profitUSD =
-    accountInfo.currentPortfolioValueUSD -
-    accountInfo.investedPortfolioValueUSD;
+  const profit = isBlastDao ? portfolioPrice : portfolioPrice - investedAmount;
+  const profitUSD = isBlastDao
+    ? portfolioPrice
+    : accountInfo.currentPortfolioValueUSD -
+      accountInfo.investedPortfolioValueUSD;
   const profitPercent = (profit / investedAmount) * 100;
 
   useEffect(() => {
@@ -118,6 +121,8 @@ const TokenTableInfoRow = (props) => {
     totalInvestedAccumulator,
   } = props;
 
+  const isBlastDao = checkIsBlastDao(dao.address);
+
   return (
     <AccountPortfolioProvider
       dao={dao}
@@ -125,6 +130,7 @@ const TokenTableInfoRow = (props) => {
       childrenLoading={() => <RowLoading token={dao} />}
       children={(accountInfo) => (
         <RowData
+          isBlastDao={isBlastDao}
           baseCurrency={dao.base_currency}
           accountInfo={accountInfo}
           tableName={accountInfo.tableName}

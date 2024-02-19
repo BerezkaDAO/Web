@@ -28,9 +28,11 @@ const AccountPortfolioProvider = (props) => {
           symbol: "points",
           balance: blastCurrent.points,
           investedPortfolioValue: blastCurrent.usd,
+          investedPortfolioValueUSD: blastCurrent.usd,
           lastPrice: blastPrice,
         }
       : data;
+
   if (!patcheddata || isLoading) {
     return <>{childrenLoading()}</>;
   }

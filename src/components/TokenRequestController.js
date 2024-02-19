@@ -228,7 +228,7 @@ function TokenRequestController(props) {
         .call();
       const balanceFloat = Number.parseFloat(balance);
       if (!balanceFloat || web3.utils.toBN(balance).lt(offeredAmountDecimals)) {
-        setErrorMessage("Not enough USDT / USDC / DAI on balance");
+        setErrorMessage(`Not enough ${offeredToken} on balance`);
         return;
       }
       let nonce = await web3.eth.getTransactionCount(address);
@@ -245,7 +245,11 @@ function TokenRequestController(props) {
         // If allowance != 0 and token is USDT reset approval first,
         // otherwise transaction will fail
         //
-        if (allowanceFloat && allowanceFloat > 0 && offeredToken === "usdt") {
+        if (
+          allowanceFloat &&
+          allowanceFloat > 0 &&
+          offeredToken.toLowerCase() === "usdt"
+        ) {
           offeredTokenContract.methods
             .approve(daoAddress, toBigNumberString("0"))
             .send({
@@ -363,7 +367,7 @@ function TokenRequestController(props) {
         .call();
       const balanceFloat = Number.parseFloat(balance);
       if (!balanceFloat || web3.utils.toBN(balance).lt(offeredAmountDecimals)) {
-        setErrorMessage("Not enough USDT / USDC / DAI on balance");
+        setErrorMessage(`Not enough ${offeredToken} on balance`);
         return;
       }
       let nonce = await web3.eth.getTransactionCount(address);
@@ -380,7 +384,11 @@ function TokenRequestController(props) {
         // If allowance != 0 and token is USDT reset approval first,
         // otherwise transaction will fail
         //
-        if (allowanceFloat && allowanceFloat > 0 && offeredToken === "usdt") {
+        if (
+          allowanceFloat &&
+          allowanceFloat > 0 &&
+          offeredToken.toLowerCase() === "usdt"
+        ) {
           offeredTokenContract.methods
             .approve(depositContractAddress, toBigNumberString("0"))
             .send({

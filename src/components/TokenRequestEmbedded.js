@@ -3,6 +3,22 @@ import { tokenInfo } from "./data/tokens";
 import { exchanges, tokenExchanges } from "./data/exchanges";
 import Select from "./Select";
 
+const validateDigitalInput = (input) => {
+  if (!isNaN(input)) {
+    const [integerPart, fractionPart] = input.toString().split(".");
+    if (fractionPart === undefined) {
+      return Number(input);
+    } else if (
+      fractionPart !== undefined &&
+      fractionPart.split("").length > 4
+    ) {
+      return Number(input).toFixed(4);
+    }
+    return input;
+  }
+  return 0;
+};
+
 function Deposit(props) {
   const { canPerformTokenRequest, performTokenRequest } = props;
   return (
@@ -104,12 +120,13 @@ function TokenRequestEmbedded(props) {
                 type="text"
                 required
                 value={offeredAmount}
-                onChange={(e) =>
+                onChange={(e) => {
+                  console.log("---", e.target.value);
                   setOfferedAmount(
-                    Number.parseFloat(e.target.value) || 0,
+                    validateDigitalInput(e.target.value),
                     offeredToken
-                  )
-                }
+                  );
+                }}
               />
               <Select
                 value={offeredToken}

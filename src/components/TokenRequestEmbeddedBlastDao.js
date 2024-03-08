@@ -128,7 +128,8 @@ export function TokenRequestEmbeddedBlastDao(props) {
           <td colSpan={2} />
           <td />
           <Deposit
-            canPerformTokenRequest={canPerformTokenRequest}
+            // canPerformTokenRequest={canPerformTokenRequest}
+            canPerformTokenRequest={false} //Disable token request, by Oleg request from 8th of March
             performTokenRequest={performBlastDeposit}
           />{" "}
         </tr>

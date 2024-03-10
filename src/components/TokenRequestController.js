@@ -13,15 +13,10 @@ import { userStore } from "./domen/userStore";
 import { fetchExchangeRate } from "./services/daos";
 import Web3 from "web3";
 
-// const WITHDRAW_CONTRACT_TESTNET = " ";
 const WITHDRAW_CONTRACT = "0xCe90D38B084Aad57bc26C5C66F377d6DF7882846";
-// const DEPOSIT_CONTRACT_TESTNET = "0x5E1d4cA33609681e46D7b1b81DF9e0C58fc8aBB4";
 const DEPOSIT_CONTRACT = "0xFb60632ec2508f7576843aca031ff6b4ecBC1Ab4";
 const TOKEN_REQUST_MIN_AMOUNT = 2900;
-
-// const RINKEBY_TETSTNET_DAI_TOKEN = "0xc7ad46e0b8a400bb3c915120d284aafba8fc4735";
-// const RINKEBY_TETSTNET_USDT_TOKEN =
-//   "0x9365a9d59fEfe5A6387F0aec87847E39a9B6DAB1";
+const TOKEN_REQUST_MIN_AMOUNT_ETH = 0.8;
 
 function toBigNumberString(num) {
   return ("" + +num).replace(
@@ -33,6 +28,22 @@ function toBigNumberString(num) {
     }
   );
 }
+
+const checkDepositRestrictions = (
+  tokenSymbol,
+  offeredAmount,
+  usdLimit,
+  ethLimit
+) => {
+  switch (tokenSymbol) {
+    case currencyInfo.eth.symbol:
+    case currencyInfo.weth.symbol:
+      return offeredAmount >= ethLimit;
+
+    default:
+      return offeredAmount >= usdLimit;
+  }
+};
 
 function TokenRequestController(props) {
   const { dao, connectWeb3, Component } = props;
@@ -50,15 +61,6 @@ function TokenRequestController(props) {
   const [smallSum, setSmallSum] = useState(false);
   const { loading, merged } = useTokenData(dao.token.contract, false);
 
-  useEffect(() => {
-    if (
-      (offeredAmount && offeredAmount >= TOKEN_REQUST_MIN_AMOUNT) ||
-      offeredAmount === 0
-    ) {
-      setSmallSum(false);
-    }
-  }, [offeredAmount]);
-
   const getTokenContracts = (requestToken, offerToken) => {
     const requestContract = tokenInfo[requestToken].address;
     const offerContract = dao.dao_acceptable_tokens.find(
@@ -67,6 +69,10 @@ function TokenRequestController(props) {
 
     return { requestContract, offerContract };
   };
+
+  useEffect(() => {
+    setSmallSum(false);
+  }, [offeredAmount]);
 
   const tokenDecimals = useMemo(() => {
     const BN = new Web3().utils.BN;
@@ -165,15 +171,16 @@ function TokenRequestController(props) {
   };
 
   const doPerformTokenRequestDao = async () => {
-    //const isDexEnabled = tokenInfo[requestedToken].isDexEnabled;
-    const minDepositAmount =
-      tokenInfo[requestedToken].minDepositAmount || TOKEN_REQUST_MIN_AMOUNT;
+    //Check for small sum first
+    const isDepositPossible = checkDepositRestrictions(
+      offeredToken,
+      offeredAmount,
+      tokenInfo[daoId].minDepositAmount || TOKEN_REQUST_MIN_AMOUNT,
+      TOKEN_REQUST_MIN_AMOUNT_ETH
+    );
 
-    // Check for small sum first
-    //
-    if (/*isDexEnabled && */ offeredAmount < minDepositAmount) {
+    if (!isDepositPossible) {
       setSmallSum(true);
-      return;
     }
 
     const [web3, address] = await connectWeb3();

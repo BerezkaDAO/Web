@@ -155,27 +155,19 @@ export const getDaoSummary = async (tokenAddress, precision = 3) => {
       date: Math.floor(new Date(data.dt).getTime() / 1000, 0),
       dayId: Math.floor(new Date(data.dt).getTime() / 1000 / 86400, 0),
       price:
-        "" +
-        round(
-          Number.parseFloat(data.dao_token_price_in_usd) * 10 ** 6,
-          precision
-        ),
+        "" + round(Number.parseFloat(data.dao_token_price_in_usd), precision),
       priceInBaseToken: round(
-        Number.parseFloat(data.dao_token_price_in_base_token) * 10 ** 6,
+        Number.parseFloat(data.dao_token_price_in_base_token),
         precision
       ),
       token: tokenAddress.toLowerCase(),
-      supply: round(Number.parseFloat(data.dao_token_amount) * 10 ** 18, 0),
+      supply: round(Number.parseFloat(data.dao_token_amount), 0),
       totalPrice: round(
-        Number.parseFloat(data.gross_liquidity_value_in_usd) *
-          10 ** 18 *
-          10 ** 6,
+        Number.parseFloat(data.gross_liquidity_value_in_usd),
         0
       ),
       totalPriceInBaseToken: round(
-        Number.parseFloat(data.gross_liquidity_value_in_base_token) *
-          10 ** 18 *
-          10 ** 6,
+        Number.parseFloat(data.gross_liquidity_value_in_base_token),
         0
       ),
       totalCarry:

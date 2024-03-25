@@ -17,7 +17,7 @@ COPY . .
 
 # build application
 # RUN yarn build 
-RUN npm run react-scripts build && cat ./.env
+RUN npm run build && cat ./.env
 
 
 
